@@ -3,21 +3,22 @@
  */
 var Entry = require('./entry');
 var newLine = '\n';
-module.exports.process = function parserF(text){
-    // TODO implement parse Magic
+var dateParser = require('./parser-14util/dateparser'), parseTimeFromLine = require('./parser-14util/parseTimeFromLine'),
+    parseGroups = require('./parser-14util/parseGroups');
+
+
+var getTimestamp = function getTimestampF(lines) {
+    var dateValues = {};
+    dateValues.date = lines[2];
+    dateValues.time = parseTimeFromLine(lines[3]);
+    return dateParser(dateValues);
 };
-
-module.exports.getValues = function getValuesF(text){
+module.exports = function createEntryForAlertF(text) {
     var lines = text.split(newLine);
-    var entries = [];
-    var values;
-    var createEntry = function createEntryF(entry){
-        console.log(entry);
-        values.timestamp;
-        values.group;
-        values.description;
+    var values = {
+        group: parseGroups(lines[3]),
+        timestamp: getTimestamp(lines, values),
+        description: lines[3].substring(lines[3].lastIndexOf('/') + 2, lines[3].length)
     };
-    lines.forEach(createEntry)
-    return entries;
-
-}
+    return new Entry(values);
+};

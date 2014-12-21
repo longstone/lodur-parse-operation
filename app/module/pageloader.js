@@ -4,32 +4,36 @@
 "use strict";
 var request = require('request')
     , cheerio = require('cheerio'), parser14 = require("./parser-14");
-module.exports = function pageLoaderF(url){
-var array,url;
-    array = [];
-       url = 'http://www.lodur-zh.ch/duebendorf/index.php?modul=6';
+module.exports = function pageLoaderF(url) {
+    var parsedEntries, url;
+    parsedEntries = [];
+    url = 'http://www.lodur-zh.ch/duebendorf/index.php?modul=6';
 
-    request(url, function(err, resp, body){
+    request(url, function (err, resp, body) {
         var $ = cheerio.load(body);
-        $('div .content table').each(function(position,element){
-                var entry = $(element);
+        var contentsOfPage = $('div .content table');
+        var entries = [];
+        contentsOfPage.each(function (position, element) {
+
             // returns something like:
             /**
              *19.11.2014
              164 - 22:32 Uhr / BAG N1 / Rauch/gelöschter Brand: Hörnlistrasse, Dübendorf
              */
-           var payload = entry.text();
-            console.log('--begin');
-                console.log(payload);
-            parser14()
-            array.push(payload);
-            console.log('--end');
+            var entry = $(element);
+            // extract text only
+            entries.push(entry.text());
 
         });
-        return array;
+        entries.shift(); // remove Einsatzberichte des Jahres...
+        entries.forEach(function (element) {
+            parsedEntries.push(parser14(element));
+        });
+        console.log(parsedEntries);
+        return parsedEntries;
 //        $(links).each(function(i, link){
-  ///          console.log($(link).text() + ':\n  ' + $(link).attr('href'));
-     //   });
+        ///          console.log($(link).text() + ':\n  ' + $(link).attr('href'));
+        //   });
     });
 
 
