@@ -3,8 +3,9 @@
  */
 "use strict";
 var request = require('request')
-    , cheerio = require('cheerio'), parser14 = require("./parser-14");
+    , cheerio = require('cheerio'), parser14 = require("./parser-14"), q = require('q');
 module.exports = function pageLoaderF(url) {
+    var deferred = q.defer();
     var parsedEntries, url;
     parsedEntries = [];
     url = 'http://www.lodur-zh.ch/duebendorf/index.php?modul=6';
@@ -29,12 +30,11 @@ module.exports = function pageLoaderF(url) {
         entries.forEach(function (element) {
             parsedEntries.push(parser14(element));
         });
-        console.log(parsedEntries);
-        return parsedEntries;
+        deferred.resolve(parsedEntries);
 //        $(links).each(function(i, link){
         ///          console.log($(link).text() + ':\n  ' + $(link).attr('href'));
         //   });
     });
 
-
-}
+    return deferred.promise;
+};
