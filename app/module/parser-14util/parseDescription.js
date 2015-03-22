@@ -4,7 +4,8 @@
  */
 
 module.exports = function parseDescriptionF(line) {
-    var start = line.lastIndexOf('/') + 2;
+    line = line.replace('\t', '');
+    var start = line.indexOf(' / ', 23) + 3;
     var end = line.length;
     return line.substring(start, end);
 };
