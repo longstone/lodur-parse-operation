@@ -40,6 +40,8 @@ router.get('/', function (req, res) {
                     }
                 });
             });
+            res.statusCode = 204;
+            res.send();
         });
 
 
