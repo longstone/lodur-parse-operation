@@ -72,7 +72,7 @@ app.use(function (err, req, res, next) {
         error: {}
     });
 });
-
-app.listen(8080);
-console.log("app started");
+var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+app.listen(port);
+console.log("app started, port: " + port);
 module.exports = app;
