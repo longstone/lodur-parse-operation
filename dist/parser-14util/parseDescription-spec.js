@@ -4,7 +4,7 @@
 "use strict";
 var assert = require("assert");
 
-var parseDescription = require("./../../module/parser-14util/parseDescription");
+var parseDescription = require("./.././parser-14util/parseDescription");
 
 var oneGroup = "001 - 17:09 Uhr / Kdo / Hilfeleistung: Weidstrasse, Wangen-Br�ttisellen";
 var twoGroups = "20.10.2014	150 - 16:03 Uhr / KA2+KA3 / BMA: Rotbuchstrasse, Dübendorf";
