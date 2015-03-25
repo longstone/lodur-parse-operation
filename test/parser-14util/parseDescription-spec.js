@@ -4,14 +4,14 @@
 "use strict";
 var assert = require("assert");
 
-var parseDescription = require("./.././parser-14util/parseDescription");
+var parseDescription = require("../../module/parser-14util/parseDescription");
 
-var oneGroup = "001 - 17:09 Uhr / Kdo / Hilfeleistung: Weidstrasse, Wangen-Br�ttisellen";
-var twoGroups = "20.10.2014	150 - 16:03 Uhr / KA2+KA3 / BMA: Rotbuchstrasse, Dübendorf";
+var oneGroup = "043 - 18:16 Uhr / KA5 / Brand: Ringstrasse, Brüttisellen";
+var twoGroups = "150 - 16:03 Uhr / KA2+KA3 / BMA: Rotbuchstrasse, Dübendorf";
 describe("test description", function () {
-    it('should parse "Hilfeleistung: Weidstrasse, Wangen-Br�ttisellen"', function () {
+    it('should parse "Brand: Ringstrasse, Brüttisellen"', function () {
         var actual = parseDescription(oneGroup);
-        var expected = "Hilfeleistung: Weidstrasse, Wangen-Br�ttisellen";
+        var expected = "Brand: Ringstrasse, Brüttisellen";
         assert.deepEqual(actual, expected);
     })
 });

@@ -5,7 +5,7 @@
 var assert = require("assert");
 
 var moment = require("moment");
-var dateparser = require("./.././parser-14util/dateparser");
+var dateparser = require("../../module/parser-14util/dateparser");
 
 describe("test date", function () {
     it('should parse date as expected', function () {
