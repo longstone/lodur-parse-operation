@@ -3,7 +3,7 @@
  */
 var express = require('express');
 var router = express.Router();
-var device = require('../Schemas/device');
+var device = require('../schemas/device');
 
 router.post('/', function (req, res) {
     var sendHeaders = false;
