@@ -1,8 +1,10 @@
 {
-  "name": "app",
+  "name": "lodurparser",
   "version": "0.0.0",
   "private": true,
+  "main": "app.js",
   "scripts": {
+    "start": "supervisor app.js",
     "test": "npm run test-node ",
     "test-node": "mocha -R spec ./dist/"
   },

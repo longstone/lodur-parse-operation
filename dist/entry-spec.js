@@ -2,7 +2,7 @@
  * Created by longstone on 15/11/14.
  */
 "use strict";
-var Entry = require("../module/entry");
+var Entry = require("./entry");
 var empty = '';
 module.exports = function(){
 describe("testDefaults", function () {

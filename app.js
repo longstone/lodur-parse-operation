@@ -10,6 +10,7 @@ var mongoose = require('mongoose');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var updatePage = require('./routes/update');
 var registerDevice = require('./routes/registerDevice');
 var app = express();
 
@@ -27,6 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/update', updatePage);
 app.use('/registerDevice', registerDevice);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -36,6 +38,7 @@ app.use(function (req, res, next) {
 });
 
 var mongoUri = process.env.MONGOURI || "mongodb://localhost:27017/lodur";
+console.log(mongoUri);
 mongoose.connect(mongoUri, function (err, res) {
     if (err) {
         console.log('ERROR connecting to: ' + mongoUri + '. ' + err);

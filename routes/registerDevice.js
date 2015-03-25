@@ -3,7 +3,7 @@
  */
 var express = require('express');
 var router = express.Router();
-var device = require('../schemas/device');
+var device = require('./device');
 router.post('/', function (req, res) {
     var sendHeaders = false;
     var fail = function failF(err) {
@@ -15,6 +15,7 @@ router.post('/', function (req, res) {
         var newDevice = new device({
             deviceId: req.body.deviceId
         });
+        console.log(newDevice.deviceId);
         newDevice.save(fail);
     } catch (err) {
         fail(err);
