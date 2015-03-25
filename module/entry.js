@@ -9,6 +9,7 @@ var Entry = function EntryF(that) {
     this.timestamp = that.timestamp || '';
     this.group = that.group || '';
     this.description = that.description || '';
+    this.number = that.number || -1;
 };
 
 Entry.prototype.getTimestamp = function getTimestampF() {
@@ -19,6 +20,9 @@ Entry.prototype.getGroup = function getGroupF() {
 };
 Entry.prototype.getDescription = function getDescriptionF() {
     return this.description;
+};
+Entry.prototype.getNumber = function getNumberF() {
+    return this.nr;
 };
 
 module.exports = Entry;

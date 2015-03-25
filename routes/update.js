@@ -5,7 +5,7 @@ var express = require('express');
 var router = express.Router();
 var pageloader = require('../module/pageloader');
 var gcm = require('node-gcm');
-var Device = require('./device');
+var Device = require('../schemas/device');
 /* GET home page. */
 router.get('/', function (req, res) {
 

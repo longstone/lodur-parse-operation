@@ -4,7 +4,7 @@
 "use strict";
 var assert = require("assert");
 
-var parseTimeFromLine = require("./.././parser-14util/parseTimeFromLine");
+var parseTimeFromLine = require("../../module/parser-14util/parseTimeFromLine");
 
 var sample_line = "001 - 17:09 Uhr / Kdo / Hilfeleistung: Weidstrasse, Wangen-Br�ttisellen";
 

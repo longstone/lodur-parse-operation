@@ -38,7 +38,8 @@ app.use(function (req, res, next) {
 });
 
 var mongoUri = process.env.MONGOURI || "mongodb://localhost:27017/lodur";
-console.log(mongoUri);
+
+
 mongoose.connect(mongoUri, function (err, res) {
     if (err) {
         console.log('ERROR connecting to: ' + mongoUri + '. ' + err);
@@ -46,6 +47,7 @@ mongoose.connect(mongoUri, function (err, res) {
         console.log('Succeeded connected to: ' + mongoUri);
     }
 });
+
 // error handlers
 
 // development error handler
