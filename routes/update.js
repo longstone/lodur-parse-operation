@@ -8,7 +8,7 @@ var gcm = require('node-gcm');
 var Device = require('../schemas/device');
 var q = require('q');
 /* GET home page. */
-
+lastID = -1;
 router.get('/', function (req, res) {
 
 
@@ -16,9 +16,9 @@ router.get('/', function (req, res) {
 
 
         var message = new gcm.Message({
-            collapseKey: 'demo',
+            collapseKey: result.id,
             delayWhileIdle: true,
-            timeToLive: 3,
+            timeToLive: 259200,
             data: {
                 message: json[0]
             }
@@ -29,19 +29,22 @@ router.get('/', function (req, res) {
         // ... or retrying
         Device.find({}).exec(function (err, result) {
             console.log(result);
+            if (lastID !== result.id) {
+                lastID = result.id;
             result.forEach(function (item) {
 
-                registrationIds.push(item.deviceId);
-                sender.send(message, registrationIds, function (err, result) {
+                // registrationIds.push(item.deviceId);
+                sender.send(message, item.deviceId, function (err, result) {
                     if (err) {
                         console.error(err);
                         console.log("result: " + result)
                     }
                     else {
-                        console.log(result);
+                        console.log(JSON.stringify(result) + " - Message: " + JSON.stringify(message));
                     }
                 });
             });
+            }
             res.statusCode = 204;
             res.send();
         });
