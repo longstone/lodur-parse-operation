@@ -6,7 +6,9 @@ var router = express.Router();
 var pageloader = require('../module/pageloader');
 var gcm = require('node-gcm');
 var Device = require('../schemas/device');
+var q = require('q');
 /* GET home page. */
+
 router.get('/', function (req, res) {
 
 
@@ -54,4 +56,3 @@ router.get('/', function (req, res) {
 });
 
 module.exports = router;
-
