@@ -31,19 +31,21 @@ router.get('/', function (req, res) {
             console.log(result);
             if (lastID !== result.id) {
                 lastID = result.id;
-            result.forEach(function (item) {
+                result.forEach(function (item) {
 
-                // registrationIds.push(item.deviceId);
-                sender.send(message, item.deviceId, function (err, result) {
-                    if (err) {
-                        console.error(err);
-                        console.log("result: " + result)
-                    }
-                    else {
-                        console.log(JSON.stringify(result) + " - Message: " + JSON.stringify(message));
-                    }
+                    // registrationIds.push(item.deviceId);
+                    sender.send(message, item.deviceId, function (err, result) {
+                        if (err) {
+                            console.error(err);
+                            console.log("result: " + result)
+                        }
+                        else {
+                            console.log(JSON.stringify(result) + " - Message: " + JSON.stringify(message));
+                        }
+                    });
                 });
-            });
+            } else {
+                console.log('no update, latest id ' + lastID);
             }
             res.statusCode = 204;
             res.send();
