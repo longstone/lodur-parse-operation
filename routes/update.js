@@ -37,7 +37,7 @@ router.get('/', function (req, res) {
                     sender.send(message, item.deviceId, function (err, result) {
                         if (err) {
                             console.error(err);
-                            console.log("failed sending, result: " + result)
+                            console.log("failed sending, result: " + err)
                         }
                         else {
                             console.log('sent to' + JSON.stringify(result) + " - Message: " + JSON.stringify(message));

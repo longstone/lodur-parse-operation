@@ -12,6 +12,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var updatePage = require('./routes/update');
 var registerDevice = require('./routes/registerDevice');
+var heartbeat = require('./routes/heartbeat');
 var app = express();
 
 // view engine setup
@@ -30,6 +31,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/update', updatePage);
 app.use('/registerDevice', registerDevice);
+app.use('/heartbeat', heartbeat);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
