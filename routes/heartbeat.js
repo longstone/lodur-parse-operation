@@ -4,7 +4,6 @@
 var express = require('express');
 var moment = require('moment');
 var router = express.Router();
-var pageloader = require('../module/pageloader');
 var gcm = require('node-gcm');
 var Device = require('../schemas/device');
 var q = require('q');
