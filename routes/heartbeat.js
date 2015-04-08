@@ -19,39 +19,38 @@ router.get('/', function (req, res) {
         description: "Heartbeat check",
         number: -2
     };
-        var message = new gcm.Message({
-            collapseKey: "heartbeat",
-            delayWhileIdle: true,
-            timeToLive: 120,
-            data: {
-                message: entry
-            }
-        });
-        var sender = new gcm.Sender(process.env.gcmapikey);
-        var registrationIds = [];
+    var message = new gcm.Message({
+        collapseKey: "heartbeat",
+        delayWhileIdle: true,
+        timeToLive: 120,
+        data: {
+            message: entry
+        }
+    });
+    var sender = new gcm.Sender(process.env.gcmapikey);
+    var registrationIds = [];
 
-        // ... or retrying
-        Device.find({}).exec(function (err, result) {
-            console.log(result);
+    // ... or retrying
+    Device.find({}).exec(function (err, result) {
+        console.log(result);
 
-            result.forEach(function (item) {
+        result.forEach(function (item) {
 
-                    // registrationIds.push(item.deviceId);
-                    sender.send(message, item.deviceId, function (err, result) {
-                        if (err) {
-                            console.error(err);
-                            console.log("failed sending, result: " + err)
-                        }
-                        else {
-                            console.log('sent to' + JSON.stringify(result) + " - Message: " + JSON.stringify(message));
-                        }
-                    });
-                });
-
-            res.statusCode = 204;
-            res.send();
+            // registrationIds.push(item.deviceId);
+            sender.send(message, item.deviceId, function (err, result) {
+                if (err) {
+                    console.error(err);
+                    console.log("failed sending, result: " + err)
+                }
+                else {
+                    console.log('sent to' + JSON.stringify(result) + " - Message: " + JSON.stringify(message));
+                }
+            });
         });
 
+        res.statusCode = 204;
+        res.send();
+    });
 
 
 });
