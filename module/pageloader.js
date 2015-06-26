@@ -3,7 +3,7 @@
  */
 "use strict";
 var request = require('request')
-    , cheerio = require('cheerio'), parser14 = require("./parser-14"), q = require('q'), iconv = require('iconv');
+    , cheerio = require('cheerio'), parser14 = require("./parser-14"), q = require('q');// iconv = require('iconv');
 module.exports = function pageLoaderF(url) {
     var deferred = q.defer();
     var parsedEntries, url;
@@ -14,9 +14,9 @@ module.exports = function pageLoaderF(url) {
     request(url, {
         encoding: null
     }, function (err, resp, body) {
-        var ic = new iconv.Iconv('iso-8859-1', 'utf-8');
-        var buf = ic.convert(body);
-        body = buf.toString('utf-8');
+  //      var ic = new iconv.Iconv('iso-8859-1', 'utf-8');
+    //    var buf = ic.convert(body);
+      //  body = buf.toString('utf-8');
 
         var $ = cheerio.load(body);
         var contentsOfPage = $('div .content table');
