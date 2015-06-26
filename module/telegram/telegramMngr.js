@@ -11,6 +11,20 @@ var bot = new Bot({token: process.env.telegram_hash}).on('message',
     function (message) {
         var chatId = message.chat.id;
         var sendMessage = 'not processable';
+        var send = function (id, msg) {
+            bot.sendMessage(
+                {
+                    chat_id: id,
+                    text: msg
+                }
+                , function (err, body) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log('sucessful sent :' + JSON.stringify(body));
+                    }
+                })
+        };
         if (message && message.text) {
             switch (message.text) {
                 case "/start":
@@ -22,37 +36,41 @@ var bot = new Bot({token: process.env.telegram_hash}).on('message',
                     });
                     console.log('registered chat id ' + chatId);
                     sendMessage = 'should be registered right now';
-
+                    send(chatId, sendMessage);
                     break;
                 case "/stop":
                     sendMessage = "";
                     Chat.find({chatId: chatId}).remove(function (result) {
                         sendMessage += 'removed ' + result;
+                        send(chatId, sendMessage);
                     });
 
                     break;
                 case "/update":
                     sendMessage = message.text + ': is currently not implemented';
+                    send(chatId, sendMessage);
                     break;
                 case "/stats":
                     Chat.find({}, function (err, chats) {
-                        sendMessage = 'currently, im notifying ' + chats.length + ' chat' + chats.length > 1 ? 's' : '';
+                        var chatOrChats = function (count) {
+                            var term = count+' chat';
+                            if(count > 1 ){
+                                return term+'s';
+                            }
+                            return term;
+                        };
+                        sendMessage = 'currently, im notifying ' + chatOrChats(chats.length);
+                        send(chatId, sendMessage);
                     });
+                    break;
                 case "/help'":
                 default:
                     sendMessage = 'Following commands are possible: ' + JSON.stringify(orders);
+                    send(chatId, sendMessage);
             }
         }
 
-        bot.sendMessage(
-            {
-                chat_id: chatId,
-                text: sendMessage
-            }
-            , function (err, body) {
-                console.log(err);
-                console.log(body);
-            })
+
     }
 ).start();
 var notifyAll = function notifyAllF(sendMessage) {
