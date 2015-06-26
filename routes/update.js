@@ -7,6 +7,8 @@ var pageloader = require('../module/pageloader');
 var gcm = require('node-gcm');
 var Device = require('../schemas/device');
 var q = require('q');
+var teleBot = require('./../module/telegram/telegramMngr');
+var moment = require('moment');
 /* GET home page. */
 lastID = -1;
 router.get('/', function (req, res) {
@@ -15,6 +17,13 @@ router.get('/', function (req, res) {
     var success = function sucessF(json) {
 
         var lastEntry = json[0];
+        if (lastID !== lastEntry.number) {
+            teleBot("Wer:  " + lastEntry.group.toString() + "\n"
+                + "Was:  " + lastEntry.description + "\n"
+                + "Wann: " + moment(lastEntry.timestamp).locale('de').format('HH:mm DD.MM.YY')
+            );
+            _lastEntryCache = lastEntry;
+        }
         var message = new gcm.Message({
             collapseKey: lastEntry.number,
             delayWhileIdle: true,
@@ -25,11 +34,11 @@ router.get('/', function (req, res) {
         });
         var sender = new gcm.Sender(process.env.gcmapikey);
         var registrationIds = [];
-
         // ... or retrying
         Device.find({}).exec(function (err, result) {
             console.log(result);
             if (lastID !== lastEntry.number) {
+
                 lastID = lastEntry.number;
                 result.forEach(function (item) {
 
