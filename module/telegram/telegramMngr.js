@@ -10,7 +10,7 @@ var orders = ['/start', '/stop', '/update', '/stats', '/help'];
 var bot = new Bot({token: process.env.telegram_hash}).on('message',
     function (message) {
         var chatId = message.chat.id;
-        var sendMessage = 'no message found';
+        var sendMessage = 'not processable';
         if (message && message.text) {
             switch (message.text) {
                 case "/start":
@@ -25,13 +25,10 @@ var bot = new Bot({token: process.env.telegram_hash}).on('message',
 
                     break;
                 case "/stop":
-                    Chat.find({  chatId: chatId }).remove( function(result){
-                        bot.sendMessage({
-                            chat_id: chatId,
-                            text: result
-                        });
-                    } );
-                    sendMessage = message.text + ': is currently not implemented';
+                    Chat.find({chatId: chatId}).remove(function (result) {
+                        sendMessage += 'removed ' + result;
+                    });
+
                     break;
                 case "/update":
                     sendMessage = message.text + ': is currently not implemented';
