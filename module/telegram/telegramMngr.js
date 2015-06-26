@@ -7,7 +7,9 @@ var Chat = require('./../../schemas/chats');
 /* GET home page. */
 
 var orders = ['/start', '/stop', '/update', '/stats', '/help'];
-var bot = new Bot({token: process.env.telegram_hash}).on('message',
+var token = process.env.telegram_hash;
+console.log('starting bot with token: ' + token);
+var bot = new Bot({token: token}).on('message',
     function (message) {
         var chatId = message.chat.id;
         var sendMessage = 'not processable';
