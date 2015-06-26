@@ -25,6 +25,7 @@ var bot = new Bot({token: process.env.telegram_hash}).on('message',
 
                     break;
                 case "/stop":
+                    sendMessage = "";
                     Chat.find({chatId: chatId}).remove(function (result) {
                         sendMessage += 'removed ' + result;
                     });
@@ -32,9 +33,11 @@ var bot = new Bot({token: process.env.telegram_hash}).on('message',
                     break;
                 case "/update":
                     sendMessage = message.text + ': is currently not implemented';
-
-
                     break;
+                case "/stats":
+                    Chat.find({}, function (err, chats) {
+                        sendMessage = 'currently, im notifying ' + chats.length + ' chat' + chats.length > 1 ? 's' : '';
+                    });
                 case "/help'":
                 default:
                     sendMessage = 'Following commands are possible: ' + JSON.stringify(orders);
