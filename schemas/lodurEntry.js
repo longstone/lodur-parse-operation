@@ -6,14 +6,14 @@ var mongoose = require("mongoose");
 var entrySchema = new mongoose.Schema({
     group: [String],
     timestamp: Date,
-    description: String
+    description: String,
+    number : Number
 });
-var lodurEntry;
 
-var lodurEntry;
+var LodurEntry;
 if (mongoose.models.LodurEntry) {
-    lodurEntry = mongoose.model('LodurEntry');
+    LodurEntry = mongoose.model('LodurEntry');
 } else {
-    lodurEntry = mongoose.model('LodurEntry', entrySchema);
+    LodurEntry = mongoose.model('LodurEntry', entrySchema);
 }
-module.exports = lodurEntry;
+module.exports = LodurEntry;
