@@ -1,4 +1,10 @@
 "use strict";
+
+process.on('uncaughtException', function (err) {
+    console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
+    console.error(err.stack);
+})
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
