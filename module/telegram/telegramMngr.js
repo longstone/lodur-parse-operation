@@ -7,75 +7,63 @@ var Chat = require('./../../schemas/chats');
 var request = require('request');
 /* GET home page. */
 
-var orders = ['/start', '/stop', '/update', '/stats', '/help'];
 var token = process.env.telegram_hash;
 console.log('starting bot with token: ' + token);
-var bot = new Bot({token: token}).on('message',
-    function (message) {
-        var chatId = message.chat.id;
-        var sendMessage = 'not processable';
-        var send = function (id, msg) {
-            bot.sendMessage(
-                {
-                    chat_id: id,
-                    text: msg
-                }
-                , function (err, body) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        console.log('sucessful sent :' + JSON.stringify(body));
-                    }
-                })
-        };
-        if (message && message.text) {
-            switch (message.text) {
-                case "/start":
-                    var newChat = new Chat({
-                        chatId: chatId
-                    });
-                    newChat.save(function (err) {
-                        console.log(err);
-                    });
-                    console.log('registered chat id ' + chatId);
-                    sendMessage = 'should be registered right now';
-                    send(chatId, sendMessage);
-                    break;
-                case "/stop":
-                    sendMessage = "";
-                    Chat.find({chatId: chatId}).remove(function (result) {
-                        sendMessage += 'removed ' + result;
-                        send(chatId, sendMessage);
-                    });
-
-                    break;
-                case "/update":
-                    sendMessage = 'update triggered';
-                    send(chatId, sendMessage);
-                    break;
-                case "/stats":
-                    Chat.find({}, function (err, chats) {
-                        var chatOrChats = function (count) {
-                            var term = count + ' chat';
-                            if (count > 1) {
-                                return term + 's';
-                            }
-                            return term;
-                        };
-                        sendMessage = 'currently, im notifying ' + chatOrChats(chats.length);
-                        send(chatId, sendMessage);
-                    });
-                    break;
-                case "/help'":
-                default:
-                    sendMessage = 'Following commands are possible: ' + JSON.stringify(orders);
-                    send(chatId, sendMessage);
-            }
+var send = function (id, msg) {
+    bot.sendMessage(
+        {
+            chat_id: id,
+            text: msg
         }
+        , function (err, body) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('sucessful sent :' + JSON.stringify(body));
+            }
+        })
+};
 
+var bot = new Bot({token: token})
+    .on('start', function (message) {
+        var newChat = new Chat({
+            chatId: message.chat.id
+        });
+        newChat.save(function (err) {
+            console.log(err);
+        });
+        console.log('registered chat id ' + chatId);
+        var msg = 'should be registered right now';
+        send(chatId, msg);
+    }).on('stop', function (message) {
+        Chat.find({chatId: message.chat.id}).remove(function (error) {
+            var sendMessage = 'removed you from list';
+            if (error) {
+                sendMessage = 'error while removing ' + error;
+            }
+            send(message.chat.id, sendMessage);
+        });
+    }).on('stats', function (message) {
+        Chat.find({}, function (err, chats) {
+            var chatOrChats = function (count) {
+                var term = count + ' chat';
+                if (count > 1) {
+                    return term + 's';
+                }
+                return term;
+            };
+            var sendMessage = 'currently, im notifying ' + chatOrChats(chats.length);
+            send(message.chat.id, sendMessage);
+        });
+    }).on('update', function (message) {
+        request('http://lodurparser-longstone.rhcloud.com/update', function () {
+        });
+        send(message.chat.id, 'update triggered');
+    }).on('message', function (msg) {
+        console.log('unprocessable command ' + msg);
+        send(msg.chat.id, 'unprocessable command: ' + msg.text);
+    }).start();
 
-    }
-).start();
 var notifyAll = function notifyAllF(sendMessage) {
 
     console.log('should notify all chats with message: ' + sendMessage);
