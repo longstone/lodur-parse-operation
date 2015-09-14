@@ -59,9 +59,6 @@ var bot = new Bot({token: token})
         request('http://lodurparser-longstone.rhcloud.com/update', function () {
         });
         send(message.chat.id, 'update triggered');
-    }).on('message', function (msg) {
-        console.log('unprocessable command ' + msg);
-        send(msg.chat.id, 'unprocessable command: ' + msg.text);
     }).start();
 
 var notifyAll = function notifyAllF(sendMessage) {
