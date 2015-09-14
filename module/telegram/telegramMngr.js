@@ -4,7 +4,6 @@
 'use strict';
 var Bot = require('node-telegram-bot');
 var Chat = require('./../../schemas/chats');
-var routeUpdate = require('./../../routes/update');
 var request = require('request');
 /* GET home page. */
 
@@ -51,7 +50,6 @@ var bot = new Bot({token: token}).on('message',
 
                     break;
                 case "/update":
-                    routeUpdate();
                     sendMessage = 'update triggered';
                     send(chatId, sendMessage);
                     break;
