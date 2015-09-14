@@ -2,8 +2,12 @@
  * Created by longstone on 15/11/14.
  */
 "use strict";
-var request = require('request')
-    , cheerio = require('cheerio'), parser14 = require("./parser-14"), q = require('q'), iconv = require('iconv');
+var request = require('request');
+var cheerio = require('cheerio');
+var parser14 = require("./parser-14");
+var q = require('q');
+var iconv = require('iconv');
+
 module.exports = function pageLoaderF(url) {
     var deferred = q.defer();
     var parsedEntries, url;

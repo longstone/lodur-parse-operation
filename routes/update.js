@@ -4,60 +4,54 @@
 var express = require('express');
 var router = express.Router();
 var pageloader = require('../module/pageloader');
-var gcm = require('node-gcm');
 var Device = require('../schemas/device');
 var q = require('q');
 var teleBot = require('./../module/telegram/telegramMngr');
 var moment = require('moment');
+var LodurEntry = require('./../schemas/lodurEntry');
 /* GET home page. */
-lastID = -1;
+var lastID = 163;
+var _lastEntryCache = null;
 router.get('/', function (req, res) {
 
-
+    if (!_lastEntryCache) {
+        LodurEntry.find({}).sort({number: -1}).limit(1).exec(function (err, docs) {
+            if (docs.length === 0) {
+                return;
+            }
+            _lastEntryCache = docs[0]._doc;
+            lastID = _lastEntryCache.number;
+        });
+    }
     var success = function sucessF(json) {
 
-        var lastEntry = json[0];
-        if (lastID !== lastEntry.number) {
-            teleBot("Wer:  " + lastEntry.group.toString() + "\n"
-                + "Was:  " + lastEntry.description + "\n"
-                + "Wann: " + moment(lastEntry.timestamp).locale('de').format('HH:mm DD.MM.YY')
-            );
-            _lastEntryCache = lastEntry;
-        }
-        var message = new gcm.Message({
-            collapseKey: lastEntry.number,
-            delayWhileIdle: true,
-            timeToLive: 259200,
-            data: {
-                message: lastEntry
-            }
-        });
-        var sender = new gcm.Sender(process.env.gcmapikey);
-        var registrationIds = [];
-        // ... or retrying
-        Device.find({}).exec(function (err, result) {
-            console.log(result);
-            if (lastID !== lastEntry.number) {
-
-                lastID = lastEntry.number;
-                result.forEach(function (item) {
-
-                    // registrationIds.push(item.deviceId);
-                    sender.send(message, item.deviceId, function (err, result) {
-                        if (err) {
-                            console.error(err);
-                            console.log("failed sending, result: " + err)
-                        }
-                        else {
-                            console.log('sent to' + JSON.stringify(result) + " - Message: " + JSON.stringify(message));
-                        }
+        function getSendArray(json) {
+            var sendArr = [];
+            json.forEach(function (item) {
+                if (item.number > lastID) {
+                    sendArr.push(item);
+                    LodurEntry.create({
+                        number: item.number,
+                        group: item.group,
+                        timestamp: item.timestamp,
+                        description: item.description
+                    }, function (err, x) {
+                        console.log(err);
                     });
-                });
-            } else {
-                console.log('no update, latest id ' + lastID);
-            }
-            res.statusCode = 204;
-            res.send();
+                }
+            });
+
+            return sendArr;
+        }
+
+        var lastEntries = getSendArray(json);
+        lastEntries.reverse();
+        lastEntries.forEach(function (item) {
+            teleBot("Wer:  " + item.group.toString() + "\n"
+                + "Was:  " + item.description + "\n"
+                + "Wann: " + moment(item.timestamp).locale('de').format('HH:mm DD.MM.YY') + "\n"
+                + "Nummer: " + item.number
+            );
         });
 
 

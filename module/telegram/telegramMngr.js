@@ -4,6 +4,8 @@
 'use strict';
 var Bot = require('node-telegram-bot');
 var Chat = require('./../../schemas/chats');
+var routeUpdate = require('./../../routes/update');
+var request = require('request');
 /* GET home page. */
 
 var orders = ['/start', '/stop', '/update', '/stats', '/help'];
@@ -49,15 +51,16 @@ var bot = new Bot({token: token}).on('message',
 
                     break;
                 case "/update":
-                    sendMessage = message.text + ': is currently not implemented';
+                    routeUpdate();
+                    sendMessage = 'update triggered';
                     send(chatId, sendMessage);
                     break;
                 case "/stats":
                     Chat.find({}, function (err, chats) {
                         var chatOrChats = function (count) {
-                            var term = count+' chat';
-                            if(count > 1 ){
-                                return term+'s';
+                            var term = count + ' chat';
+                            if (count > 1) {
+                                return term + 's';
                             }
                             return term;
                         };
@@ -76,13 +79,15 @@ var bot = new Bot({token: token}).on('message',
     }
 ).start();
 var notifyAll = function notifyAllF(sendMessage) {
+
+    console.log('should notify all chats with message: ' + sendMessage);
     Chat.find({}, function (err, chats) {
         chats.forEach(function (chat) {
-
             bot.sendMessage({
                 chat_id: chat.chatId,
                 text: sendMessage
             });
+
         });
     });
 };

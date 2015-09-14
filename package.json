@@ -21,7 +21,6 @@
     "mongodb": "^2.0.35",
     "mongoose": "^4.0.6",
     "morgan": "~1.6.0",
-    "node-gcm": "^0.9.15",
     "q": "^1.4.1",
     "request": "^2.58.0",
     "serve-favicon": "~2.3.0",
