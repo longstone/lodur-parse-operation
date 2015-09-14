@@ -35,9 +35,11 @@ router.get('/', function (req, res) {
                         group: item.group,
                         timestamp: item.timestamp,
                         description: item.description
-                    }, function (err, x) {
+                    }, function (err) {
                         console.log(err);
                     });
+                    _lastEntryCache = item;
+                    lastID = _lastEntryCache.number;
                 }
             });
 
