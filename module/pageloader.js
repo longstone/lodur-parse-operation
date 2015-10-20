@@ -6,8 +6,7 @@ var request = require('request');
 var cheerio = require('cheerio');
 var parser14 = require("./parser-14");
 var q = require('q');
-var iconv = require('iconv');
-
+require('iconv-lite').extendNodeEncodings();
 module.exports = function pageLoaderF(url) {
     var deferred = q.defer();
     var parsedEntries, url;
@@ -16,12 +15,10 @@ module.exports = function pageLoaderF(url) {
 
     // encoding for umlaute
     request(url, {
-        encoding: null
+        uri: url,
+        method: 'GET',
+        encoding: "ISO-8859-1"
     }, function (err, resp, body) {
-        var ic = new iconv.Iconv('iso-8859-1', 'utf-8');
-        var buf = ic.convert(body);
-        body = buf.toString('utf-8');
-
         var $ = cheerio.load(body);
         var contentsOfPage = $('div .content table');
         var entries = [];
