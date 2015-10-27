@@ -6,7 +6,7 @@ var request = require('request');
 var cheerio = require('cheerio');
 var parser14 = require("./parser-14");
 var q = require('q');
-require('iconv-lite').extendNodeEncodings();
+
 module.exports = function pageLoaderF(url) {
     var deferred = q.defer();
     var parsedEntries, url;
@@ -17,7 +17,7 @@ module.exports = function pageLoaderF(url) {
     request(url, {
         uri: url,
         method: 'GET',
-        encoding: "ISO-8859-1"
+        encoding: 'binary'
     }, function (err, resp, body) {
         var $ = cheerio.load(body);
         var contentsOfPage = $('div .content table');
