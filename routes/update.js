@@ -10,7 +10,7 @@ var teleBot = require('./../module/telegram/telegramMngr');
 var moment = require('moment');
 var LodurEntry = require('./../schemas/lodurEntry');
 /* GET home page. */
-var lastID = 163;
+var lastID = 179;
 var _lastEntryCache = null;
 router.get('/', function (req, res) {
 
