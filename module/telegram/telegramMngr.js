@@ -32,9 +32,9 @@ var bot = new Bot({token: token})
         newChat.save(function (err) {
             console.log(err);
         });
-        console.log('registered chat id ' + chatId);
+        console.log('registered chat id ' + message.chat.id);
         var msg = 'should be registered right now';
-        send(chatId, msg);
+        send(message.chat.id, msg);
     }).on('stop', function (message) {
         Chat.find({chatId: message.chat.id}).remove(function (error) {
             var sendMessage = 'removed you from list';
