@@ -26,18 +26,34 @@ var send = function (id, msg) {
 
 var bot = new Bot({token: token})
     .on('start', function (message) {
-        var newChat = new Chat({
-            chatId: message.chat.id
+        Chat.find({chatId: message.chat.id}).exec(function (err, docs) {
+            //  console.log('err,docs', err, docs);
+            if (docs.length === 0) {
+                var newChat = new Chat({
+                    chatId: message.chat.id,
+                    firstName: message.chat.first_name,
+                    lastName: message.chat.last_name,
+                    type: message.chat.type,
+                    username: message.chat.username
+                });
+                newChat.save(function (err) {
+                    console.log(err);
+                });
+                console.log('registered chat id ' + message.chat.id);
+                var msg = 'should be registered right now';
+                send(message.chat.id, msg);
+            } else {
+                console.log('already registered chat id ' + message.chat.id);
+                var errorMsg = 'you\'re registered already, doing nothing...';
+                send(message.chat.id, errorMsg);
+            }
+
         });
-        newChat.save(function (err) {
-            console.log(err);
-        });
-        console.log('registered chat id ' + message.chat.id);
-        var msg = 'should be registered right now';
-        send(message.chat.id, msg);
+
+
     }).on('stop', function (message) {
         Chat.find({chatId: message.chat.id}).remove(function (error) {
-            var sendMessage = 'removed you from list';
+            var sendMessage = 'removed you from notification list';
             if (error) {
                 sendMessage = 'error while removing ' + error;
             }
@@ -66,6 +82,7 @@ var notifyAll = function notifyAllF(sendMessage) {
     console.log('should notify all chats with message: ' + sendMessage);
     Chat.find({}, function (err, chats) {
         chats.forEach(function (chat) {
+            console.log('send Message [chat, text]', chat, sendMessage);
             bot.sendMessage({
                 chat_id: chat.chatId,
                 text: sendMessage
