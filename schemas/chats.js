@@ -4,7 +4,11 @@
  */
 var mongoose = require("mongoose");
 var chatSchema = new mongoose.Schema({
-    chatId: String
+    chatId: String,
+    firstName: String,
+    lastName: String,
+    type: String,
+    username: String
 });
 
 var Chat;
