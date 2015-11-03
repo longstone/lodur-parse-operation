@@ -13,7 +13,6 @@ module.exports = function pageLoaderF(url) {
     parsedEntries = [];
     url = 'http://www.lodur-zh.ch/duebendorf/index.php?modul=6';
 
-    // encoding for umlaute
     request(url, {
         uri: url,
         method: 'GET',

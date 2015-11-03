@@ -57,6 +57,8 @@ router.get('/', function (req, res) {
                     + "Nummer: " + item.number
                 );
             });
+        }else{
+            console.log('no update, latest was:',_lastEntryCache);
         }
         var result = {newEntries: lastEntries};
         res.json(result);
