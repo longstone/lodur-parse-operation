@@ -12,6 +12,11 @@ var LodurEntry = require('./../schemas/lodurEntry');
 /* GET home page. */
 var _lastEntryCache = null;
 router.get('/', function (req, res) {
+    var silent = false;
+    if (req.query.hasOwnProperty('silent')) {
+        silent = req.query.silent;
+    }
+
 
     LodurEntry.find({}).sort({number: -1}).limit(1).exec(function (err, docs) {
         //  console.log('err,docs', err, docs);
@@ -57,8 +62,10 @@ router.get('/', function (req, res) {
                     + "Nummer: " + item.number
                 );
             });
-        }else{
-            console.log('no update, latest was:',_lastEntryCache);
+        } else {
+            if (!silent) {
+                console.log('no update, latest was:', _lastEntryCache);
+            }
         }
         var result = {newEntries: lastEntries};
         res.json(result);
