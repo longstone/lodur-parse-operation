@@ -1,5 +1,5 @@
 "use strict";
-var LogEntry = require('./../../schemas/logEntry');
+var LogEntry = require('./schemas/logEntry');
 
 process.on('uncaughtException', function (err) {
     console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
