@@ -23,14 +23,14 @@ var send = function (id, msg) {
                     timestamp: new Date(),
                     text: 'error: ' + JSON.stringify(body)
                 }, function (err) {
-                    console.log('persist new Entry Error', err);
+                    if(err!==null){console.log('persist new Entry Error', err)};
                 });
             } else {
                 LogEntry.create({
                     timestamp: new Date(),
                     text: 'sucessful sent :' + JSON.stringify(body)
                 }, function (err) {
-                    console.log('persist new Entry Error', err);
+                    if(err!==null){console.log('persist new Entry Error', err)};
                 });
             }
         })
