@@ -5,6 +5,8 @@
 var Bot = require('node-telegram-bot');
 var Chat = require('./../../schemas/chats');
 var request = require('request');
+var LogEntry = require('./../../schemas/logEntry');
+
 /* GET home page. */
 
 var token = process.env.telegram_hash;
@@ -17,9 +19,19 @@ var send = function (id, msg) {
         }
         , function (err, body) {
             if (err) {
-                console.log(err);
+                LogEntry.create({
+                    timestamp: new Date(),
+                    text: 'error: ' + JSON.stringify(body)
+                }, function (err) {
+                    console.log('persist new Entry Error', err);
+                });
             } else {
-                console.log('sucessful sent :' + JSON.stringify(body));
+                LogEntry.create({
+                    timestamp: new Date(),
+                    text: 'sucessful sent :' + JSON.stringify(body)
+                }, function (err) {
+                    console.log('persist new Entry Error', err);
+                });
             }
         })
 };
@@ -83,11 +95,7 @@ var notifyAll = function notifyAllF(sendMessage) {
     Chat.find({}, function (err, chats) {
         chats.forEach(function (chat) {
             console.log('send Message [chat, text]', chat, sendMessage);
-            bot.sendMessage({
-                chat_id: chat.chatId,
-                text: sendMessage
-            });
-
+            send(chat.chatId, sendMessage);
         });
     });
 };

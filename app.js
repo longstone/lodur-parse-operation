@@ -1,8 +1,15 @@
 "use strict";
+var LogEntry = require('./../../schemas/logEntry');
 
 process.on('uncaughtException', function (err) {
     console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
     console.error(err.stack);
+    LogEntry.create({
+        timestamp: new Date(),
+        text: 'uncaughtException :' + JSON.stringify(err)
+    }, function (err) {
+        console.log('persist new Entry ', err);
+    });
 });
 
 var express = require('express');
