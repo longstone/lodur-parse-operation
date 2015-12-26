@@ -19,7 +19,7 @@ router.get('/', function (req, res) {
     }
 
 
-    LodurEntry.find({}).sort({number: -1}).limit(1).exec(function (err, docs) {
+    LodurEntry.find({timestamp: {$gte: new Date(new Date().getFullYear() - 1, 12, 31)}}).sort({number: -1}).limit(1).exec(function (err, docs) {
         //  console.log('err,docs', err, docs);
         if (docs.length === 0) {
             return;
