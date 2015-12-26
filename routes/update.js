@@ -22,9 +22,11 @@ router.get('/', function (req, res) {
     LodurEntry.find({timestamp: {$gte: new Date(new Date().getFullYear() - 1, 12, 31)}}).sort({number: -1}).limit(1).exec(function (err, docs) {
         //  console.log('err,docs', err, docs);
         if (docs.length === 0) {
-            return;
+            _lastEntryCache.number = -1;
+        } else {
+            _lastEntryCache = docs[0]._doc;
         }
-        _lastEntryCache = docs[0]._doc;
+
         pageloader().then(success, fail);
     });
     var success = function sucessF(json) {
