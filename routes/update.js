@@ -9,6 +9,7 @@ var q = require('q');
 var teleBot = require('./../module/telegram/telegramMngr');
 var moment = require('moment');
 var LodurEntry = require('./../schemas/lodurEntry');
+var moment = require('moment');
 
 /* GET home page. */
 var _lastEntryCache = null;
@@ -19,7 +20,7 @@ router.get('/', function (req, res) {
     }
 
 
-    LodurEntry.find({timestamp: {$gte: new Date(new Date().getFullYear() - 1, 12, 31)}}).sort({number: -1}).limit(1).exec(function (err, docs) {
+    LodurEntry.find({timestamp: {$gte: moment().year(new Date().getFullYear()).month(0).date(1).hour(0).minute(0).second(0).millisecond(0).toDate()}}).sort({number: -1}).limit(1).exec(function (err, docs) {
         //  console.log('err,docs', err, docs);
         if (docs.length === 0) {
             _lastEntryCache.number = -1;
