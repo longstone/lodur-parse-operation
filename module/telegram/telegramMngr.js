@@ -12,6 +12,7 @@ var LogEntry = require('./../../schemas/logEntry');
 var token = process.env.telegram_hash;
 console.log('starting bot with token: ' + token);
 var send = function (id, msg) {
+
     bot.sendMessage(
         {
             chat_id: id,
@@ -21,23 +22,39 @@ var send = function (id, msg) {
             if (err) {
                 LogEntry.create({
                     timestamp: new Date(),
-                    text: 'error: ' + JSON.stringify(body)
+                    text: 'error: ' + JSON.stringify(body),
+                    error: body
                 }, function (err) {
-                    if(err!==null){console.log('persist new Entry Error', err)};
+                    if (err !== null) {
+                        console.log('persist new Entry Error', err)
+                    }
                 });
             } else {
                 LogEntry.create({
                     timestamp: new Date(),
                     text: 'sucessful sent :' + JSON.stringify(body)
                 }, function (err) {
-                    if(err!==null){console.log('persist new Entry Error', err)};
+                    if (err !== null) {
+                        console.log('persist new Entry Error', err)
+                    }
                 });
             }
         })
 };
 
 var bot = new Bot({token: token})
-    .on('start', function (message) {
+    .on('error', function (message) {
+        // prevent bot from crashing
+        LogEntry.create({
+            timestamp: new Date(),
+            text: 'received error: ' + JSON.stringify(message),
+            error: message
+        }, function (err) {
+            if (err !== null) {
+                console.log('persist new received Error', err)
+            }
+        });
+    }).on('start', function (message) {
         Chat.find({chatId: message.chat.id}).exec(function (err, docs) {
             //  console.log('err,docs', err, docs);
             if (docs.length === 0) {
