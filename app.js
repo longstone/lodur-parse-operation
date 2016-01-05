@@ -7,7 +7,7 @@ process.on('uncaughtException', function (err) {
     LogEntry.create({
         timestamp: new Date(),
         text: 'uncaughtException',
-        err: err
+        error: err
     }, function (err) {
         console.log('persist new Entry ', err);
     });
