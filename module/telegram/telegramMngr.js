@@ -107,6 +107,8 @@ var bot = new Bot({token: token})
     }).on('wieheisstschind', function (message) {
         // some fun...
         send(message.chat.id, 'ANNAAAAAAAAAA!');
+        send(message.chat.id, 'ANNAAAAAAAAAA!');
+        send(message.chat.id, 'ANNAAAAAAAAAA!');
     }).start();
 
 var notifyAll = function notifyAllF(sendMessage) {
