@@ -104,6 +104,9 @@ var bot = new Bot({token: token})
         request('http://lodurparser-longstone.rhcloud.com/update', function () {
         });
         send(message.chat.id, 'update triggered');
+    }).on('wieheisstschind', function (message) {
+        // some fun...
+        send(message.chat.id, 'ANNAAAAAAAAAA!');
     }).start();
 
 var notifyAll = function notifyAllF(sendMessage) {
