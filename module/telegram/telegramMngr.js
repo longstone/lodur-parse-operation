@@ -106,9 +106,10 @@ var bot = new Bot({token: token})
         send(message.chat.id, 'update triggered');
     }).on('wieheisstschind', function (message) {
         // some fun...
-        send(message.chat.id, 'ANNAAAAAAAAAA!');
-        send(message.chat.id, 'ANNAAAAAAAAAA!');
-        send(message.chat.id, 'ANNAAAAAAAAAA!');
+        // usbaut 15.05
+        //    send(message.chat.id, 'ANNAAAAAAAAAA!');
+        //    send(message.chat.id, 'ANNAAAAAAAAAA!');
+        //    send(message.chat.id, 'ANNAAAAAAAAAA!');
     }).start();
 
 var notifyAll = function notifyAllF(sendMessage) {
