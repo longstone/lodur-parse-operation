@@ -4,12 +4,11 @@
 var express = require('express');
 var router = express.Router();
 var pageloader = require('../module/pageloader');
-var Device = require('../schemas/device');
 var q = require('q');
 var teleBot = require('./../module/telegram/telegramMngr');
 var moment = require('moment');
 var LodurEntry = require('./../schemas/lodurEntry');
-var moment = require('moment');
+var lodurUtil = require('./../module/util/lodur-util');
 
 /* GET home page. */
 var _lastEntryCache = null;
@@ -32,34 +31,20 @@ router.get('/', function (req, res) {
     });
     var success = function sucessF(json) {
 
-        function getSendArray(json) {
-            var sendArr = [];
-            json.every(function (item) {
-                if (item.number > _lastEntryCache.number) {
-                    sendArr.push(item);
-                    // persist new Entry
-                    LodurEntry.create({
-                        number: item.number,
-                        group: item.group,
-                        timestamp: item.timestamp,
-                        description: item.description
-                    }, function (err) {
-                        console.log('persist new Entry Error', err);
-                    });
-                } else {
-                    return false;
-                }
-            });
-            if (sendArr[0]) {
-                _lastEntryCache = sendArr[0];
-            }
-            return sendArr;
-        }
-
-        var lastEntries = getSendArray(json);
+        var lastEntries = lodurUtil.getSendArray(json, _lastEntryCache);
         if (lastEntries.length > 0) {
-            lastEntries.reverse();
+            _lastEntryCache = lodurUtil.getLastEntry(lastEntries, _lastEntryCache);
             lastEntries.forEach(function (item) {
+                // persist new Entry
+                LodurEntry.create({
+                    number: item.number,
+                    group: item.group,
+                    timestamp: item.timestamp,
+                    description: item.description
+                }, function (err) {
+                    console.log('persist new Entry Error', err);
+                });
+
                 teleBot("Wer:  " + item.group.toString() + "\n"
                     + "Was:  " + item.description + "\n"
                     + "Wann: " + moment(item.timestamp).locale('de').format('HH:mm DD.MM.YY') + "\n"

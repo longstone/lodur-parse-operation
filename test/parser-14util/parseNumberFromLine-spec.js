@@ -8,7 +8,7 @@ var parseNumber = require("../../module/parser-14util/parseNumber");
 
 var sample_line_001 = "001 - 17:09 Uhr / Kdo / Hilfeleistung: Weidstrasse, Wangen-Brüttisellen";
 var sample_line_043 = "043 - 18:16 Uhr / KA5 / Brand: Ringstrasse, Brüttisellen \n\t\t\t\t  \n\t\t\t\t";
-describe("test date", function () {
+describe("parse alarm number", function () {
     it('should parse number as 1', function () {
         var actual = parseNumber(sample_line_001);
         var expected = 1;
