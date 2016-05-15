@@ -10,23 +10,37 @@ var getLastEntry = function getLastEntryF(list, cache) {
     return cache;
 };
 
+var isOrderingForwards = function orderingForwardsF(arr) {
+    return arr.length > 0 && arr[0].number < getLastEntry(arr).number;
+};
+
 var getSendArray = function getSendArrayF(json, _lastEntryCache) {
+
     var sendArr = [];
-    if (json.length > 0) {
-        json.reverse();
-    }
-    json.some(function (item) {
-        if (item.number > _lastEntryCache.number) {
-            sendArr.push(item);
-            return false;
+
+    if (json && json.length > 0) {
+        var entries = json.slice();
+
+        if (isOrderingForwards(entries)) {
+            entries.reverse();
         }
-        return true;
-    });
+        entries.every(function (item) {
+
+            if (item.number > _lastEntryCache.number) {
+                sendArr.push(item);
+                return true;
+            } else {
+                //we want to break
+                return false;
+            }
+        });
+    }
 
     return sendArr.reverse();
 };
 
 module.exports = {
     getLastEntry: getLastEntry,
-    getSendArray: getSendArray
+    getSendArray: getSendArray,
+    isOrderingForwards: isOrderingForwards
 };
