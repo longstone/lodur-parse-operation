@@ -4,7 +4,9 @@
  */
 
 var assert = require("assert");
-
+var createNumberEntry = function (number) {
+    return {number: number};
+};
 var lodurUtil = require('./../module/util/lodur-util');
 
 describe('last entry', function () {
@@ -23,6 +25,15 @@ describe('last entry', function () {
         assert.deepEqual(actual, cache);
     });
 
+});
+
+describe('order array by number', function () {
+    it('should sort a unsorted array', function () {
+        var arr = [createNumberEntry(2), createNumberEntry(3), createNumberEntry(1)];
+        var expected = [createNumberEntry(1), createNumberEntry(2), createNumberEntry(3)];
+        var actual = lodurUtil.sortArrayByNumber(arr);
+        assert.deepEqual(arr, expected);
+    })
 });
 
 describe('isOrderingForwards', function () {

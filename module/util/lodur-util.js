@@ -14,13 +14,19 @@ var isOrderingForwards = function orderingForwardsF(arr) {
     return arr.length > 0 && arr[0].number < getLastEntry(arr).number;
 };
 
+var sortArrayByNumber = function sortArrayByNumberF(arr) {
+    arr.sort(function (a, b) {
+        return a.number - b.number;
+    });
+};
+
 var getSendArray = function getSendArrayF(json, _lastEntryCache) {
 
     var sendArr = [];
 
     if (json && json.length > 0) {
         var entries = json.slice();
-
+        sortArrayByNumber(entries);
         if (isOrderingForwards(entries)) {
             entries.reverse();
         }
@@ -42,5 +48,6 @@ var getSendArray = function getSendArrayF(json, _lastEntryCache) {
 module.exports = {
     getLastEntry: getLastEntry,
     getSendArray: getSendArray,
-    isOrderingForwards: isOrderingForwards
+    isOrderingForwards: isOrderingForwards,
+    sortArrayByNumber: sortArrayByNumber
 };

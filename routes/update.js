@@ -34,6 +34,7 @@ router.get('/', function (req, res) {
         var lastEntries = lodurUtil.getSendArray(json, _lastEntryCache);
         if (lastEntries.length > 0) {
             _lastEntryCache = lodurUtil.getLastEntry(lastEntries, _lastEntryCache);
+            lodurUtil.sortArrayByNumber(lastEntries);
             lastEntries.forEach(function (item) {
                 // persist new Entry
                 LodurEntry.create({
