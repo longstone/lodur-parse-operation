@@ -43,6 +43,7 @@ router.get('/', function (req, res) {
                     timestamp: item.timestamp,
                     description: item.description
                 }, function (err) {
+                    if(err === null){return;}
                     console.log('persist new Entry Error', err);
                 });
 

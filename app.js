@@ -9,6 +9,7 @@ process.on('uncaughtException', function (err) {
         error: JSON.stringify(err),
         description: err.message + '\n' + err.stack
     }, function (err) {
+        if(err===null){return;}
         console.log('persist new Entry ', err);
     });
     console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
