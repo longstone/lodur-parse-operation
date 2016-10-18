@@ -48,7 +48,7 @@ var bot = new Bot({token: token})
         LogEntry.create({
             timestamp: new Date(),
             text: 'received error: ' + JSON.stringify(message),
-            error: message
+            error: 'Bot.onError:' + message
         }, function (err) {
             if (err !== null) {
                 console.log('persist new received Error', err)
