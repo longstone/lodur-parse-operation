@@ -6,8 +6,8 @@ process.on('uncaughtException', function (err) {
     LogEntry.create({
         timestamp: new Date(),
         text: 'uncaughtException',
-        error: err,
-        description: err.message
+        error: JSON.stringify(err),
+        description: err.message + '\n' + err.stack
     }, function (err) {
         console.log('persist new Entry ', err);
     });
