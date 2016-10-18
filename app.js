@@ -2,15 +2,17 @@
 var LogEntry = require('./schemas/logEntry');
 
 process.on('uncaughtException', function (err) {
-    console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
-    console.error(err.stack);
+
     LogEntry.create({
         timestamp: new Date(),
         text: 'uncaughtException',
-        error: err
+        error: err,
+        description: err.message
     }, function (err) {
         console.log('persist new Entry ', err);
     });
+    console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
+    console.error(err.stack);
 });
 
 var express = require('express');
