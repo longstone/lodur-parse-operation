@@ -6,6 +6,7 @@ var request = require('request');
 var cheerio = require('cheerio');
 var parser14 = require("./parser-14");
 var q = require('q');
+var LogEntry = require('./../../schemas/logEntry');
 
 module.exports = function pageLoaderF(url) {
     var deferred = q.defer();
@@ -18,8 +19,22 @@ module.exports = function pageLoaderF(url) {
         method: 'GET',
         encoding: 'binary'
     }, function (err, resp, body) {
+        var contentsOfPage = [];
+        try{
         var $ = cheerio.load(body);
-        var contentsOfPage = $('div .content table');
+            contentsOfPage = $('div .content table');
+
+        } catch (ex){
+            LogEntry.create({
+                timestamp: new Date(),
+                text: 'uncaughtException',
+                error: JSON.stringify(ex),
+                description: ex.message + '\nbody:'+body+'\n' + ex.stack
+            }, function (err) {
+                if(err===null){return;}
+                console.log('persist new Entry ', err);
+            });
+        }
         var entries = [];
         contentsOfPage.each(function (position, element) {
 
