@@ -6,7 +6,7 @@ var request = require('request');
 var cheerio = require('cheerio');
 var parser14 = require("./parser-14");
 var q = require('q');
-var LogEntry = require('./../../schemas/logEntry');
+var LogEntry = require('./../schemas/logEntry');
 
 module.exports = function pageLoaderF(url) {
     var deferred = q.defer();
