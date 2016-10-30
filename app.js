@@ -1,5 +1,5 @@
 "use strict";
-var _ = require('underscore');
+var _ = require('lodash');
 var LogEntry = require('./schemas/logEntry');
 
 process.on('uncaughtException', function (err) {
