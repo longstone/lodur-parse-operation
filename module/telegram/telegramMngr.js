@@ -13,17 +13,18 @@ var token = process.env.telegram_hash;
 console.log('starting bot with token: ' + token);
 var send = function (id, msg) {
 
+    var conf = {
+        chat_id: id,
+        text: msg
+    };
     bot.sendMessage(
-        {
-            chat_id: id,
-            text: msg
-        }
+        conf
         , function (err, body) {
             if (err) {
                 LogEntry.create({
                     timestamp: new Date(),
                     text: 'telegramMngr - send: : ' + JSON.stringify(body),
-                    error: body
+                    error: "id: "+id+" text:"+text +"\n" + body
                 }, function (err) {
                     if (err !== null) {
                         console.log('persist new Entry Error', err)
