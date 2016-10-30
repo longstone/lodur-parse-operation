@@ -27,7 +27,7 @@ module.exports = function pageLoaderF(url) {
         } catch (ex){
             LogEntry.create({
                 timestamp: new Date(),
-                text: 'uncaughtException',
+                text: 'pageloader - parser: uncaughtException',
                 error: JSON.stringify(ex),
                 description: ex.message + '\nbody:'+body+'\n' + ex.stack
             }, function (err) {

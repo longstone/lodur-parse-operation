@@ -22,7 +22,7 @@ var send = function (id, msg) {
             if (err) {
                 LogEntry.create({
                     timestamp: new Date(),
-                    text: 'error: ' + JSON.stringify(body),
+                    text: 'telegramMngr - send: : ' + JSON.stringify(body),
                     error: body
                 }, function (err) {
                     if (err !== null) {
@@ -47,7 +47,7 @@ var bot = new Bot({token: token})
         // prevent bot from crashing
         LogEntry.create({
             timestamp: new Date(),
-            text: 'received error: ' + JSON.stringify(message),
+            text: 'telegramMngr - received error: ' + JSON.stringify(message),
             error: 'Bot.onError:' + message
         }, function (err) {
             if (err !== null) {

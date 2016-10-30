@@ -1,18 +1,20 @@
 "use strict";
+var _ = require('underscore');
 var LogEntry = require('./schemas/logEntry');
 
 process.on('uncaughtException', function (err) {
-
     LogEntry.create({
         timestamp: new Date(),
-        text: 'uncaughtException',
+        text: 'app.js - uncaughtException',
         error: JSON.stringify(err),
-        description: err.message + '\n' + err.stack
+        description: _.get(err,'message','nomessage') + '\n' + _.get(err,'stack','nostack')
     }, function (err) {
         if(err===null){return;}
         console.log('persist new Entry ', err);
     });
-    console.error((new Date).toUTCString() + ' uncaughtException:', err.message);
+    console.error((new Date).toUTCString()+' uncaughtException:' );
+    console.error(err);
+    console.error(err.message);
     console.error(err.stack);
 });
 
