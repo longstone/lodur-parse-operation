@@ -7,7 +7,7 @@ process.on('uncaughtException', function (err) {
         timestamp: new Date(),
         text: 'app.js - uncaughtException',
         error: JSON.stringify(err),
-        description: _.get(err,'message','nomessage') + '\n' + _.get(err,'stack','nostack')
+        description: _.get(err, 'message', 'nomessage') + '\nstack:\n' + _.get(err, 'stack', 'nostack')
     }, function (err) {
         if(err===null){return;}
         console.log('persist new Entry ', err);

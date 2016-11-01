@@ -37,6 +37,7 @@ router.get('/', function (req, res) {
             lodurUtil.sortArrayByNumber(lastEntries);
             lastEntries.forEach(function (item) {
                 // persist new Entry
+                var errorFree = true;
                 LodurEntry.create({
                     number: item.number,
                     group: item.group,
@@ -45,13 +46,15 @@ router.get('/', function (req, res) {
                 }, function (err) {
                     if(err === null){return;}
                     console.log('persist new Entry Error', err);
+                    errorFree = false;
                 });
-
+                if (errorFree) {
                 teleBot("Wer:  " + item.group.toString() + "\n"
                     + "Was:  " + item.description + "\n"
                     + "Wann: " + moment(item.timestamp).locale('de').format('HH:mm DD.MM.YY') + "\n"
                     + "Nummer: " + item.number
                 );
+                }
             });
         } else {
             if (!silent) {

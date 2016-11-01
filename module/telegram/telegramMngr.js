@@ -23,13 +23,14 @@ var send = function (id, msg) {
             if (err) {
                 LogEntry.create({
                     timestamp: new Date(),
-                    text: 'telegramMngr - send: : ' + JSON.stringify(body),
+                    text: 'telegramMngr - send: ' + JSON.stringify(body),
                     error: "id: "+id+" text:"+text +"\n" + body
                 }, function (err) {
                     if (err !== null) {
                         console.log('persist new Entry Error', err)
                     }
                 });
+                console.dir(err);
             } else {
                 LogEntry.create({
                     timestamp: new Date(),
