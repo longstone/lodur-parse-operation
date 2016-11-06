@@ -6,7 +6,7 @@ var Bot = require('node-telegram-bot');
 var Chat = require('./../../schemas/chats');
 var request = require('request');
 var LogEntry = require('./../../schemas/logEntry');
-
+var _ = require('lodash');
 /* GET home page. */
 
 var token = process.env.telegram_hash;
@@ -24,7 +24,7 @@ var send = function (id, msg) {
                 LogEntry.create({
                     timestamp: new Date(),
                     text: 'telegramMngr - send: ' + JSON.stringify(body),
-                    error: "id: "+id+" text:"+err +"\n" + body
+                    error: "id: " + id + " text:" + _.isObject(err) ? JSON.stringify(err) : err + "\n" + body
                 }, function (err) {
                     if (err !== null) {
                         console.log('persist new Entry Error', err)
