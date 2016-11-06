@@ -24,7 +24,7 @@ var send = function (id, msg) {
                 LogEntry.create({
                     timestamp: new Date(),
                     text: 'telegramMngr - send: ' + JSON.stringify(body),
-                    error: "id: "+id+" text:"+text +"\n" + body
+                    error: "id: "+id+" text:"+err +"\n" + body
                 }, function (err) {
                     if (err !== null) {
                         console.log('persist new Entry Error', err)
