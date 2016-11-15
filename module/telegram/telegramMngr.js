@@ -23,7 +23,7 @@ var send = function (id, msg) {
             if (err) {
                 LogEntry.create({
                     timestamp: new Date(),
-                    text: 'telegramMngr - send: ' + JSON.stringify(body),
+                    text: 'telegramMngr - send: ' + JSON.stringify(body) + 'conf: '+ JSON.stringify(conf),
                     error: "id: " + id + " text:" + _.isObject(err) ? JSON.stringify(err) : err + "\n" + body
                 }, function (err) {
                     if (err !== null) {
