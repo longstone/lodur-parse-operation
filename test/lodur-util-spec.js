@@ -33,7 +33,137 @@ describe('order array by number', function () {
         var expected = [createNumberEntry(1), createNumberEntry(2), createNumberEntry(3)];
         var actual = lodurUtil.sortArrayByNumber(arr);
         assert.deepEqual(arr, expected);
-    })
+    });
+    // https://github.com/longstone/lodur-parse-operation/issues/4
+    it('should order multible entries the right way', function () {
+        var arr = [{
+            "timestamp": "2016-11-26T11:39:00.000Z",
+            "group": [
+                "KA4"
+            ],
+            "description": "BMA: Giessenstrasse, Dübendorf",
+            "number": 200
+        }, {
+            "timestamp": "2016-11-26T14:29:00.000Z",
+            "group": [
+                "BagT1"
+            ],
+            "description": "gelöschter Brand/Rauchentwicklung: Hallenstrasse, Dübendorf",
+            "number": 201
+        },
+            {
+                "timestamp": "2016-11-26T10:35:00.000Z",
+                "group": [
+                    "KA3"
+                ],
+                "description": "BMA: Giessenstrasse, Dübendorf",
+                "number": 199
+            },
+            {
+                "timestamp": "2016-11-26T03:01:00.000Z",
+                "group": [
+                    "VrkGr"
+                ],
+                "description": "Verkehrsunfall: Bettlistrasse, Dübendorf",
+                "number": 198
+            }];
+        var expected = [{
+            "timestamp": "2016-11-26T03:01:00.000Z",
+            "group": [
+                "VrkGr"
+            ],
+            "description": "Verkehrsunfall: Bettlistrasse, Dübendorf",
+            "number": 198
+        }, {
+            "timestamp": "2016-11-26T10:35:00.000Z",
+            "group": [
+                "KA3"
+            ],
+            "description": "BMA: Giessenstrasse, Dübendorf",
+            "number": 199
+        }, {
+            "timestamp": "2016-11-26T11:39:00.000Z",
+            "group": [
+                "KA4"
+            ],
+            "description": "BMA: Giessenstrasse, Dübendorf",
+            "number": 200
+        }, {
+            "timestamp": "2016-11-26T14:29:00.000Z",
+            "group": [
+                "BagT1"
+            ],
+            "description": "gelöschter Brand/Rauchentwicklung: Hallenstrasse, Dübendorf",
+            "number": 201
+        }];
+        var actual = lodurUtil.sortArrayByNumber(arr);
+        assert.deepEqual(arr, expected);
+    });
+    // https://github.com/longstone/lodur-parse-operation/issues/4
+    it('should order multible entries the right way and return them', function () {
+        var arr = [{
+            "timestamp": "2016-11-26T11:39:00.000Z",
+            "group": [
+                "KA4"
+            ],
+            "description": "BMA: Giessenstrasse, Dübendorf",
+            "number": 200
+        }, {
+            "timestamp": "2016-11-26T14:29:00.000Z",
+            "group": [
+                "BagT1"
+            ],
+            "description": "gelöschter Brand/Rauchentwicklung: Hallenstrasse, Dübendorf",
+            "number": 201
+        },
+            {
+                "timestamp": "2016-11-26T10:35:00.000Z",
+                "group": [
+                    "KA3"
+                ],
+                "description": "BMA: Giessenstrasse, Dübendorf",
+                "number": 199
+            },
+            {
+                "timestamp": "2016-11-26T03:01:00.000Z",
+                "group": [
+                    "VrkGr"
+                ],
+                "description": "Verkehrsunfall: Bettlistrasse, Dübendorf",
+                "number": 198
+            }];
+        var expected = [{
+            "timestamp": "2016-11-26T03:01:00.000Z",
+            "group": [
+                "VrkGr"
+            ],
+            "description": "Verkehrsunfall: Bettlistrasse, Dübendorf",
+            "number": 198
+        }, {
+            "timestamp": "2016-11-26T10:35:00.000Z",
+            "group": [
+                "KA3"
+            ],
+            "description": "BMA: Giessenstrasse, Dübendorf",
+            "number": 199
+        }, {
+            "timestamp": "2016-11-26T11:39:00.000Z",
+            "group": [
+                "KA4"
+            ],
+            "description": "BMA: Giessenstrasse, Dübendorf",
+            "number": 200
+        }, {
+            "timestamp": "2016-11-26T14:29:00.000Z",
+            "group": [
+                "BagT1"
+            ],
+            "description": "gelöschter Brand/Rauchentwicklung: Hallenstrasse, Dübendorf",
+            "number": 201
+        }];
+        var actual = lodurUtil.sortArrayByNumber(arr);
+        assert.deepEqual(actual, expected);
+    });
 });
 
 describe('isOrderingForwards', function () {

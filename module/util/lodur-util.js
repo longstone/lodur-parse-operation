@@ -18,6 +18,7 @@ var sortArrayByNumber = function sortArrayByNumberF(arr) {
     arr.sort(function (a, b) {
         return a.number - b.number;
     });
+    return arr;
 };
 
 var getSendArray = function getSendArrayF(json, _lastEntryCache) {
@@ -41,7 +42,7 @@ var getSendArray = function getSendArrayF(json, _lastEntryCache) {
             }
         });
     }
-
+// TODO sort by Number or Date....
     return sendArr.reverse();
 };
 
