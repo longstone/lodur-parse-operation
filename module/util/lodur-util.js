@@ -28,10 +28,7 @@ var getSendArray = function getSendArrayF(json, _lastEntryCache) {
     if (json && json.length > 0) {
         var entries = json.slice();
         sortArrayByNumber(entries);
-        if (isOrderingForwards(entries)) {
-            entries.reverse();
-        }
-        entries.every(function (item) {
+        entries.reverse().every(function (item) {
 
             if (item.number > _lastEntryCache.number) {
                 sendArr.push(item);
@@ -42,7 +39,6 @@ var getSendArray = function getSendArrayF(json, _lastEntryCache) {
             }
         });
     }
-// TODO sort by Number or Date....
     return sendArr.reverse();
 };
 
