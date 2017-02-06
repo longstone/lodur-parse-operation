@@ -1,13 +1,9 @@
-"use strict";
-/**
- * Created by longstone on 18/03/15.
- */
-var mongoose = require("mongoose");
-var deviceSchema = new mongoose.Schema({
+const mongoose = require("mongoose");
+const deviceSchema = new mongoose.Schema({
     deviceId: String,
     date: {type: Date, default: Date.now}
 });
-var Device;
+let Device;
 if (mongoose.models.Device) {
     Device = mongoose.model('Device');
 } else {

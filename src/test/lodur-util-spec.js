@@ -189,7 +189,39 @@ describe('isOrderingForwards', function () {
     });
 
 });
+describe("recognize duplicated ids", () => {
+    it('should recognize duplicated numbers', () => {
+        var items = [{number: 4}, {number: 6}, {number: 6}, {number: 5}];
+        var actual = lodurUtil.containsDuplicatedID(items);
+        var expected = true;
+        assert.equal(actual, expected);
+    })
 
+    it('should return false when not containing duplicated numbers', () => {
+        var items = [{number: 4}, {number: 6}, {number: 7}, {number: 5}];
+        var actual = lodurUtil.containsDuplicatedID(items);
+        var expected = false;
+        assert.equal(actual, expected);
+    })
+    it('should not fail if input is empty array', () => {
+        var items = [];
+        var actual = lodurUtil.containsDuplicatedID(items);
+        var expected = false;
+        assert.equal(actual, expected);
+    })
+    it('should not fail if input is undefined', () => {
+        var items = [];
+        var actual = lodurUtil.containsDuplicatedID();
+        var expected = false;
+        assert.equal(actual, expected);
+    })
+    it('should not fail if input is null', () => {
+        var items = [];
+        var actual = lodurUtil.containsDuplicatedID(null);
+        var expected = false;
+        assert.equal(actual, expected);
+    })
+});
 describe("new entries array filtering", function () {
 
 

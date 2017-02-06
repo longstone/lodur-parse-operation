@@ -6,4 +6,3 @@ Following env vars are required
 
 *telegram_hash // telegram bot api hash
 *MONGOURI // uri to persistence
-*gcmapikey // api key for gcm messages

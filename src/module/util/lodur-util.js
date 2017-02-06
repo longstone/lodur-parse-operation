@@ -1,32 +1,27 @@
-'use stric';
-/**
- * Created by longstone on 15/05/16.
- */
-
-var getLastEntry = function getLastEntryF(list, cache) {
+const getLastEntry = function getLastEntryF(list, cache) {
     if (list.length > 0) {
         return list.slice(-1).pop();
     }
     return cache;
 };
 
-var isOrderingForwards = function orderingForwardsF(arr) {
+const isOrderingForwards = function orderingForwardsF(arr) {
     return arr.length > 0 && arr[0].number < getLastEntry(arr).number;
 };
 
-var sortArrayByNumber = function sortArrayByNumberF(arr) {
+const sortArrayByNumber = function sortArrayByNumberF(arr) {
     arr.sort(function (a, b) {
         return a.number - b.number;
     });
     return arr;
 };
 
-var getSendArray = function getSendArrayF(json, _lastEntryCache) {
+const getSendArray = function getSendArrayF(json, _lastEntryCache) {
 
-    var sendArr = [];
+    let sendArr = [];
 
     if (json && json.length > 0) {
-        var entries = json.slice();
+        let entries = json.slice();
         sortArrayByNumber(entries);
         entries.reverse().every(function (item) {
 
@@ -42,9 +37,18 @@ var getSendArray = function getSendArrayF(json, _lastEntryCache) {
     return sendArr.reverse();
 };
 
+const containsDuplicatedID = function(array) {
+    if (!array) {
+        return false;
+    }
+    const set = new Set();
+    array.map(item => set.add(item.number));
+    return !(array.length === set.size);
+};
 module.exports = {
-    getLastEntry: getLastEntry,
-    getSendArray: getSendArray,
-    isOrderingForwards: isOrderingForwards,
-    sortArrayByNumber: sortArrayByNumber
+    getLastEntry,
+    getSendArray,
+    isOrderingForwards,
+    sortArrayByNumber,
+    containsDuplicatedID
 };

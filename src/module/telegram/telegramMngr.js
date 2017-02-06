@@ -1,50 +1,14 @@
-/**
- * Created by lag on 26.06.2015.
- */
 'use strict';
-var Bot = require('node-telegram-bot');
-var Chat = require('./../../schemas/chats');
-var request = require('request');
-var LogEntry = require('./../../schemas/logEntry');
-var _ = require('lodash');
+const Bot = require('node-telegram-bot');
+const Chat = require('./../../schemas/chats');
+const request = require('request');
+const LogEntry = require('./../../schemas/logEntry');
+const _ = require('lodash');
 /* GET home page. */
 
-var token = process.env.telegram_hash;
+const token = process.env.telegram_hash;
 console.log('starting bot with token: ' + token);
-var send = function (id, msg) {
-
-    var conf = {
-        chat_id: id,
-        text: msg
-    };
-    bot.sendMessage(
-        conf
-        , function (err, body) {
-            if (err) {
-                LogEntry.create({
-                    timestamp: new Date(),
-                    text: 'telegramMngr - send: ' + JSON.stringify(body) + 'conf: '+ JSON.stringify(conf),
-                    error: "id: " + id + " text:" + _.isObject(err) ? JSON.stringify(err) : err + "\n" + body
-                }, function (err) {
-                    if (err !== null) {
-                        console.log('persist new Entry Error', err)
-                    }
-                });
-                console.dir(err);
-            } else {
-                LogEntry.create({
-                    timestamp: new Date(),
-                    text: 'sucessful sent :' + JSON.stringify(body)
-                }, function (err) {
-                    if (err !== null) {
-                        console.log('persist new Entry Error', err)
-                    }
-                });
-            }
-        })
-};
-
-var bot = new Bot({token: token})
+const bot = new Bot({token: token})
     .on('error', function (message) {
         // prevent bot from crashing
         LogEntry.create({
@@ -113,6 +77,40 @@ var bot = new Bot({token: token})
         //    send(message.chat.id, 'ANNAAAAAAAAAA!');
         //    send(message.chat.id, 'ANNAAAAAAAAAA!');
     }).start();
+var send = function (id, msg) {
+
+    var conf = {
+        chat_id: id,
+        text: msg
+    };
+    bot.sendMessage(
+        conf
+        , function (err, body) {
+            if (err) {
+                LogEntry.create({
+                    timestamp: new Date(),
+                    text: 'telegramMngr - send: ' + JSON.stringify(body) + 'conf: '+ JSON.stringify(conf),
+                    error: "id: " + id + " text:" + _.isObject(err) ? JSON.stringify(err) : err + "\n" + body
+                }, function (err) {
+                    if (err !== null) {
+                        console.log('persist new Entry Error', err)
+                    }
+                });
+                console.dir(err);
+            } else {
+                LogEntry.create({
+                    timestamp: new Date(),
+                    text: 'sucessful sent :' + JSON.stringify(body)
+                }, function (err) {
+                    if (err !== null) {
+                        console.log('persist new Entry Error', err)
+                    }
+                });
+            }
+        })
+};
+
+
 
 var notifyAll = function notifyAllF(sendMessage) {
 

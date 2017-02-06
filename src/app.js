@@ -1,7 +1,7 @@
 "use strict";
-var _ = require('lodash');
-var LogEntry = require('./schemas/logEntry');
-
+const CheckEnv = require('./module/util/checkEnv');
+const _ = require('lodash');
+const LogEntry = require('./schemas/logEntry');
 process.on('uncaughtException', function (err) {
     LogEntry.create({
         timestamp: new Date(),
@@ -21,7 +21,8 @@ process.on('uncaughtException', function (err) {
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
+var logger = require('winston');
+const  expressWinston = require('express-winston');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
@@ -37,7 +38,14 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(logger('dev'));
+app.use(expressWinston.logger({
+    transports: [
+        new logger.transports.Console({
+            json: true,
+            colorize: true
+        })
+    ]
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
@@ -51,7 +59,12 @@ app.use(function (req, res, next) {
     err.status = 404;
     next(err);
 });
-
+const checkEnv = new CheckEnv(process.env);
+checkEnv.setVariableNames(['MONGOURI','telegram_hash']);
+const missingEnv = checkEnv.check();
+if(missingEnv.length > 0 ){
+   logger.log('warn','missing process.env variables: ',missingEnv);
+}
 var mongoUri = process.env.MONGOURI || "mongodb://localhost:27017/lodur";
 
 
