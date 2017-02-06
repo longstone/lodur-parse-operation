@@ -19,9 +19,7 @@ class CheckEnv {
     }
 
     check() {
-        var namesNotFound = this.names.filter(name => this.process[name]=== undefined);
-        console.log(namesNotFound);
-        return namesNotFound
+        return this.names.filter(name => this.process[name]=== undefined);
     }
 }
 module.exports = CheckEnv;

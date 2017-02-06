@@ -7,7 +7,7 @@ const CheckEnv = require('./checkEnv');
 
 describe('ensure environment',  ()  => {
     it('should return empty array if matching all cases',  () =>  {
-        let process = { user : 'foo', url : 'bar'};
+        const process = { user : 'foo', url : 'bar'};
         const checkEnv = new CheckEnv(process);
         checkEnv.setVariableNames(['user', 'url']);
         const expected = [];
@@ -16,7 +16,7 @@ describe('ensure environment',  ()  => {
     });
 
    it('should return empty array if matching all cases and ignore additional entries',  () =>  {
-        let process = { user : 'foo', url : 'bar', elementary: 'watson'};
+        const process = { user : 'foo', url : 'bar', elementary: 'watson'};
         const checkEnv = new CheckEnv(process);
         checkEnv.setVariableNames(['user', 'url']);
         const expected = [];

@@ -18,10 +18,10 @@ const sortArrayByNumber = function sortArrayByNumberF(arr) {
 
 const getSendArray = function getSendArrayF(json, _lastEntryCache) {
 
-    let sendArr = [];
+    const sendArr = [];
 
     if (json && json.length > 0) {
-        let entries = json.slice();
+        const entries = json.slice();
         sortArrayByNumber(entries);
         entries.reverse().every(function (item) {
 

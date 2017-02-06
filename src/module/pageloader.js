@@ -1,18 +1,15 @@
-/**
- * Created by longstone on 15/11/14.
- */
 "use strict";
-var request = require('request');
-var cheerio = require('cheerio');
-var parser14 = require("./parser-14");
-var q = require('q');
-var LogEntry = require('./../schemas/logEntry');
+const request = require('request');
+const cheerio = require('cheerio');
+const parser14 = require("./parser-14");
+const q = require('q');
+const LogEntry = require('./../schemas/logEntry');
 
 module.exports = function pageLoaderF(url) {
-    var deferred = q.defer();
-    var parsedEntries, url;
+    const deferred = q.defer();
+    let parsedEntries;
+    let url = 'http://www.lodur-zh.ch/duebendorf/index.php?modul=6';
     parsedEntries = [];
-    url = 'http://www.lodur-zh.ch/duebendorf/index.php?modul=6';
 
     request(url, {
         uri: url,
@@ -20,18 +17,20 @@ module.exports = function pageLoaderF(url) {
         encoding: 'binary'
     }, function (err, resp, body) {
         var contentsOfPage = [];
-        try{
-        var $ = cheerio.load(body);
+        try {
+            var $ = cheerio.load(body);
             contentsOfPage = $('div .content table');
 
-        } catch (ex){
+        } catch (ex) {
             LogEntry.create({
                 timestamp: new Date(),
                 text: 'pageloader - parser: uncaughtException',
                 error: JSON.stringify(ex),
-                description: ex.message + '\nbody:'+body+'\n' + ex.stack
+                description: ex.message + '\nbody:' + body + '\n' + ex.stack
             }, function (err) {
-                if(err===null){return;}
+                if (err === null) {
+                    return;
+                }
                 console.log('persist new Entry ', err);
             });
         }
