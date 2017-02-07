@@ -27,7 +27,6 @@ const dependencies = {
 };
 const telegramBot = new TelegramBotNG(dependencies);
 
-/* GET home page. */
 var _lastEntryCache = null;
 router.get('/', function (req, res) {
     let silent = false;

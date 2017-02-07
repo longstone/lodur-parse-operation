@@ -9,28 +9,30 @@ process.on('uncaughtException', function (err) {
         error: JSON.stringify(err),
         description: _.get(err, 'message', 'nomessage') + '\nstack:\n' + _.get(err, 'stack', 'nostack')
     }, function (err) {
-        if(err===null){return;}
+        if (err === null) {
+            return;
+        }
         console.log('persist new Entry ', err);
     });
-    console.error((new Date).toUTCString()+' uncaughtException:' );
+    console.error((new Date).toUTCString() + ' uncaughtException:');
     console.error(err);
     console.error(err.message);
     console.error(err.stack);
 });
 
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('winston');
-const  expressWinston = require('express-winston');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('winston');
+const expressWinston = require('express-winston');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 
-var routes = require('./routes/index');
-var updatePage = require('./routes/update');
-var app = express();
+const routes = require('./routes/index');
+const updatePage = require('./routes/update');
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -55,24 +57,33 @@ app.use('/', routes);
 app.use('/update', updatePage);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    var err = new Error('Not Found');
+    const err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
 const checkEnv = new CheckEnv(process.env);
-checkEnv.setVariableNames(['MONGOURI','telegram_hash']);
+checkEnv.setVariableNames(['MONGOURI', 'telegram_hash']);
 const missingEnv = checkEnv.check();
-if(missingEnv.length > 0 ){
-   logger.log('warn','missing process.env variables: ',missingEnv);
+if (missingEnv.length > 0) {
+    logger.log('warn', 'missing process.env variables: ', missingEnv);
 }
-var mongoUri = process.env.MONGOURI || "mongodb://localhost:27017/lodur";
+const mongoUri = process.env.MONGOURI || "mongodb://localhost:27017/lodur";
 
 
 mongoose.connect(mongoUri, function (err, res) {
+    const stripCredentialsConnectionString = function (uri) {
+        const indexOfAt = uri.indexOf('@');
+        let substFrom = 0;
+        if (indexOfAt > 0) {
+            substFrom = indexOfAt;
+        }
+      return uri.substring(substFrom);
+    };
+    const connectionStringWithoutCredentials = stripCredentialsConnectionString(mongoUri);
     if (err) {
-        console.log('ERROR connecting to: ' + mongoUri + '. ' + err);
+        logger.log('error', 'ERROR connecting to: ' + connectionStringWithoutCredentials + '. ' + err);
     } else {
-        console.log('Succeeded connected to: ' + mongoUri);
+        console.log('Succeeded connected to: ' + connectionStringWithoutCredentials);
     }
 });
 
@@ -93,18 +104,18 @@ if (app.get('env') === 'development') {
 // production error handler
 // no stacktraces leaked to user
 app.use(function (err, req, res, next) {
-    console.log(err);
+    logger.log('error',err);
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,
         error: {}
     });
 });
-var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
-var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+const server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+const server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 
 app.listen(server_port, server_ip_address, function () {
-    console.log("Listening on " + server_ip_address + ", server_port " + server_port)
+    logger.log('info',"Listening on " + server_ip_address + ", server_port " + server_port)
 });
 
 module.exports = app;
