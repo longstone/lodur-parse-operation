@@ -7,7 +7,7 @@
     "start": "webpack && node ./bin/app.bundle.js",
     "test": "mocha-webpack --webpack-config webpack.config-test.babel.js \"src/**/*-spec.js\"",
     "test-watch": "mocha-webpack --webpack-config webpack.config-test.babel.js \"src/**/*-spec.js\" --watch",
-    "build": "webpack"
+    "build": "webpack",
     "heroku-postbuild": "webpack -p --config ./webpack.config.js --progress"
   },
   "dependencies": {
