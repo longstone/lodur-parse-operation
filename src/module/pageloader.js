@@ -5,7 +5,7 @@ const parser14 = require("./parser-14");
 const q = require('q');
 const LogEntry = require('./../schemas/logEntry');
 
-module.exports = function pageLoaderF(url) {
+module.exports = function pageLoaderF(url_unsused) {
     const deferred = q.defer();
     let parsedEntries;
     let url = 'http://www.lodur-zh.ch/duebendorf/index.php?modul=6';
