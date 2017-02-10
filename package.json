@@ -8,6 +8,7 @@
     "test": "mocha-webpack --webpack-config webpack.config-test.babel.js \"src/**/*-spec.js\"",
     "test-watch": "mocha-webpack --webpack-config webpack.config-test.babel.js \"src/**/*-spec.js\" --watch",
     "build": "webpack"
+    "heroku-postbuild": "webpack -p --config ./webpack.config.js --progress"
   },
   "dependencies": {
     "body-parser": "^1.13.1",
