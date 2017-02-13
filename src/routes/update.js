@@ -27,7 +27,7 @@ const dependencies = {
 };
 const telegramBot = new TelegramBotNG(dependencies);
 
-var _lastEntryCache = null;
+const _lastEntryCache = {};
 router.get('/', function (req, res) {
     let silent = false;
     if (req.query.hasOwnProperty('silent')) {
