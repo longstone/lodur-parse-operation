@@ -111,6 +111,7 @@ app.use(function (err, req, res, next) {
         error: {}
     });
 });
+logger.log('info',JSON.stringify(process.env));
 const server_port = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 8080;
 // const server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 
