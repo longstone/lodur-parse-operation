@@ -96,7 +96,7 @@ class TelegramBotService {
             chat_id: id,
             text: msg
         };
-
+        const that = this;
         this.bot.sendMessage(
             conf
             , function (err, body) {
@@ -107,7 +107,7 @@ class TelegramBotService {
                         error: "id: " + id + " text:" + this._.isObject(err) ? JSON.stringify(err) : err + "\n" + body
                     }, (err) => {
                         if (err !== null) {
-                            this.log.log('error','persist new Entry Error', err)
+                            that.log.log('error','persist new Entry Error', err)
                         }
                     });
                     console.dir(err);
@@ -117,7 +117,7 @@ class TelegramBotService {
                         text: 'sucessful sent :' + JSON.stringify(body)
                     }, (err) => {
                         if (err !== null) {
-                            this.log.log('error','persist new Entry Error', err)
+                            that.log.log('error','persist new Entry Error', err)
                         }
                     });
                 }
