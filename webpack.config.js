@@ -21,17 +21,16 @@ module.exports = {
     output: {
         libraryTarget: 'commonjs',
         path: './bin',
-        filename: 'app.bundle.js'
+        filename: 'app.bundle.js',
+        devtoolModuleFilenameTemplate: '[absolute-resource-path]',
+        devtoolFallbackModuleFilenameTemplate: '[absolute-resource-path]?[hash]'
     },
     externals: nodeModules,
     resolve: {
         modules: [path.join(__dirname, "node_modules")],
         descriptionFiles: ['package.json']
     },
-
-
-
-    devtool: 'cheap-source-map',
+    devtool: 'source-map',
     module: {
 
         loaders: [
