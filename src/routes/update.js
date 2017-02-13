@@ -1,16 +1,14 @@
 /**
  * Created by longstone on 06/03/15.
  */
-var express = require('express');
-var router = express.Router();
-var pageloader = require('../module/pageloader');
-var q = require('q');
-var teleBot = require('./../module/telegram/telegramMngr');
-var TelegramBotNG = require('./../module/telegram/telegram-bot-service');
-var moment = require('moment');
-var LodurEntry = require('./../schemas/lodurEntry');
-var lodurUtil = require('./../module/util/lodur-util');
-var log = require('winston');
+import express from 'express';
+const router = express.Router();
+import pageloader from '../module/pageloader';
+import TelegramBotNG  from './../module/telegram/telegram-bot-service';
+import moment from 'moment';
+import LodurEntry from './../schemas/lodurEntry';
+import lodurUtil from './../module/util/lodur-util';
+import log from 'winston';
 
 const dependencies = {
     'node-telegram-bot': require('node-telegram-bot'),
@@ -27,15 +25,15 @@ const dependencies = {
 };
 const telegramBot = new TelegramBotNG(dependencies);
 
-const _lastEntryCache = {};
+let _lastEntryCache = {};
 router.get('/', function (req, res) {
     let silent = false;
     if (req.query.hasOwnProperty('silent')) {
         silent = req.query.silent;
     }
-    var success = function sucessF(json) {
+    const success = function sucessF(json) {
 
-        var lastEntries = lodurUtil.getSendArray(json, _lastEntryCache);
+        let lastEntries = lodurUtil.getSendArray(json, _lastEntryCache);
         if (lastEntries.length > 0) {
             _lastEntryCache = lodurUtil.getLastEntry(lastEntries, _lastEntryCache);
             lodurUtil.sortArrayByNumber(lastEntries);
@@ -58,7 +56,7 @@ router.get('/', function (req, res) {
                         errorFree = false;
                     });
                     if (errorFree) {
-                        var message = "Wer:  " + item.group.toString() + "\n"
+                        const message = "Wer:  " + item.group.toString() + "\n"
                             + "Was:  " + item.description + "\n"
                             + "Wann: " + moment(item.timestamp).locale('de').format('HH:mm DD.MM.YY') + "\n"
                             + "Nummer: " + item.number;
@@ -72,12 +70,12 @@ router.get('/', function (req, res) {
                 log.debug('no update, latest was:', _lastEntryCache);
             }
         }
-        var result = {newEntries: lastEntries};
+        const result = {newEntries: lastEntries};
         res.json(result);
 
 
     };
-    var fail = function failF(err) {
+    const fail = function failF(err) {
         log.log('error','err', err);
         res.json({error: err});
     };
