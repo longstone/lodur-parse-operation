@@ -58,19 +58,18 @@ class TelegramBotService {
                     if (error) {
                         sendMessage = 'error while removing ' + error;
                     }
-                    this._send(message.chat.id, sendMessage);
+                    that._send(message.chat.id, sendMessage);
                 });
             }).on('stats', function (message) {
                 Chats.find({}, function (err, chats) {
-
                     const sendMessage = 'currently, im notifying ' + TelegramBotService._chatOrChats(chats.length);
-                    this._send(message.chat.id, sendMessage);
+                    that._send(message.chat.id, sendMessage);
                 });
             }).on('update', function (message) {
                 this.req.request('http://lodurparser-longstone.rhcloud.com/update', () => {
-                    this.log.log('info','update from bot triggered')
+                    logger.log('info','update from bot triggered')
                 });
-                this._send(message.chat.id, 'update triggered');
+                that._send(message.chat.id, 'update triggered');
             }).start();
     }
 
