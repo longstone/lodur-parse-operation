@@ -3,18 +3,19 @@
  */
 class TelegramBotService {
     constructor(dependencies) {
-        this.req = {}
+        this.req = {};
         this.req.Bot = dependencies['node-telegram-bot'];
         this.req.request = dependencies.request;
         this.Chats = dependencies.schemas.Chats;
         this.LogEntry = dependencies.schemas.LogEntry;
         this._ = dependencies.lodash;
         this.log = dependencies.logger;
-        this.bot = this._initBot(this.req.Bot, this.LogEntry, this.Chats, this._.get(dependencies, 'config.telegram-token'));
+        this.bot = this._initBot(this.req.Bot, this.LogEntry, this.Chats, this._.get(dependencies, 'config.telegram-token'), this.log);
     }
 
-    _initBot(Bot, LogEntry, Chats, token) {
-        const bot = new Bot({token: token})
+    _initBot(Bot, LogEntry, Chats, token, logger) {
+        const that = this;
+        return new Bot({token: token})
             .on('error', function (message) {
                 // prevent bot from crashing
                 LogEntry.create({
@@ -23,14 +24,13 @@ class TelegramBotService {
                     error: 'Bot.onError:' + message
                 }, function (err) {
                     if (err !== null) {
-                        this.log.log('error','persist new received Error', err)
+                        logger.log('error','persist new received Error', err)
                     }
                 });
             }).on('start', function (message) {
                 Chats.find({chatId: message.chat.id}).exec(function (err, docs) {
-                    //  console.log('err,docs', err, docs);
                     if (docs.length === 0) {
-                        var newChat = new Chats({
+                        const newChat = new Chats({
                             chatId: message.chat.id,
                             firstName: message.chat.first_name,
                             lastName: message.chat.last_name,
@@ -38,15 +38,15 @@ class TelegramBotService {
                             username: message.chat.username
                         });
                         newChat.save(function (err) {
-                            this.log.log('error',err);
+                            logger.log('error',err);
                         });
-                        this.log.log('info','registered chat id ' + message.chat.id);
-                        var msg = 'should be registered right now';
-                        this._send(message.chat.id, msg);
+                        logger.log('info','registered chat id ' + message.chat.id);
+                        const msg = 'should be registered right now';
+                        that._send(message.chat.id, msg);
                     } else {
-                        this.log.log('error','already registered chat id ' + message.chat.id);
-                        var errorMsg = 'you\'re registered already, doing nothing...';
-                        this._send(message.chat.id, errorMsg);
+                        logger.log('error','already registered chat id ' + message.chat.id);
+                        const errorMsg = 'you\'re registered already, doing nothing...';
+                        that._send(message.chat.id, errorMsg);
                     }
 
                 });
@@ -72,7 +72,6 @@ class TelegramBotService {
                 });
                 this._send(message.chat.id, 'update triggered');
             }).start();
-        return bot;
     }
 
     static _chatOrChats(count) {
