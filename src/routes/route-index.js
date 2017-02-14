@@ -23,4 +23,4 @@ class RouteIndex {
     }
 }
 
-module.exports = TelegramBotService;
+module.exports = RouteIndex;
