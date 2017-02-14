@@ -1,5 +1,6 @@
 "use strict";
 require('source-map-support').install();
+import 'source-map-support/register';
 //# sourceMappingURL=./app.bundle.js.map
 const CheckEnv = require('./module/util/checkEnv');
 const _ = require('lodash');
