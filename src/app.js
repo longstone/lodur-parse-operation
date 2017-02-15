@@ -2,9 +2,17 @@
 require('source-map-support').install();
 import 'source-map-support/register';
 //# sourceMappingURL=./app.bundle.js.map
+
+import PersistenceService from './module/persistence/persistence-service';
+import TelegramBotService from './module/telegram/telegram-bot-service';
+import Bot from 'node-telegram-bot'
+import LodurEntry from './schemas/lodurEntry';
+import Chats from './schemas/chats';
+import LogEntry from './schemas/logEntry'
+
 const CheckEnv = require('./module/util/checkEnv');
-const _ = require('lodash');
-const LogEntry = require('./schemas/logEntry');
+import _  from 'lodash';
+import request from 'request';
 process.on('uncaughtException', function (err) {
     LogEntry.create({
         timestamp: new Date(),
@@ -23,18 +31,19 @@ process.on('uncaughtException', function (err) {
     console.error(err.stack);
 });
 
-const express = require('express');
+import express from 'express';
+import logger from 'winston';
+
 const path = require('path');
 const favicon = require('serve-favicon');
-const logger = require('winston');
 const expressWinston = require('express-winston');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-
+mongoose.Promise = global.Promise;
 import RouteIndex from './routes/route-index';
+import RouteUpdate from './routes/route-update';
 const pageloader = require('./module/pageloader');
-const updatePage = require('./routes/update');
 const app = express();
 
 // view engine setup
@@ -55,11 +64,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+const config = {telegramToken: process.env.telegram_hash};
 const dependencies = {
-    express, pageloader
+    express,
+    pageloader,
+    persistenceService: new PersistenceService({
+        Chats,
+        LogEntry,
+        LodurEntry
+    }, {logger}),
+    logger,
+    request,
+    telegramBotService: null
 };
-app.use('/', new RouteIndex(depenencies).getRoute());
-app.use('/update', updatePage);
+dependencies.telegramBotService = new TelegramBotService(new Bot({token: config.telegramToken}), dependencies);
+app.use('/', new RouteIndex(dependencies).getRoute());
+app.use('/update', new RouteUpdate(dependencies).getRoute());
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     const err = new Error('Not Found');
@@ -82,7 +103,7 @@ mongoose.connect(mongoUri, function (err, res) {
         if (indexOfAt > 0) {
             substFrom = indexOfAt;
         }
-      return uri.substring(substFrom);
+        return uri.substring(substFrom);
     };
     const connectionStringWithoutCredentials = stripCredentialsConnectionString(mongoUri);
     if (err) {
@@ -97,6 +118,8 @@ mongoose.connect(mongoUri, function (err, res) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
+    logger.level = 'silly';
+    logger.warn('env:developement');
     app.use(function (err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
@@ -109,7 +132,7 @@ if (app.get('env') === 'development') {
 // production error handler
 // no stacktraces leaked to user
 app.use(function (err, req, res, next) {
-    logger.log('error',err);
+    logger.log('error', err);
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,
@@ -119,8 +142,8 @@ app.use(function (err, req, res, next) {
 const server_port = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 8080;
 // const server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 
-app.listen(server_port,  function () {
-    logger.log('info',"Listening on server_port: " + server_port)
+app.listen(server_port, function () {
+    logger.log('info', "Listening on server_port: " + server_port)
 });
 
 module.exports = app;
