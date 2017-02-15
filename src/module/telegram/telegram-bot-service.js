@@ -91,7 +91,6 @@ class TelegramBotService {
             chat_id: id,
             text: msg
         };
-        const that = this;
         this.bot.sendMessage(conf, (err, body) => {
                 if (err) {
                     this.persistenceService.log(
