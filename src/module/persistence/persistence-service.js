@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 class PersistenceService {
 
     constructor(schemas, dependencies) {
@@ -6,28 +8,21 @@ class PersistenceService {
         this.LogEntry = schemas.LogEntry;
         this.logger = dependencies.logger;
         this.query = {
-            entriesThisYear: {timestamp: {$gte: () => moment().year(new Date().getFullYear()).month(0).date(1).hour(0).minute(0).second(0).millisecond(0).toDate()}}
+            entriesThisYear: {timestamp: {$gte:  moment().year(new Date().getFullYear()).month(0).date(1).hour(0).minute(0).second(0).millisecond(0).toDate()}}
         };
     }
 
     getLastEntryForYear() {
-        return new Promise((resolve, reject) => {
-            const promise = this.LodurEntry.find(query.entriesThisYear).sort({number: -1}).limit(1).exec();
-            promise.then(doc => resolve(doc)).catch(error => reject(error));
-
-        });
+        return this.LodurEntry.find(this.query.entriesThisYear).sort({number: -1}).limit(1).exec();
     }
 
     getEntriesForActualYear() {
-        return new Promise((resolve, reject) => {
-            const promise = this.LodurEntry.find(query.entriesThisYear).sort({number: -1}).exec();
-            promise.then(doc => resolve(doc)).catch(error => reject(error));
-        });
+        return this.LodurEntry.find(this.query.entriesThisYear).sort({number: -1}).exec();
     }
 
     createNewLodurEntry(entry) {
         return new Promise((resolve, reject) => {
-            this.LodurEntry.create(entry, function (err, obj) {
+            this.LodurEntry.create(entry, (err, obj) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -39,7 +34,7 @@ class PersistenceService {
 
     findChatsById(chatId) {
         return new Promise((resolve, reject) => {
-            this.Chats.find({chatId},(err, docs) => {
+            this.Chats.find({chatId}, (err, docs) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -86,7 +81,7 @@ class PersistenceService {
     }
 
     log(text, error) {
-        this.logger.log('debug','persistence-service logged: '+text+error);
+        this.logger.log('debug', 'persistence-service logged: ' + text + ' -> ' + error);
         this.LogEntry.create({
             timestamp: new Date(),
             text,

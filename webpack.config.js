@@ -32,17 +32,15 @@ module.exports = {
     },
     devtool: 'source-map',
     module: {
-
         loaders: [
-            {
-       //         resolveLoader: { root: path.join(__dirname, "node_modules") },
-                test: /\.js$/,
+            {   test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: 'babel-loader',
                 query: {
                     presets: ['es2015']
                 }
             }
+
         ]
     },
     plugins: [
