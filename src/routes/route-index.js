@@ -5,9 +5,10 @@ class RouteIndex {
             express: dependencies.express,
             pageloader: dependencies.pageloader
         };
-        this.router = this.import.express.Router();
-        this.router.get('/', function (req, res) {
+    }
 
+    getRoute() {
+        return (req, res) => {
             this.import.pageloader().then(json => {
                     res.setHeader('charset', 'utf8');
                     res.setHeader('Content-Length', new Buffer(json).length);
@@ -15,11 +16,7 @@ class RouteIndex {
                 },
                 err => res.json({error: err}));
 
-        });
-    }
-
-    getRoute() {
-        return this.router;
+        }
     }
 }
 
