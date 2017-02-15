@@ -1,16 +1,13 @@
-"use strict";
-/**
- * Created by longstone on 18/03/15.
- */
-var mongoose = require("mongoose");
-var entrySchema = new mongoose.Schema({
+import mongoose from 'mongoose';
+
+const entrySchema = new mongoose.Schema({
     group: [String],
     timestamp: Date,
     description: String,
     number : Number
 });
 
-var LodurEntry;
+let LodurEntry;
 if (mongoose.models.LodurEntry) {
     LodurEntry = mongoose.model('LodurEntry');
 } else {

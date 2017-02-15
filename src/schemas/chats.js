@@ -1,9 +1,6 @@
-"use strict";
-/**
- * Created by longstone on 18/03/15.
- */
-var mongoose = require("mongoose");
-var chatSchema = new mongoose.Schema({
+import mongoose from 'mongoose';
+
+const chatSchema = new mongoose.Schema({
     chatId: String,
     firstName: String,
     lastName: String,
@@ -11,7 +8,7 @@ var chatSchema = new mongoose.Schema({
     username: String
 });
 
-var Chat;
+let Chat;
 if (mongoose.models.Chat) {
     Chat = mongoose.model('Chat');
 } else {

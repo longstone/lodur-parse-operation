@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
+
 const deviceSchema = new mongoose.Schema({
     deviceId: String,
     date: {type: Date, default: Date.now}
