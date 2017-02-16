@@ -40,7 +40,6 @@ const expressWinston = require('express-winston');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
 import RouteIndex from './routes/route-index';
 import RouteUpdate from './routes/route-update';
 const pageloader = require('./module/pageloader');
@@ -75,7 +74,8 @@ const dependencies = {
     request,
     telegramBotService: null
 };
-dependencies.telegramBotService = new TelegramBotService(new Bot({token: config.telegramToken}), dependencies);
+const bot = new Bot({token: config.telegramToken});
+dependencies.telegramBotService = new TelegramBotService(bot, dependencies);
 const router = express.Router();
 router.get('/', new RouteIndex(dependencies).getRoute());
 router.get('/update', new RouteUpdate(dependencies).getRoute());
@@ -92,8 +92,9 @@ const missingEnv = checkEnv.check();
 if (missingEnv.length > 0) {
     logger.log('warn', 'missing process.env variables: ', missingEnv);
 }
+mongoose.Promise = global.Promise;
 const mongoUri = process.env.MONGOURI || "mongodb://localhost:27017/lodur";
-
+const options = { promiseLibrary: global.Promise };
 
 mongoose.connect(mongoUri, function (err, res) {
     const stripCredentialsConnectionString = function (uri) {

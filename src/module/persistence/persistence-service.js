@@ -8,7 +8,7 @@ class PersistenceService {
         this.LogEntry = schemas.LogEntry;
         this.logger = dependencies.logger;
         this.query = {
-            entriesThisYear: {timestamp: {$gte:  moment().year(new Date().getFullYear()).month(0).date(1).hour(0).minute(0).second(0).millisecond(0).toDate()}}
+            entriesThisYear: {timestamp: {$gte: moment().year(new Date().getFullYear()).month(0).date(1).hour(0).minute(0).second(0).millisecond(0).toDate()}}
         };
     }
 
@@ -20,23 +20,15 @@ class PersistenceService {
         return this.LodurEntry.find(this.query.entriesThisYear).sort({number: -1}).exec();
     }
 
-    createNewLodurEntry(entry) {
-        return new Promise((resolve, reject) => {
-            this.LodurEntry.create(entry, (err, obj) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(obj);
-                }
-            });
-        });
+    createNewLodurEntry(dto) {
+        return new this.LodurEntry(dto).save();
     }
 
     findChatsById(chatId) {
         return new Promise((resolve, reject) => {
             this.Chats.find({chatId}, (err, docs) => {
-                if (err) {
-                    reject(err);
+                if (err !== null) {
+                    reject({'err-find-chats-by-id': err});
                 } else {
                     resolve(docs);
                 }
@@ -47,8 +39,8 @@ class PersistenceService {
     findAllChats() {
         return new Promise((resolve, reject) => {
             this.Chats.find({}, (err, chats) => {
-                if (err) {
-                    reject(err);
+                if (err != null) {
+                    reject({'err-find-all-chats': err});
                 } else {
                     resolve(chats);
                 }
@@ -68,16 +60,7 @@ class PersistenceService {
      * @returns {Promise}
      */
     createChat(chat) {
-        return new Promise((resolve, reject) => {
-            const newChat = new this.Chats(chat);
-            newChat.save(function (err, document) {
-                if (err) {
-                    reject(err)
-                } else {
-                    resolve(document);
-                }
-            });
-        });
+            return new this.Chats(chat).save();
     }
 
     log(text, error) {

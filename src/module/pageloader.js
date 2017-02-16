@@ -5,7 +5,7 @@ const parser14 = require("./parser-14");
 const LogEntry = require('./../schemas/logEntry');
 
 module.exports = function pageLoaderF(url_unsused) {
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject)=> {
         let parsedEntries= [];
         let url = 'http://www.lodur-zh.ch/duebendorf/index.php?modul=6';
         let $;
@@ -31,7 +31,8 @@ module.exports = function pageLoaderF(url_unsused) {
                     }
                     console.log('persist new Entry ', err);
                 });
-                reject(ex);
+                logger.log('error: pageloader parse',ex);
+                reject({'err-parse-contents-page' :ex});
                 return;
             }
             let entries = [];

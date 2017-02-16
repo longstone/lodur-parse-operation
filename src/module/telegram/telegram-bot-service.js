@@ -5,12 +5,12 @@ class TelegramBotService {
         this.req = {};
         this.req.request = dependencies.request;
         this.persistenceService = dependencies.persistenceService;
-        this.log = dependencies.logger;
-        this.bot = this._initBot(botInstance, this.log);
+        this.logger = dependencies.logger;
+        this.bot = this._initBot(botInstance, this.logger);
     }
 
     _initBot(botInstance, logger) {
-        logger.log('info','binding bot commands');
+        logger.log('info', 'binding bot commands');
         const that = this;
         return botInstance.on('error', (message) => {
             // prevent bot from crashing
@@ -18,7 +18,7 @@ class TelegramBotService {
                 'Bot.onError:' + message
             );
         }).on('start', message => {
-            this.persistenceService.log('telegram-bot-service: cmd start: ',JSON.stringify(message));
+            this.persistenceService.log('telegram-bot-service: cmd start: ', JSON.stringify(message));
             this.persistenceService.findChatsById(message.chat.id).then(docs => {
                 if (docs.length === 0) {
                     this.persistenceService.createChat({
@@ -38,9 +38,9 @@ class TelegramBotService {
                     this.persistenceService.log('error', 'already registered chat id ' + message.chat.id);
                     this._send(message.chat.id, 'you\'re registered already, doing nothing...');
                 }
-            }).catch(err => this.log('error', 'telegram-bot-service: unknow error occured ' + JSON.stringify(err)));
+            }).catch(err => this.logger.log('error', 'telegram-bot-service: unknow error occured ' + JSON.stringify(err)));
         }).on('stop', (message) => {
-            this.persistenceService.log('telegram-bot-service: cmd stop: ',JSON.stringify(message));
+            this.persistenceService.log('telegram-bot-service: cmd stop: ', JSON.stringify(message));
             this.persistenceService.findChatsById(message.chat.id).then(docs => {
                 _.each(docs, doc => doc.remove((error) => {
                     let sendMessage = 'removed you from notification list';
@@ -51,7 +51,7 @@ class TelegramBotService {
                 }));
             });
         }).on('stats', message => {
-            this.persistenceService.log('telegram-bot-service: cmd stats: ',JSON.stringify(message));
+            this.persistenceService.log('telegram-bot-service: cmd stats: ' + JSON.stringify(message));
             this.persistenceService.findAllChats().then(chats => {
                 const sendMessage = 'currently, im notifying ' + TelegramBotService._chatOrChats(chats.length);
                 that._send(message.chat.id, sendMessage);
@@ -60,10 +60,10 @@ class TelegramBotService {
                 that.logger('warn', JSON.stringify(err))
             });
         }).on('update', message => {
-            this.persistenceService.log('telegram-bot-service: cmd update: ',JSON.stringify(message));
-          /*  this.req.request('http://lodurparser-longstone.rhcloud.com/update', () => {
-                logger.log('info', 'update from bot triggered')
-            });*/
+            this.persistenceService.log('telegram-bot-service: cmd update: ', JSON.stringify(message));
+            /*  this.req.request('http://lodurparser-longstone.rhcloud.com/update', () => {
+             logger.log('info', 'update from bot triggered')
+             });*/
             that._send(message.chat.id, '(not working right now)update triggered');
         }).start();
     }
@@ -77,13 +77,20 @@ class TelegramBotService {
     };
 
     notifyAll(message) {
-        this.log.log('info', 'should notify all chats with message: ' + sendMessage);
-        this.persistenceService.findAllChats().then(chats => {
-            chats.forEach(chat => {
-                this.log.log('info', 'send Message [chat, text]', chat, sendMessage);
-                this._send(chat.chatId, sendMessage);
+        return new Promise((resolve, reject) => {
+            this.persistenceService.findAllChats().then(chats => {
+                chats.map(chat => {
+                    this._send(chat.chatId, message);
+                    return true;
+                }).every(() => {
+                    resolve(chats);
+                    return false;
+                });
+            }).catch(err => {
+                this.persistenceService.log('telegram-bot-service.notifyAll: error', err);
+                reject({'error-find-all-chats': err})
             });
-        }).catch( err => this.persistenceService.log('telegram-bot-service.notifyAll: error',err));
+        });
     }
 
     _send(id, msg) {
@@ -91,15 +98,16 @@ class TelegramBotService {
             chat_id: id,
             text: msg
         };
+        this.logger.log('debug', 'send ' + JSON.stringify(conf));
         this.bot.sendMessage(conf, (err, body) => {
-                if (err) {
-                    this.persistenceService.log(
-                        'telegramMngr - send: ' + JSON.stringify(body) + 'conf: ' + JSON.stringify(conf),
-                        'id: ' + id + ' text:' + this._.isObject(err) ? JSON.stringify(err) : err + '\n' + body
-                    );
-                } else {
-                    this.persistenceService.log('sucessful sent :' + JSON.stringify(body), '');
-                }
+            if (err) {
+                this.persistenceService.log(
+                    'telegramMngr - send: ' + JSON.stringify(body) + 'conf: ' + JSON.stringify(conf),
+                    'id: ' + id + ' text:' + this._.isObject(err) ? JSON.stringify(err) : err + '\n' + body
+                );
+            } else {
+                this.persistenceService.log('sucessful sent :' + JSON.stringify(body), '');
+            }
         });
     }
 
