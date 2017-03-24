@@ -7,7 +7,7 @@ const LogEntry = require('./../schemas/logEntry');
 module.exports = function pageLoaderF(url_unsused) {
     return new Promise((resolve, reject)=> {
         let parsedEntries= [];
-        let url = 'http://www.lodur-zh.ch/duebendorf/index.php?modul=6';
+        let url = 'https://www.lodur-zh.ch/duebendorf/index.php?modul=6';
         let $;
         request(url, {
             uri: url,
