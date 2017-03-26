@@ -885,7 +885,7 @@ router.get('/update', new _routeUpdate2.default(dependencies).getRoute());
 app.use('/', router);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    _winston2.default.log('warn', 'errorhandler ', req);
+    _winston2.default.log('warn', 'errorhandler ', req.originalUrl);
     var err = new Error('Not Found');
     err.status = 404;
     next(err);

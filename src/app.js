@@ -82,7 +82,7 @@ router.get('/update', new RouteUpdate(dependencies).getRoute());
 app.use('/',router);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    logger.log('warn', 'errorhandler ', req);
+    logger.log('warn', 'errorhandler ', req.originalUrl);
     const err = new Error('Not Found');
     err.status = 404;
     next(err);
