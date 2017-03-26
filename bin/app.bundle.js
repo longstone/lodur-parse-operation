@@ -942,7 +942,8 @@ app.use(function (err, req, res, next) {
         error: {}
     });
 });
-var server_port = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 8080;
+var server_port = process.env.NODE_PORT || process.env.PORT || 8080;
+// const server_port = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 8080;
 // const server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 
 app.listen(server_port, function () {
@@ -994,33 +995,53 @@ module.exports = Entry;
 "use strict";
 
 
+var _entry = __webpack_require__(25);
+
+var _entry2 = _interopRequireDefault(_entry);
+
+var _dateparser = __webpack_require__(27);
+
+var _dateparser2 = _interopRequireDefault(_dateparser);
+
+var _parseTimeFromLine = __webpack_require__(31);
+
+var _parseTimeFromLine2 = _interopRequireDefault(_parseTimeFromLine);
+
+var _parseGroups = __webpack_require__(29);
+
+var _parseGroups2 = _interopRequireDefault(_parseGroups);
+
+var _parseDescription = __webpack_require__(28);
+
+var _parseDescription2 = _interopRequireDefault(_parseDescription);
+
+var _parseNumber = __webpack_require__(30);
+
+var _parseNumber2 = _interopRequireDefault(_parseNumber);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /**
  * Created by longstone on 15/11/14.
  */
-var Entry = __webpack_require__(25);
 var newLine = '\n';
-var dateParser = __webpack_require__(27),
-    parseTimeFromLine = __webpack_require__(31),
-    parseGroups = __webpack_require__(29),
-    parseDescription = __webpack_require__(28),
-    parseNumber = __webpack_require__(30);
 
-var getTimestamp = function getTimestampF(lines) {
+var getTimestamp = function getTimestamp(lines) {
     var dateValues = {};
     dateValues.date = lines[2];
-    dateValues.time = parseTimeFromLine(lines[3]);
-    return dateParser(dateValues);
+    dateValues.time = (0, _parseTimeFromLine2.default)(lines[3]);
+    return (0, _dateparser2.default)(dateValues);
 };
-module.exports = function createEntryForAlertF(text) {
+module.exports = function (text) {
     var lines = text.split(newLine);
     var values = {
-        group: parseGroups(lines[3]),
+        group: (0, _parseGroups2.default)(lines[3]),
         timestamp: getTimestamp(lines, values),
-        description: parseDescription(lines[3]),
-        number: parseNumber(lines[3])
+        description: (0, _parseDescription2.default)(lines[3]),
+        number: (0, _parseNumber2.default)(lines[3])
 
     };
-    return new Entry(values);
+    return new _entry2.default(values);
 };
 
 /***/ }),
