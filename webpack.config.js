@@ -20,7 +20,7 @@ module.exports = {
     entry: './src/app.js',
     output: {
         libraryTarget: 'commonjs',
-        path: './bin',
+        path: path.resolve(__dirname, 'bin'),
         filename: 'app.bundle.js',
         devtoolModuleFilenameTemplate: '[absolute-resource-path]',
         devtoolFallbackModuleFilenameTemplate: '[absolute-resource-path]?[hash]'
