@@ -44,9 +44,9 @@
     "babel-loader": "^7.1.2",
     "babel-preset-es2015": "^6.22.0",
     "file-loader": "^1.1.5",
-    "mocha": "^4.0.1",
+    "mocha": "^3.0.0",
     "mocha-webpack": "^0.7.0",
-    "webpack": "^3.6.0",
+    "webpack": "^2.1.0-beta.15",
     "webpack-node-externals": "^1.6.0"
   }
 }
