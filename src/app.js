@@ -82,6 +82,7 @@ router.get('/update', new RouteUpdate(dependencies).getRoute());
 app.use('/',router);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
+    logger.log('warn', 'errorhandler ', req.originalUrl);
     const err = new Error('Not Found');
     err.status = 404;
     next(err);
@@ -139,11 +140,13 @@ app.use(function (err, req, res, next) {
         error: {}
     });
 });
-const server_port = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 8080;
-// const server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+const server_port = process.env.NODE_PORT || process.env.PORT || 8080;
+// const server_port = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 8080;
+ const server_ip_address = process.env.NODE_IP  || 'localhost';
 
-app.listen(server_port, function () {
+app.listen(server_port,server_ip_address, function () {
     logger.log('info', "Listening on server_port: " + server_port)
+    logger.log('info', "Listening on server_ip_address: " + server_ip_address)
 });
 
 module.exports = app;
