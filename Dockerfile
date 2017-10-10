@@ -1,13 +1,8 @@
-FROM alpine:3.1
-
-RUN apk add --update nodejs && rm -rf /var/cache/apk/*
-
+FROM node:alpine
+EXPOSE 8080
+ENV NOgDE_ENV=production
 # copy app to src
 COPY . /src
 WORKDIR /src
+CMD [ "node", "/src/bin/app.bundle.js" ]
 
-# Install app dependencies
-
-RUN cd /src; npm install
-
-CMD [ "npm", "start" ]
