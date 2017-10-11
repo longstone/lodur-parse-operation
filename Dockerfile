@@ -6,6 +6,5 @@ WORKDIR /script
 RUN npm install
 RUN npm run-script build
 ENV NODE_ENV=production
-RUN npm prune
-RUN npm run-script start
+ENTRYPOINT npm run-script start
 
