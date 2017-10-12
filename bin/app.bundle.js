@@ -387,10 +387,10 @@ var TelegramBotService = function () {
                 });
             }).on('update', function (message) {
                 _this.persistenceService.log('telegram-bot-service: cmd update: ', JSON.stringify(message));
-                /*  this.req.request('http://lodurparser-longstone.rhcloud.com/update', () => {
-                 logger.log('info', 'update from bot triggered')
-                 });*/
-                that._send(message.chat.id, '(not working right now)update triggered');
+                _this.req.request('http://' + server_ip_address + ':' + server_port + '/update', function () {
+                    logger.log('info', 'update from bot triggered');
+                    that._send(message.chat.id, 'update triggered');
+                });
             }).start();
         }
     }, {
