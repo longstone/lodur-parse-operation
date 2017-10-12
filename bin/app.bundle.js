@@ -134,10 +134,10 @@ var containsDuplicatedID = function containsDuplicatedID(array) {
     });
     return !(array.length === set.size);
 };
-var getServerIp = function getServerIp() {
+var getServerPort = function getServerPort() {
     return process.env.NODE_PORT || process.env.PORT || 8080;
 };
-var getServerPort = function getServerPort() {
+var getServerIp = function getServerIp() {
     return process.env.NODE_IP || 'localhost';
 };
 module.exports = {
