@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 24);
+/******/ 	return __webpack_require__(__webpack_require__.s = 25);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -80,12 +80,84 @@ module.exports = require("mongoose");
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var getLastEntry = function getLastEntryF(list, cache) {
+    if (list.length > 0) {
+        return list.slice(-1).pop();
+    }
+    return cache;
+};
+
+var isOrderingForwards = function orderingForwardsF(arr) {
+    return arr.length > 0 && arr[0].number < getLastEntry(arr).number;
+};
+
+var sortArrayByNumber = function sortArrayByNumberF(arr) {
+    arr.sort(function (a, b) {
+        return a.number - b.number;
+    });
+    return arr;
+};
+
+var getSendArray = function getSendArrayF(json, _lastEntryCache) {
+
+    var sendArr = [];
+
+    if (json && json.length > 0) {
+        var entries = json.slice();
+        sortArrayByNumber(entries);
+        entries.reverse().every(function (item) {
+
+            if (item.number > _lastEntryCache.number) {
+                sendArr.push(item);
+                return true;
+            } else {
+                //we want to break
+                return false;
+            }
+        });
+    }
+    return sendArr.reverse();
+};
+
+var containsDuplicatedID = function containsDuplicatedID(array) {
+    if (!array) {
+        return false;
+    }
+    var set = new Set();
+    array.map(function (item) {
+        return set.add(item.number);
+    });
+    return !(array.length === set.size);
+};
+var getServerIp = function getServerIp() {
+    return process.env.NODE_PORT || process.env.PORT || 8080;
+};
+var getServerPort = function getServerPort() {
+    return process.env.NODE_IP || 'localhost';
+};
+module.exports = {
+    getLastEntry: getLastEntry,
+    getSendArray: getSendArray,
+    isOrderingForwards: isOrderingForwards,
+    sortArrayByNumber: sortArrayByNumber,
+    containsDuplicatedID: containsDuplicatedID,
+    getServerIp: getServerIp,
+    getServerPort: getServerPort
+};
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports) {
 
 module.exports = require("lodash");
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -113,34 +185,34 @@ if (_mongoose2.default.models.LogEntry) {
 module.exports = LogEntry;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 module.exports = require("path");
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 module.exports = require("request");
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports) {
 
 module.exports = require("string");
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var request = __webpack_require__(5);
+var request = __webpack_require__(6);
 var cheerio = __webpack_require__(34);
-var parser14 = __webpack_require__(26);
-var LogEntry = __webpack_require__(3);
+var parser14 = __webpack_require__(27);
+var LogEntry = __webpack_require__(4);
 
 module.exports = function pageLoaderF(url_unsused) {
     return new Promise(function (resolve, reject) {
@@ -188,7 +260,7 @@ module.exports = function pageLoaderF(url_unsused) {
 };
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -302,7 +374,7 @@ var PersistenceService = function () {
 module.exports = PersistenceService;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -310,9 +382,13 @@ module.exports = PersistenceService;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _lodash = __webpack_require__(2);
+var _lodash = __webpack_require__(3);
 
 var _lodash2 = _interopRequireDefault(_lodash);
+
+var _lodurUtil = __webpack_require__(2);
+
+var _lodurUtil2 = _interopRequireDefault(_lodurUtil);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -387,7 +463,7 @@ var TelegramBotService = function () {
                 });
             }).on('update', function (message) {
                 _this.persistenceService.log('telegram-bot-service: cmd update: ', JSON.stringify(message));
-                _this.req.request('http://' + server_ip_address + ':' + server_port + '/update', function () {
+                _this.req.request('http://' + _lodurUtil2.default.getServerIp() + ':' + _lodurUtil2.default.getServerPort() + '/update', function () {
                     logger.log('info', 'update from bot triggered');
                     that._send(message.chat.id, 'update triggered');
                 });
@@ -448,7 +524,7 @@ var TelegramBotService = function () {
 module.exports = TelegramBotService;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -500,7 +576,7 @@ var CheckEnv = function () {
 module.exports = CheckEnv;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -543,7 +619,7 @@ var RouteIndex = function () {
 module.exports = RouteIndex;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -551,7 +627,7 @@ module.exports = RouteIndex;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _lodash = __webpack_require__(2);
+var _lodash = __webpack_require__(3);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -559,7 +635,7 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _lodurUtil = __webpack_require__(32);
+var _lodurUtil = __webpack_require__(2);
 
 var _lodurUtil2 = _interopRequireDefault(_lodurUtil);
 
@@ -646,7 +722,7 @@ var RouteUpdate = function () {
 module.exports = RouteUpdate;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -675,7 +751,7 @@ if (_mongoose2.default.models.Chat) {
 module.exports = Chat;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -703,123 +779,127 @@ if (_mongoose2.default.models.LodurEntry) {
 module.exports = LodurEntry;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(33).install();
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports = require("body-parser");
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports) {
 
 module.exports = require("cookie-parser");
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 module.exports = require("express");
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports) {
 
 module.exports = require("express-winston");
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports) {
 
 module.exports = require("node-telegram-bot");
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports) {
 
 module.exports = require("serve-favicon");
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports) {
 
 module.exports = require("source-map-support");
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports) {
 
 module.exports = require("winston");
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(__dirname) {
 
-__webpack_require__(15);
+__webpack_require__(16);
 
-var _persistenceService = __webpack_require__(8);
+var _persistenceService = __webpack_require__(9);
 
 var _persistenceService2 = _interopRequireDefault(_persistenceService);
 
-var _telegramBotService = __webpack_require__(9);
+var _telegramBotService = __webpack_require__(10);
 
 var _telegramBotService2 = _interopRequireDefault(_telegramBotService);
 
-var _nodeTelegramBot = __webpack_require__(20);
+var _nodeTelegramBot = __webpack_require__(21);
 
 var _nodeTelegramBot2 = _interopRequireDefault(_nodeTelegramBot);
 
-var _lodurEntry = __webpack_require__(14);
+var _lodurEntry = __webpack_require__(15);
 
 var _lodurEntry2 = _interopRequireDefault(_lodurEntry);
 
-var _chats = __webpack_require__(13);
+var _chats = __webpack_require__(14);
 
 var _chats2 = _interopRequireDefault(_chats);
 
-var _logEntry = __webpack_require__(3);
+var _logEntry = __webpack_require__(4);
 
 var _logEntry2 = _interopRequireDefault(_logEntry);
 
-var _lodash = __webpack_require__(2);
+var _lodash = __webpack_require__(3);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _request = __webpack_require__(5);
+var _request = __webpack_require__(6);
 
 var _request2 = _interopRequireDefault(_request);
 
-var _express = __webpack_require__(18);
+var _express = __webpack_require__(19);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _winston = __webpack_require__(23);
+var _winston = __webpack_require__(24);
 
 var _winston2 = _interopRequireDefault(_winston);
 
-var _routeIndex = __webpack_require__(11);
+var _routeIndex = __webpack_require__(12);
 
 var _routeIndex2 = _interopRequireDefault(_routeIndex);
 
-var _routeUpdate = __webpack_require__(12);
+var _routeUpdate = __webpack_require__(13);
 
 var _routeUpdate2 = _interopRequireDefault(_routeUpdate);
 
+var _lodurUtil = __webpack_require__(2);
+
+var _lodurUtil2 = _interopRequireDefault(_lodurUtil);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-__webpack_require__(22).install();
+__webpack_require__(23).install();
 //# sourceMappingURL=./app.bundle.js.map
 
-var CheckEnv = __webpack_require__(10);
+var CheckEnv = __webpack_require__(11);
 
 process.on('uncaughtException', function (err) {
     _logEntry2.default.create({
@@ -839,14 +919,14 @@ process.on('uncaughtException', function (err) {
     console.error(err.stack);
 });
 
-var path = __webpack_require__(4);
-var favicon = __webpack_require__(21);
-var expressWinston = __webpack_require__(19);
-var cookieParser = __webpack_require__(17);
-var bodyParser = __webpack_require__(16);
+var path = __webpack_require__(5);
+var favicon = __webpack_require__(22);
+var expressWinston = __webpack_require__(20);
+var cookieParser = __webpack_require__(18);
+var bodyParser = __webpack_require__(17);
 var mongoose = __webpack_require__(1);
 
-var pageloader = __webpack_require__(7);
+var pageloader = __webpack_require__(8);
 var app = (0, _express2.default)();
 
 // uncomment after placing your favicon in /public
@@ -942,20 +1022,17 @@ app.use(function (err, req, res, next) {
         error: {}
     });
 });
-var server_port = process.env.NODE_PORT || process.env.PORT || 8080;
-// const server_port = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 8080;
-var server_ip_address = process.env.NODE_IP || 'localhost';
 
-app.listen(server_port, server_ip_address, function () {
-    _winston2.default.log('info', "Listening on server_port: " + server_port);
-    _winston2.default.log('info', "Listening on server_ip_address: " + server_ip_address);
+app.listen(_lodurUtil2.default.getServerPort(), _lodurUtil2.default.getServerIp(), function () {
+    _winston2.default.log('info', "Listening on server_port: " + _lodurUtil2.default.getServerPort());
+    _winston2.default.log('info', "Listening on server_ip_address: " + _lodurUtil2.default.getServerIp());
 });
 
 module.exports = app;
 /* WEBPACK VAR INJECTION */}.call(exports, "/"))
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -990,33 +1067,33 @@ Entry.prototype.getNumber = function getNumberF() {
 module.exports = Entry;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _entry = __webpack_require__(25);
+var _entry = __webpack_require__(26);
 
 var _entry2 = _interopRequireDefault(_entry);
 
-var _dateparser = __webpack_require__(27);
+var _dateparser = __webpack_require__(28);
 
 var _dateparser2 = _interopRequireDefault(_dateparser);
 
-var _parseTimeFromLine = __webpack_require__(31);
+var _parseTimeFromLine = __webpack_require__(32);
 
 var _parseTimeFromLine2 = _interopRequireDefault(_parseTimeFromLine);
 
-var _parseGroups = __webpack_require__(29);
+var _parseGroups = __webpack_require__(30);
 
 var _parseGroups2 = _interopRequireDefault(_parseGroups);
 
-var _parseDescription = __webpack_require__(28);
+var _parseDescription = __webpack_require__(29);
 
 var _parseDescription2 = _interopRequireDefault(_parseDescription);
 
-var _parseNumber = __webpack_require__(30);
+var _parseNumber = __webpack_require__(31);
 
 var _parseNumber2 = _interopRequireDefault(_parseNumber);
 
@@ -1046,7 +1123,7 @@ module.exports = function (text) {
 };
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1067,13 +1144,13 @@ module.exports = function (args) {
 };
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var S = __webpack_require__(6);
+var S = __webpack_require__(7);
 /**
  * Created by longstone on 31/12/14.
  */
@@ -1086,7 +1163,7 @@ module.exports = function parseDescriptionF(line) {
 };
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1105,7 +1182,7 @@ module.exports = function parseTimeFromLineF(line) {
 };
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1114,7 +1191,7 @@ module.exports = function parseTimeFromLineF(line) {
  */
 
 
-var S = __webpack_require__(6);
+var S = __webpack_require__(7);
 /**
  * Created by longstone on 16/12/14.
  */
@@ -1125,7 +1202,7 @@ module.exports = function parseNumberFromLineF(line) {
 };
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1143,75 +1220,11 @@ module.exports = function parseTimeFromLineF(line) {
 };
 
 /***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var getLastEntry = function getLastEntryF(list, cache) {
-    if (list.length > 0) {
-        return list.slice(-1).pop();
-    }
-    return cache;
-};
-
-var isOrderingForwards = function orderingForwardsF(arr) {
-    return arr.length > 0 && arr[0].number < getLastEntry(arr).number;
-};
-
-var sortArrayByNumber = function sortArrayByNumberF(arr) {
-    arr.sort(function (a, b) {
-        return a.number - b.number;
-    });
-    return arr;
-};
-
-var getSendArray = function getSendArrayF(json, _lastEntryCache) {
-
-    var sendArr = [];
-
-    if (json && json.length > 0) {
-        var entries = json.slice();
-        sortArrayByNumber(entries);
-        entries.reverse().every(function (item) {
-
-            if (item.number > _lastEntryCache.number) {
-                sendArr.push(item);
-                return true;
-            } else {
-                //we want to break
-                return false;
-            }
-        });
-    }
-    return sendArr.reverse();
-};
-
-var containsDuplicatedID = function containsDuplicatedID(array) {
-    if (!array) {
-        return false;
-    }
-    var set = new Set();
-    array.map(function (item) {
-        return set.add(item.number);
-    });
-    return !(array.length === set.size);
-};
-module.exports = {
-    getLastEntry: getLastEntry,
-    getSendArray: getSendArray,
-    isOrderingForwards: isOrderingForwards,
-    sortArrayByNumber: sortArrayByNumber,
-    containsDuplicatedID: containsDuplicatedID
-};
-
-/***/ }),
 /* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var SourceMapConsumer = __webpack_require__(37).SourceMapConsumer;
-var path = __webpack_require__(4);
+var path = __webpack_require__(5);
 
 var fs;
 try {

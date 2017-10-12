@@ -42,6 +42,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 import RouteIndex from './routes/route-index';
 import RouteUpdate from './routes/route-update';
+import LodurUtil from './module/util/lodur-util';
 const pageloader = require('./module/pageloader');
 const app = express();
 
@@ -138,13 +139,11 @@ app.use(function (err, req, res, next) {
         error: {}
     });
 });
-const server_port = process.env.NODE_PORT || process.env.PORT || 8080;
-// const server_port = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 8080;
- const server_ip_address = process.env.NODE_IP  || 'localhost';
 
-app.listen(server_port,server_ip_address, function () {
-    logger.log('info', "Listening on server_port: " + server_port)
-    logger.log('info', "Listening on server_ip_address: " + server_ip_address)
+
+app.listen(LodurUtil.getServerPort(),LodurUtil.getServerIp(), function () {
+    logger.log('info', "Listening on server_port: " + LodurUtil.getServerPort());
+    logger.log('info', "Listening on server_ip_address: " + LodurUtil.getServerIp());
 });
 
 module.exports = app;

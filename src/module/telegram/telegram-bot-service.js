@@ -1,5 +1,5 @@
 import _ from 'lodash';
-
+import LodurUtil from './../util/lodur-util';
 class TelegramBotService {
     constructor(botInstance, dependencies) {
         this.req = {};
@@ -61,8 +61,8 @@ class TelegramBotService {
             });
         }).on('update', message => {
             this.persistenceService.log('telegram-bot-service: cmd update: ', JSON.stringify(message));
-                this.req.request('http://'+server_ip_address+':'+server_port+'/update', () => {
-                logger.log('info', 'update from bot triggered')
+                this.req.request('http://'+LodurUtil.getServerIp()+':'+LodurUtil.getServerPort()+'/update', () => {
+                logger.log('info', 'update from bot triggered');
                 that._send(message.chat.id, 'update triggered');
              });
 
