@@ -96,23 +96,21 @@ if (missingEnv.length > 0) {
 mongoose.Promise = global.Promise;
 const mongoUri = process.env.MONGOURI || "mongodb://localhost:27017/lodur";
 const options = { promiseLibrary: global.Promise };
-
-mongoose.connect(mongoUri, function (err, res) {
-    const stripCredentialsConnectionString = function (uri) {
-        const indexOfAt = uri.indexOf('@');
-        let substFrom = 0;
-        if (indexOfAt > 0) {
-            substFrom = indexOfAt;
-        }
-        return uri.substring(substFrom);
-    };
-    const connectionStringWithoutCredentials = stripCredentialsConnectionString(mongoUri);
-    if (err) {
-        logger.log('error', 'ERROR connecting to: ' + connectionStringWithoutCredentials + '. ' + err);
-    } else {
-        logger.log('info','Succeeded connected to: ' + connectionStringWithoutCredentials);
+const stripCredentialsConnectionString = function (uri) {
+    const indexOfAt = uri.indexOf('@');
+    let substFrom = 0;
+    if (indexOfAt > 0) {
+        substFrom = indexOfAt;
     }
-});
+    return uri.substring(substFrom);
+};
+const connectionStringWithoutCredentials = stripCredentialsConnectionString(mongoUri);
+var promise = mongoose.createConnection(mongoUri, {
+    useMongoClient: true
+}).then(
+    () => logger.log('info','Succeeded connected to: ' + connectionStringWithoutCredentials) ,
+    err => logger.log('error', 'ERROR connecting to: ' + connectionStringWithoutCredentials + '. ' + err)
+);
 
 // error handlers
 

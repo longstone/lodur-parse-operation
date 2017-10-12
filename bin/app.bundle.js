@@ -899,22 +899,21 @@ if (missingEnv.length > 0) {
 mongoose.Promise = global.Promise;
 var mongoUri = process.env.MONGOURI || "mongodb://localhost:27017/lodur";
 var options = { promiseLibrary: global.Promise };
-
-mongoose.connect(mongoUri, function (err, res) {
-    var stripCredentialsConnectionString = function stripCredentialsConnectionString(uri) {
-        var indexOfAt = uri.indexOf('@');
-        var substFrom = 0;
-        if (indexOfAt > 0) {
-            substFrom = indexOfAt;
-        }
-        return uri.substring(substFrom);
-    };
-    var connectionStringWithoutCredentials = stripCredentialsConnectionString(mongoUri);
-    if (err) {
-        _winston2.default.log('error', 'ERROR connecting to: ' + connectionStringWithoutCredentials + '. ' + err);
-    } else {
-        _winston2.default.log('info', 'Succeeded connected to: ' + connectionStringWithoutCredentials);
+var stripCredentialsConnectionString = function stripCredentialsConnectionString(uri) {
+    var indexOfAt = uri.indexOf('@');
+    var substFrom = 0;
+    if (indexOfAt > 0) {
+        substFrom = indexOfAt;
     }
+    return uri.substring(substFrom);
+};
+var connectionStringWithoutCredentials = stripCredentialsConnectionString(mongoUri);
+var promise = mongoose.createConnection(mongoUri, {
+    useMongoClient: true
+}).then(function () {
+    return _winston2.default.log('info', 'Succeeded connected to: ' + connectionStringWithoutCredentials);
+}, function (err) {
+    return _winston2.default.log('error', 'ERROR connecting to: ' + connectionStringWithoutCredentials + '. ' + err);
 });
 
 // error handlers
