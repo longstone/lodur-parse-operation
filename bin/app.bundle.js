@@ -988,7 +988,7 @@ var stripCredentialsConnectionString = function stripCredentialsConnectionString
     return uri.substring(substFrom);
 };
 var connectionStringWithoutCredentials = stripCredentialsConnectionString(mongoUri);
-var promise = mongoose.createConnection(mongoUri, {
+mongoose.createConnection(mongoUri, {
     useMongoClient: true
 }).then(function () {
     return _winston2.default.log('info', 'Succeeded connected to: ' + connectionStringWithoutCredentials);
@@ -1010,18 +1010,19 @@ if (app.get('env') === 'development') {
             error: err
         });
     });
-}
+} else {
 
-// production error handler
-// no stacktraces leaked to user
-app.use(function (err, req, res, next) {
-    _winston2.default.log('error', err);
-    res.status(err.status || 500);
-    res.json({
-        message: err.message,
-        error: {}
+    // production error handler
+    // no stacktraces leaked to user
+    app.use(function (err, req, res, next) {
+        _winston2.default.log('error', err);
+        res.status(err.status || 500);
+        res.json({
+            message: err.message,
+            error: {}
+        });
     });
-});
+}
 
 app.listen(_lodurUtil2.default.getServerPort(), _lodurUtil2.default.getServerIp(), function () {
     _winston2.default.log('info', "Listening on server_port: " + _lodurUtil2.default.getServerPort());

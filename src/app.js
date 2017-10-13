@@ -80,7 +80,7 @@ dependencies.telegramBotService = new TelegramBotService(bot, dependencies);
 const router = express.Router();
 router.get('/', new RouteIndex(dependencies).getRoute());
 router.get('/update', new RouteUpdate(dependencies).getRoute());
-app.use('/',router);
+app.use('/', router);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     logger.log('warn', 'errorhandler ', req.originalUrl);
@@ -96,7 +96,7 @@ if (missingEnv.length > 0) {
 }
 mongoose.Promise = global.Promise;
 const mongoUri = process.env.MONGOURI || "mongodb://localhost:27017/lodur";
-const options = { promiseLibrary: global.Promise };
+const options = {promiseLibrary: global.Promise};
 const stripCredentialsConnectionString = function (uri) {
     const indexOfAt = uri.indexOf('@');
     let substFrom = 0;
@@ -106,10 +106,10 @@ const stripCredentialsConnectionString = function (uri) {
     return uri.substring(substFrom);
 };
 const connectionStringWithoutCredentials = stripCredentialsConnectionString(mongoUri);
-var promise = mongoose.createConnection(mongoUri, {
+mongoose.createConnection(mongoUri, {
     useMongoClient: true
 }).then(
-    () => logger.log('info','Succeeded connected to: ' + connectionStringWithoutCredentials) ,
+    () => logger.log('info', 'Succeeded connected to: ' + connectionStringWithoutCredentials),
     err => logger.log('error', 'ERROR connecting to: ' + connectionStringWithoutCredentials + '. ' + err)
 );
 
@@ -127,21 +127,21 @@ if (app.get('env') === 'development') {
             error: err
         });
     });
-}
+} else {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function (err, req, res, next) {
-    logger.log('error', err);
-    res.status(err.status || 500);
-    res.json({
-        message: err.message,
-        error: {}
+    app.use(function (err, req, res, next) {
+        logger.log('error', err);
+        res.status(err.status || 500);
+        res.json({
+            message: err.message,
+            error: {}
+        });
     });
-});
+}
 
-
-app.listen(LodurUtil.getServerPort(),LodurUtil.getServerIp(), function () {
+app.listen(LodurUtil.getServerPort(), LodurUtil.getServerIp(), function () {
     logger.log('info', "Listening on server_port: " + LodurUtil.getServerPort());
     logger.log('info', "Listening on server_ip_address: " + LodurUtil.getServerIp());
 });
