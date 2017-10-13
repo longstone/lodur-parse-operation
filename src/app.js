@@ -42,6 +42,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 import RouteIndex from './routes/route-index';
 import RouteUpdate from './routes/route-update';
+import LodurUtil from './module/util/lodur-util';
 const pageloader = require('./module/pageloader');
 const app = express();
 
@@ -79,7 +80,7 @@ dependencies.telegramBotService = new TelegramBotService(bot, dependencies);
 const router = express.Router();
 router.get('/', new RouteIndex(dependencies).getRoute());
 router.get('/update', new RouteUpdate(dependencies).getRoute());
-app.use('/',router);
+app.use('/', router);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     logger.log('warn', 'errorhandler ', req.originalUrl);
@@ -95,24 +96,22 @@ if (missingEnv.length > 0) {
 }
 mongoose.Promise = global.Promise;
 const mongoUri = process.env.MONGOURI || "mongodb://localhost:27017/lodur";
-const options = { promiseLibrary: global.Promise };
-
-mongoose.connect(mongoUri, function (err, res) {
-    const stripCredentialsConnectionString = function (uri) {
-        const indexOfAt = uri.indexOf('@');
-        let substFrom = 0;
-        if (indexOfAt > 0) {
-            substFrom = indexOfAt;
-        }
-        return uri.substring(substFrom);
-    };
-    const connectionStringWithoutCredentials = stripCredentialsConnectionString(mongoUri);
-    if (err) {
-        logger.log('error', 'ERROR connecting to: ' + connectionStringWithoutCredentials + '. ' + err);
-    } else {
-        logger.log('info','Succeeded connected to: ' + connectionStringWithoutCredentials);
+const options = {promiseLibrary: global.Promise};
+const stripCredentialsConnectionString = function (uri) {
+    const indexOfAt = uri.indexOf('@');
+    let substFrom = 0;
+    if (indexOfAt > 0) {
+        substFrom = indexOfAt;
     }
-});
+    return uri.substring(substFrom);
+};
+const connectionStringWithoutCredentials = stripCredentialsConnectionString(mongoUri);
+mongoose.createConnection(mongoUri, {
+    useMongoClient: true
+}).then(
+    () => logger.log('info', 'Succeeded connected to: ' + connectionStringWithoutCredentials),
+    err => logger.log('error', 'ERROR connecting to: ' + connectionStringWithoutCredentials + '. ' + err)
+);
 
 // error handlers
 
@@ -128,25 +127,23 @@ if (app.get('env') === 'development') {
             error: err
         });
     });
-}
+} else {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function (err, req, res, next) {
-    logger.log('error', err);
-    res.status(err.status || 500);
-    res.json({
-        message: err.message,
-        error: {}
+    app.use(function (err, req, res, next) {
+        logger.log('error', err);
+        res.status(err.status || 500);
+        res.json({
+            message: err.message,
+            error: {}
+        });
     });
-});
-const server_port = process.env.NODE_PORT || process.env.PORT || 8080;
-// const server_port = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 8080;
- const server_ip_address = process.env.NODE_IP  || 'localhost';
+}
 
-app.listen(server_port,server_ip_address, function () {
-    logger.log('info', "Listening on server_port: " + server_port)
-    logger.log('info', "Listening on server_ip_address: " + server_ip_address)
+app.listen(LodurUtil.getServerPort(), LodurUtil.getServerIp(), function () {
+    logger.log('info', "Listening on server_port: " + LodurUtil.getServerPort());
+    logger.log('info', "Listening on server_ip_address: " + LodurUtil.getServerIp());
 });
 
 module.exports = app;

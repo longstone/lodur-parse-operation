@@ -45,10 +45,14 @@ const containsDuplicatedID = function(array) {
     array.map(item => set.add(item.number));
     return !(array.length === set.size);
 };
+const getServerPort = () => {return process.env.NODE_PORT || process.env.PORT || 8080};
+const getServerIp =  () => {return process.env.NODE_IP  || 'localhost'};
 module.exports = {
     getLastEntry,
     getSendArray,
     isOrderingForwards,
     sortArrayByNumber,
-    containsDuplicatedID
+    containsDuplicatedID,
+    getServerIp,
+    getServerPort
 };
