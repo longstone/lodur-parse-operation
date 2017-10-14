@@ -43,6 +43,7 @@ const mongoose = require('mongoose');
 import RouteIndex from './routes/route-index';
 import RouteUpdate from './routes/route-update';
 import LodurUtil from './module/util/lodur-util';
+import MongoConnection from './schemas/mongo-connect';
 const pageloader = require('./module/pageloader');
 const app = express();
 
@@ -95,23 +96,11 @@ if (missingEnv.length > 0) {
     logger.log('warn', 'missing process.env variables: ', missingEnv);
 }
 mongoose.Promise = global.Promise;
-const mongoUri = process.env.MONGOURI || "mongodb://localhost:27017/lodur";
+
 const options = {promiseLibrary: global.Promise};
-const stripCredentialsConnectionString = function (uri) {
-    const indexOfAt = uri.indexOf('@');
-    let substFrom = 0;
-    if (indexOfAt > 0) {
-        substFrom = indexOfAt;
-    }
-    return uri.substring(substFrom);
-};
-const connectionStringWithoutCredentials = stripCredentialsConnectionString(mongoUri);
-mongoose.createConnection(mongoUri, {
-    useMongoClient: true
-}).then(
-    () => logger.log('info', 'Succeeded connected to: ' + connectionStringWithoutCredentials),
-    err => logger.log('error', 'ERROR connecting to: ' + connectionStringWithoutCredentials + '. ' + err)
-);
+
+const mongoUri = process.env.MONGOURI || "mongodb://localhost:27017/lodur";
+ new MongoConnection(mongoose, mongoUri, logger);
 
 // error handlers
 
@@ -120,6 +109,7 @@ mongoose.createConnection(mongoUri, {
 if (app.get('env') === 'development') {
     logger.level = 'silly';
     logger.warn('env:development');
+    mongoose.set('debug', true);
     app.use(function (err, req, res, next) {
         res.status(err.status || 500);
         res.json({
