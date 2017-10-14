@@ -13,7 +13,6 @@ class PersistenceService {
     }
 
     getLastEntryForYear() {
-        console.log('getLastEntryForYear');
         return new Promise((resolve, reject) => {
             this.LodurEntry.find(this.query.entriesThisYear).sort({number: -1}).limit(1).exec(function (err, entries) {
                 if (err === null) {
