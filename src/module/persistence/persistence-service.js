@@ -13,7 +13,15 @@ class PersistenceService {
     }
 
     getLastEntryForYear() {
-        return this.LodurEntry.find(this.query.entriesThisYear).sort({number: -1}).limit(1).exec();
+        return new Promise((resolve, reject) => {
+            this.LodurEntry.find(this.query.entriesThisYear).sort({number: -1}).limit(1).exec(function (err, entries) {
+                if (err === null) {
+                    resolve(entries)
+                } else {
+                    reject(err);
+                }
+            });
+        });
     }
 
     getEntriesForActualYear() {
@@ -60,7 +68,7 @@ class PersistenceService {
      * @returns {Promise}
      */
     createChat(chat) {
-            return new this.Chats(chat).save();
+        return new this.Chats(chat).save();
     }
 
     log(text, error) {
