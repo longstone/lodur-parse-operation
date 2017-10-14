@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 25);
+/******/ 	return __webpack_require__(__webpack_require__.s = 27);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -76,10 +76,16 @@ module.exports = require("moment");
 /* 1 */
 /***/ (function(module, exports) {
 
-module.exports = require("mongoose");
+module.exports = require("lodash");
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+module.exports = require("mongoose");
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -151,21 +157,63 @@ module.exports = {
 };
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-module.exports = require("lodash");
-
-/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _mongoose = __webpack_require__(1);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _lodash = __webpack_require__(1);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Schema Utility
+ *
+ */
+var SchemaU = function () {
+    function SchemaU(schema, schemaName) {
+        _classCallCheck(this, SchemaU);
+
+        this.schema = schema;
+        schema.on('index', function (error) {
+            // "_id index cannot be sparse"
+            console.log(schemaName + ' index: ' + _lodash2.default.get(error, 'message', 'seems ok'));
+        });
+    }
+
+    _createClass(SchemaU, [{
+        key: 'indexes',
+        value: function indexes(_indexes) {
+            this.schema.index(_indexes);
+        }
+    }]);
+
+    return SchemaU;
+}();
+
+module.exports = SchemaU;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _mongoose = __webpack_require__(2);
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
+
+var _schemaU = __webpack_require__(4);
+
+var _schemaU2 = _interopRequireDefault(_schemaU);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -176,43 +224,46 @@ var logSchema = new _mongoose2.default.Schema({
     description: String
 });
 
+new _schemaU2.default(logSchema, 'LogEntry').indexes({ timestamp: 1, error: -1 });
+
 var LogEntry = void 0;
 if (_mongoose2.default.models.LogEntry) {
     LogEntry = _mongoose2.default.model('LogEntry');
 } else {
     LogEntry = _mongoose2.default.model('LogEntry', logSchema);
 }
+
 module.exports = LogEntry;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-module.exports = require("path");
 
 /***/ }),
 /* 6 */
 /***/ (function(module, exports) {
 
-module.exports = require("request");
+module.exports = require("path");
 
 /***/ }),
 /* 7 */
 /***/ (function(module, exports) {
 
-module.exports = require("string");
+module.exports = require("request");
 
 /***/ }),
 /* 8 */
+/***/ (function(module, exports) {
+
+module.exports = require("string");
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var request = __webpack_require__(6);
-var cheerio = __webpack_require__(34);
-var parser14 = __webpack_require__(27);
-var LogEntry = __webpack_require__(4);
+var request = __webpack_require__(7);
+var cheerio = __webpack_require__(36);
+var parser14 = __webpack_require__(29);
+var LogEntry = __webpack_require__(5);
 
 module.exports = function pageLoaderF(url_unsused) {
     return new Promise(function (resolve, reject) {
@@ -260,7 +311,7 @@ module.exports = function pageLoaderF(url_unsused) {
 };
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -292,7 +343,18 @@ var PersistenceService = function () {
     _createClass(PersistenceService, [{
         key: 'getLastEntryForYear',
         value: function getLastEntryForYear() {
-            return this.LodurEntry.find(this.query.entriesThisYear).sort({ number: -1 }).limit(1).exec();
+            var _this = this;
+
+            console.log('getLastEntryForYear');
+            return new Promise(function (resolve, reject) {
+                _this.LodurEntry.find(_this.query.entriesThisYear).sort({ number: -1 }).limit(1).exec(function (err, entries) {
+                    if (err === null) {
+                        resolve(entries);
+                    } else {
+                        reject(err);
+                    }
+                });
+            });
         }
     }, {
         key: 'getEntriesForActualYear',
@@ -307,10 +369,10 @@ var PersistenceService = function () {
     }, {
         key: 'findChatsById',
         value: function findChatsById(chatId) {
-            var _this = this;
+            var _this2 = this;
 
             return new Promise(function (resolve, reject) {
-                _this.Chats.find({ chatId: chatId }, function (err, docs) {
+                _this2.Chats.find({ chatId: chatId }, function (err, docs) {
                     if (err !== null) {
                         reject({ 'err-find-chats-by-id': err });
                     } else {
@@ -322,10 +384,10 @@ var PersistenceService = function () {
     }, {
         key: 'findAllChats',
         value: function findAllChats() {
-            var _this2 = this;
+            var _this3 = this;
 
             return new Promise(function (resolve, reject) {
-                _this2.Chats.find({}, function (err, chats) {
+                _this3.Chats.find({}, function (err, chats) {
                     if (err != null) {
                         reject({ 'err-find-all-chats': err });
                     } else {
@@ -374,7 +436,7 @@ var PersistenceService = function () {
 module.exports = PersistenceService;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -382,11 +444,11 @@ module.exports = PersistenceService;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _lodash = __webpack_require__(3);
+var _lodash = __webpack_require__(1);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _lodurUtil = __webpack_require__(2);
+var _lodurUtil = __webpack_require__(3);
 
 var _lodurUtil2 = _interopRequireDefault(_lodurUtil);
 
@@ -403,6 +465,7 @@ var TelegramBotService = function () {
         this.persistenceService = dependencies.persistenceService;
         this.logger = dependencies.logger;
         this.bot = this._initBot(botInstance, this.logger);
+        this.logger.log('debug', 'telegram-bot-service: construction');
     }
 
     _createClass(TelegramBotService, [{
@@ -414,6 +477,7 @@ var TelegramBotService = function () {
             var that = this;
             return botInstance.on('error', function (message) {
                 // prevent bot from crashing
+                _this.logger.log('error', 'telegram-bot-service: Bot.onError -> ' + JSON.stringify(message));
                 _this.persistenceService.log('telegramMngr - received error: ' + JSON.stringify(message), 'Bot.onError:' + message);
             }).on('start', function (message) {
                 _this.persistenceService.log('telegram-bot-service: cmd start: ', JSON.stringify(message));
@@ -524,7 +588,7 @@ var TelegramBotService = function () {
 module.exports = TelegramBotService;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -576,7 +640,7 @@ var CheckEnv = function () {
 module.exports = CheckEnv;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -619,7 +683,7 @@ var RouteIndex = function () {
 module.exports = RouteIndex;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -627,7 +691,7 @@ module.exports = RouteIndex;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _lodash = __webpack_require__(3);
+var _lodash = __webpack_require__(1);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -635,7 +699,7 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _lodurUtil = __webpack_require__(2);
+var _lodurUtil = __webpack_require__(3);
 
 var _lodurUtil2 = _interopRequireDefault(_lodurUtil);
 
@@ -722,15 +786,19 @@ var RouteUpdate = function () {
 module.exports = RouteUpdate;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _mongoose = __webpack_require__(1);
+var _mongoose = __webpack_require__(2);
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
+
+var _schemaU = __webpack_require__(4);
+
+var _schemaU2 = _interopRequireDefault(_schemaU);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -742,6 +810,8 @@ var chatSchema = new _mongoose2.default.Schema({
     username: String
 });
 
+new _schemaU2.default(chatSchema, 'Chat').indexes({ chatId: 1 });
+
 var Chat = void 0;
 if (_mongoose2.default.models.Chat) {
     Chat = _mongoose2.default.model('Chat');
@@ -751,15 +821,19 @@ if (_mongoose2.default.models.Chat) {
 module.exports = Chat;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _mongoose = __webpack_require__(1);
+var _mongoose = __webpack_require__(2);
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
+
+var _schemaU = __webpack_require__(4);
+
+var _schemaU2 = _interopRequireDefault(_schemaU);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -770,136 +844,186 @@ var entrySchema = new _mongoose2.default.Schema({
     number: Number
 });
 
+new _schemaU2.default(entrySchema, 'LodurEntry').indexes({ number: 1, timestamp: -1 });
 var LodurEntry = void 0;
 if (_mongoose2.default.models.LodurEntry) {
     LodurEntry = _mongoose2.default.model('LodurEntry');
 } else {
     LodurEntry = _mongoose2.default.model('LodurEntry', entrySchema);
 }
+
 module.exports = LodurEntry;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(33).install();
+"use strict";
 
 
-/***/ }),
-/* 17 */
-/***/ (function(module, exports) {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-module.exports = require("body-parser");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var MongoConnection = function () {
+    function MongoConnection(mongoose, mongoUri, logger) {
+        _classCallCheck(this, MongoConnection);
+
+        var connectionStringWithoutCredentials = MongoConnection._stripCredentialsConnectionString(mongoUri);
+        mongoose.connect(mongoUri, {
+            useMongoClient: true
+        }).then(function () {
+            return logger.log('info', 'Succeeded connected to: ' + connectionStringWithoutCredentials);
+        }, function (err) {
+            return logger.log('error', 'ERROR connecting to: ' + connectionStringWithoutCredentials + '. ' + err);
+        }).catch(function (err) {
+            return console.log('mongoose-connect: unhandled error', err);
+        });
+    }
+
+    _createClass(MongoConnection, null, [{
+        key: '_stripCredentialsConnectionString',
+        value: function _stripCredentialsConnectionString(uri) {
+            var indexOfAt = uri.indexOf('@');
+            var substFrom = 0;
+            if (indexOfAt > 0) {
+                substFrom = indexOfAt;
+            }
+            return uri.substring(substFrom);
+        }
+    }]);
+
+    return MongoConnection;
+}();
+
+module.exports = MongoConnection;
 
 /***/ }),
 /* 18 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("cookie-parser");
+__webpack_require__(35).install();
+
 
 /***/ }),
 /* 19 */
 /***/ (function(module, exports) {
 
-module.exports = require("express");
+module.exports = require("body-parser");
 
 /***/ }),
 /* 20 */
 /***/ (function(module, exports) {
 
-module.exports = require("express-winston");
+module.exports = require("cookie-parser");
 
 /***/ }),
 /* 21 */
 /***/ (function(module, exports) {
 
-module.exports = require("node-telegram-bot");
+module.exports = require("express");
 
 /***/ }),
 /* 22 */
 /***/ (function(module, exports) {
 
-module.exports = require("serve-favicon");
+module.exports = require("express-winston");
 
 /***/ }),
 /* 23 */
 /***/ (function(module, exports) {
 
-module.exports = require("source-map-support");
+module.exports = require("node-telegram-bot");
 
 /***/ }),
 /* 24 */
 /***/ (function(module, exports) {
 
-module.exports = require("winston");
+module.exports = require("serve-favicon");
 
 /***/ }),
 /* 25 */
+/***/ (function(module, exports) {
+
+module.exports = require("source-map-support");
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports) {
+
+module.exports = require("winston");
+
+/***/ }),
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(__dirname) {
 
-__webpack_require__(16);
+__webpack_require__(18);
 
-var _persistenceService = __webpack_require__(9);
+var _persistenceService = __webpack_require__(10);
 
 var _persistenceService2 = _interopRequireDefault(_persistenceService);
 
-var _telegramBotService = __webpack_require__(10);
+var _telegramBotService = __webpack_require__(11);
 
 var _telegramBotService2 = _interopRequireDefault(_telegramBotService);
 
-var _nodeTelegramBot = __webpack_require__(21);
+var _nodeTelegramBot = __webpack_require__(23);
 
 var _nodeTelegramBot2 = _interopRequireDefault(_nodeTelegramBot);
 
-var _lodurEntry = __webpack_require__(15);
+var _lodurEntry = __webpack_require__(16);
 
 var _lodurEntry2 = _interopRequireDefault(_lodurEntry);
 
-var _chats = __webpack_require__(14);
+var _chats = __webpack_require__(15);
 
 var _chats2 = _interopRequireDefault(_chats);
 
-var _logEntry = __webpack_require__(4);
+var _logEntry = __webpack_require__(5);
 
 var _logEntry2 = _interopRequireDefault(_logEntry);
 
-var _lodash = __webpack_require__(3);
+var _lodash = __webpack_require__(1);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _request = __webpack_require__(6);
+var _request = __webpack_require__(7);
 
 var _request2 = _interopRequireDefault(_request);
 
-var _express = __webpack_require__(19);
+var _express = __webpack_require__(21);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _winston = __webpack_require__(24);
+var _winston = __webpack_require__(26);
 
 var _winston2 = _interopRequireDefault(_winston);
 
-var _routeIndex = __webpack_require__(12);
+var _routeIndex = __webpack_require__(13);
 
 var _routeIndex2 = _interopRequireDefault(_routeIndex);
 
-var _routeUpdate = __webpack_require__(13);
+var _routeUpdate = __webpack_require__(14);
 
 var _routeUpdate2 = _interopRequireDefault(_routeUpdate);
 
-var _lodurUtil = __webpack_require__(2);
+var _lodurUtil = __webpack_require__(3);
 
 var _lodurUtil2 = _interopRequireDefault(_lodurUtil);
 
+var _mongoConnect = __webpack_require__(17);
+
+var _mongoConnect2 = _interopRequireDefault(_mongoConnect);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-__webpack_require__(23).install();
+__webpack_require__(25).install();
 //# sourceMappingURL=./app.bundle.js.map
 
-var CheckEnv = __webpack_require__(11);
+var CheckEnv = __webpack_require__(12);
 
 process.on('uncaughtException', function (err) {
     _logEntry2.default.create({
@@ -919,14 +1043,14 @@ process.on('uncaughtException', function (err) {
     console.error(err.stack);
 });
 
-var path = __webpack_require__(5);
-var favicon = __webpack_require__(22);
-var expressWinston = __webpack_require__(20);
-var cookieParser = __webpack_require__(18);
-var bodyParser = __webpack_require__(17);
-var mongoose = __webpack_require__(1);
+var path = __webpack_require__(6);
+var favicon = __webpack_require__(24);
+var expressWinston = __webpack_require__(22);
+var cookieParser = __webpack_require__(20);
+var bodyParser = __webpack_require__(19);
+var mongoose = __webpack_require__(2);
 
-var pageloader = __webpack_require__(8);
+var pageloader = __webpack_require__(9);
 var app = (0, _express2.default)();
 
 // uncomment after placing your favicon in /public
@@ -977,24 +1101,11 @@ if (missingEnv.length > 0) {
     _winston2.default.log('warn', 'missing process.env variables: ', missingEnv);
 }
 mongoose.Promise = global.Promise;
-var mongoUri = process.env.MONGOURI || "mongodb://localhost:27017/lodur";
+
 var options = { promiseLibrary: global.Promise };
-var stripCredentialsConnectionString = function stripCredentialsConnectionString(uri) {
-    var indexOfAt = uri.indexOf('@');
-    var substFrom = 0;
-    if (indexOfAt > 0) {
-        substFrom = indexOfAt;
-    }
-    return uri.substring(substFrom);
-};
-var connectionStringWithoutCredentials = stripCredentialsConnectionString(mongoUri);
-mongoose.createConnection(mongoUri, {
-    useMongoClient: true
-}).then(function () {
-    return _winston2.default.log('info', 'Succeeded connected to: ' + connectionStringWithoutCredentials);
-}, function (err) {
-    return _winston2.default.log('error', 'ERROR connecting to: ' + connectionStringWithoutCredentials + '. ' + err);
-});
+
+var mongoUri = process.env.MONGOURI || "mongodb://localhost:27017/lodur";
+new _mongoConnect2.default(mongoose, mongoUri, _winston2.default);
 
 // error handlers
 
@@ -1003,6 +1114,7 @@ mongoose.createConnection(mongoUri, {
 if (app.get('env') === 'development') {
     _winston2.default.level = 'silly';
     _winston2.default.warn('env:development');
+    mongoose.set('debug', true);
     app.use(function (err, req, res, next) {
         res.status(err.status || 500);
         res.json({
@@ -1033,7 +1145,7 @@ module.exports = app;
 /* WEBPACK VAR INJECTION */}.call(exports, "/"))
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1068,33 +1180,33 @@ Entry.prototype.getNumber = function getNumberF() {
 module.exports = Entry;
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _entry = __webpack_require__(26);
+var _entry = __webpack_require__(28);
 
 var _entry2 = _interopRequireDefault(_entry);
 
-var _dateparser = __webpack_require__(28);
+var _dateparser = __webpack_require__(30);
 
 var _dateparser2 = _interopRequireDefault(_dateparser);
 
-var _parseTimeFromLine = __webpack_require__(32);
+var _parseTimeFromLine = __webpack_require__(34);
 
 var _parseTimeFromLine2 = _interopRequireDefault(_parseTimeFromLine);
 
-var _parseGroups = __webpack_require__(30);
+var _parseGroups = __webpack_require__(32);
 
 var _parseGroups2 = _interopRequireDefault(_parseGroups);
 
-var _parseDescription = __webpack_require__(29);
+var _parseDescription = __webpack_require__(31);
 
 var _parseDescription2 = _interopRequireDefault(_parseDescription);
 
-var _parseNumber = __webpack_require__(31);
+var _parseNumber = __webpack_require__(33);
 
 var _parseNumber2 = _interopRequireDefault(_parseNumber);
 
@@ -1124,7 +1236,7 @@ module.exports = function (text) {
 };
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1145,13 +1257,13 @@ module.exports = function (args) {
 };
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var S = __webpack_require__(7);
+var S = __webpack_require__(8);
 /**
  * Created by longstone on 31/12/14.
  */
@@ -1164,7 +1276,7 @@ module.exports = function parseDescriptionF(line) {
 };
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1183,7 +1295,7 @@ module.exports = function parseTimeFromLineF(line) {
 };
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1192,7 +1304,7 @@ module.exports = function parseTimeFromLineF(line) {
  */
 
 
-var S = __webpack_require__(7);
+var S = __webpack_require__(8);
 /**
  * Created by longstone on 16/12/14.
  */
@@ -1203,7 +1315,7 @@ module.exports = function parseNumberFromLineF(line) {
 };
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1221,15 +1333,15 @@ module.exports = function parseTimeFromLineF(line) {
 };
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var SourceMapConsumer = __webpack_require__(37).SourceMapConsumer;
-var path = __webpack_require__(5);
+var SourceMapConsumer = __webpack_require__(39).SourceMapConsumer;
+var path = __webpack_require__(6);
 
 var fs;
 try {
-  fs = __webpack_require__(35);
+  fs = __webpack_require__(37);
   if (!fs.existsSync || !fs.readFileSync) {
     // fs doesn't have all methods we need
     fs = null;
@@ -1705,7 +1817,7 @@ exports.install = function(options) {
   if (options.hookRequire && !isInBrowser()) {
     var Module;
     try {
-      Module = __webpack_require__(36);
+      Module = __webpack_require__(38);
     } catch (err) {
       // NOP: Loading in catch block to convert webpack error to warning.
     }
@@ -1754,25 +1866,25 @@ exports.install = function(options) {
 
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports) {
 
 module.exports = require("cheerio");
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports) {
 
 module.exports = require("fs");
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports) {
 
 module.exports = require("module");
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports) {
 
 module.exports = require("source-map");
