@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import LodurUtil from './../util/lodur-util';
+
 class TelegramBotService {
     constructor(botInstance, dependencies) {
         this.req = {};

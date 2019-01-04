@@ -8,7 +8,7 @@ const entrySchema = new mongoose.Schema({
     number : Number
 });
 
-new SchemaUtil(entrySchema,'LodurEntry').indexes({ number: 1, timestamp: -1 });
+new SchemaUtil(entrySchema, 'LodurEntry').indexes({number: 1, timestamp: -1});
 let LodurEntry;
 if (mongoose.models.LodurEntry) {
     LodurEntry = mongoose.model('LodurEntry');

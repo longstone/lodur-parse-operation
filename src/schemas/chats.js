@@ -9,7 +9,7 @@ const chatSchema = new mongoose.Schema({
     username: String
 });
 
-new SchemaUtil(chatSchema,'Chat').indexes({ chatId: 1});
+new SchemaUtil(chatSchema, 'Chat').indexes({chatId: 1});
 
 let Chat;
 if (mongoose.models.Chat) {

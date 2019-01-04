@@ -26,7 +26,15 @@ class PersistenceService {
     }
 
     getLastEntryForLastYear() {
-        return this.LodurEntry.find(this.query.entriesLastYear).sort({number: -1}).limit(1).exec();
+        return new Promise((resolve, reject) => {
+            this.LodurEntry.find(this.query.entriesLastYear).sort({number: -1}).limit(1).exec(function (err, entries) {
+                if (err === null) {
+                    resolve(entries)
+                } else {
+                    reject(err);
+                }
+            });
+        });
     }
 
     getEntriesForActualYear() {
