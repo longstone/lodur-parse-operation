@@ -1,18 +1,24 @@
 "use strict";
 require('source-map-support').install();
 import 'source-map-support/register';
-//# sourceMappingURL=./app.bundle.js.map
-
 import PersistenceService from './module/persistence/persistence-service';
 import TelegramBotService from './module/telegram/telegram-bot-service';
 import Bot from 'node-telegram-bot'
 import LodurEntry from './schemas/lodurEntry';
 import Chats from './schemas/chats';
 import LogEntry from './schemas/logEntry'
+import _ from 'lodash';
+import request from 'request';
+import express from 'express';
+import logger from 'winston';
+import RouteIndex from './routes/route-index';
+import RouteUpdate from './routes/route-update';
+import RouteUpdateLastYear from './routes/route-update-last-year';
+import LodurUtil from './module/util/lodur-util';
+import MongoConnection from './schemas/mongo-connect';
+//# sourceMappingURL=./app.bundle.js.map
 
 const CheckEnv = require('./module/util/checkEnv');
-import _  from 'lodash';
-import request from 'request';
 process.on('uncaughtException', function (err) {
     LogEntry.create({
         timestamp: new Date(),
@@ -31,19 +37,12 @@ process.on('uncaughtException', function (err) {
     console.error(err.stack);
 });
 
-import express from 'express';
-import logger from 'winston';
-
 const path = require('path');
 const favicon = require('serve-favicon');
 const expressWinston = require('express-winston');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-import RouteIndex from './routes/route-index';
-import RouteUpdate from './routes/route-update';
-import LodurUtil from './module/util/lodur-util';
-import MongoConnection from './schemas/mongo-connect';
 const pageloader = require('./module/pageloader');
 const app = express();
 
@@ -81,6 +80,7 @@ dependencies.telegramBotService = new TelegramBotService(bot, dependencies);
 const router = express.Router();
 router.get('/', new RouteIndex(dependencies).getRoute());
 router.get('/update', new RouteUpdate(dependencies).getRoute());
+router.get('/update-last-year', new RouteUpdateLastYear(dependencies).getRoute());
 app.use('/', router);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -100,7 +100,7 @@ mongoose.Promise = global.Promise;
 const options = {promiseLibrary: global.Promise};
 
 const mongoUri = process.env.MONGOURI || "mongodb://localhost:27017/lodur";
- new MongoConnection(mongoose, mongoUri, logger);
+new MongoConnection(mongoose, mongoUri, logger);
 
 // error handlers
 

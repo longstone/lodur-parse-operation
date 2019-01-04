@@ -8,7 +8,8 @@ class PersistenceService {
         this.LogEntry = schemas.LogEntry;
         this.logger = dependencies.logger;
         this.query = {
-            entriesThisYear: {timestamp: {$gte: moment().year(new Date().getFullYear()).month(0).date(1).hour(0).minute(0).second(0).millisecond(0).toDate()}}
+            entriesThisYear: {timestamp: {$gte: moment().startOf('year').toDate()}},
+            entriesLastYear: {timestamp: {$gte: moment().startOf('year').subtract(1,'years').toDate()}}
         };
     }
 
@@ -24,8 +25,24 @@ class PersistenceService {
         });
     }
 
+    getLastEntryForLastYear() {
+        return new Promise((resolve, reject) => {
+            this.LodurEntry.find(this.query.entriesLastYear).sort({number: -1}).limit(1).exec(function (err, entries) {
+                if (err === null) {
+                    resolve(entries)
+                } else {
+                    reject(err);
+                }
+            });
+        });
+    }
+
     getEntriesForActualYear() {
         return this.LodurEntry.find(this.query.entriesThisYear).sort({number: -1}).exec();
+    }
+
+    getEntriesForLastYear() {
+        return this.LodurEntry.find(this.query.entriesLastYear).sort({number: -1}).exec();
     }
 
     createNewLodurEntry(dto) {

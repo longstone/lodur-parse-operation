@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 27);
+/******/ 	return __webpack_require__(__webpack_require__.s = 28);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -80,12 +80,6 @@ module.exports = require("lodash");
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports) {
-
-module.exports = require("mongoose");
-
-/***/ }),
-/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -157,6 +151,12 @@ module.exports = {
 };
 
 /***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = require("mongoose");
+
+/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -207,7 +207,7 @@ module.exports = SchemaU;
 "use strict";
 
 
-var _mongoose = __webpack_require__(2);
+var _mongoose = __webpack_require__(3);
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
 
@@ -261,14 +261,14 @@ module.exports = require("string");
 
 
 var request = __webpack_require__(7);
-var cheerio = __webpack_require__(36);
-var parser14 = __webpack_require__(29);
+var cheerio = __webpack_require__(38);
+var parser14 = __webpack_require__(30);
 var LogEntry = __webpack_require__(5);
 
 module.exports = function pageLoaderF(url_unsused) {
     return new Promise(function (resolve, reject) {
         var parsedEntries = [];
-        var url = 'https://www.lodur-zh.ch/duebendorf/index.php?modul=6';
+        var url = url_unsused || 'https://www.lodur-zh.ch/duebendorf/index.php?modul=6';
         var $ = void 0;
         request(url, {
             uri: url,
@@ -336,7 +336,8 @@ var PersistenceService = function () {
         this.LogEntry = schemas.LogEntry;
         this.logger = dependencies.logger;
         this.query = {
-            entriesThisYear: { timestamp: { $gte: (0, _moment2.default)().year(new Date().getFullYear()).month(0).date(1).hour(0).minute(0).second(0).millisecond(0).toDate() } }
+            entriesThisYear: { timestamp: { $gte: (0, _moment2.default)().startOf('year').toDate() } },
+            entriesLastYear: { timestamp: { $gte: (0, _moment2.default)().startOf('year').subtract(1, 'years').toDate() } }
         };
     }
 
@@ -345,9 +346,23 @@ var PersistenceService = function () {
         value: function getLastEntryForYear() {
             var _this = this;
 
-            console.log('getLastEntryForYear');
             return new Promise(function (resolve, reject) {
                 _this.LodurEntry.find(_this.query.entriesThisYear).sort({ number: -1 }).limit(1).exec(function (err, entries) {
+                    if (err === null) {
+                        resolve(entries);
+                    } else {
+                        reject(err);
+                    }
+                });
+            });
+        }
+    }, {
+        key: 'getLastEntryForLastYear',
+        value: function getLastEntryForLastYear() {
+            var _this2 = this;
+
+            return new Promise(function (resolve, reject) {
+                _this2.LodurEntry.find(_this2.query.entriesLastYear).sort({ number: -1 }).limit(1).exec(function (err, entries) {
                     if (err === null) {
                         resolve(entries);
                     } else {
@@ -362,6 +377,11 @@ var PersistenceService = function () {
             return this.LodurEntry.find(this.query.entriesThisYear).sort({ number: -1 }).exec();
         }
     }, {
+        key: 'getEntriesForLastYear',
+        value: function getEntriesForLastYear() {
+            return this.LodurEntry.find(this.query.entriesLastYear).sort({ number: -1 }).exec();
+        }
+    }, {
         key: 'createNewLodurEntry',
         value: function createNewLodurEntry(dto) {
             return new this.LodurEntry(dto).save();
@@ -369,10 +389,10 @@ var PersistenceService = function () {
     }, {
         key: 'findChatsById',
         value: function findChatsById(chatId) {
-            var _this2 = this;
+            var _this3 = this;
 
             return new Promise(function (resolve, reject) {
-                _this2.Chats.find({ chatId: chatId }, function (err, docs) {
+                _this3.Chats.find({ chatId: chatId }, function (err, docs) {
                     if (err !== null) {
                         reject({ 'err-find-chats-by-id': err });
                     } else {
@@ -384,10 +404,10 @@ var PersistenceService = function () {
     }, {
         key: 'findAllChats',
         value: function findAllChats() {
-            var _this3 = this;
+            var _this4 = this;
 
             return new Promise(function (resolve, reject) {
-                _this3.Chats.find({}, function (err, chats) {
+                _this4.Chats.find({}, function (err, chats) {
                     if (err != null) {
                         reject({ 'err-find-all-chats': err });
                     } else {
@@ -448,7 +468,7 @@ var _lodash = __webpack_require__(1);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _lodurUtil = __webpack_require__(3);
+var _lodurUtil = __webpack_require__(2);
 
 var _lodurUtil2 = _interopRequireDefault(_lodurUtil);
 
@@ -699,7 +719,110 @@ var _moment = __webpack_require__(0);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _lodurUtil = __webpack_require__(3);
+var _lodurUtil = __webpack_require__(2);
+
+var _lodurUtil2 = _interopRequireDefault(_lodurUtil);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var RouteUpdate = function () {
+    function RouteUpdate(dependencies) {
+        _classCallCheck(this, RouteUpdate);
+
+        this.persistenceService = dependencies.persistenceService;
+        this.pageloader = dependencies.pageloader;
+        this.telegramBot = dependencies.telegramBotService;
+        this.logger = dependencies.logger;
+    }
+
+    _createClass(RouteUpdate, [{
+        key: 'getRoute',
+        value: function getRoute() {
+            var _this = this;
+
+            return function (req, res) {
+                var silent = _lodash2.default.get(req, 'query.silent', false);
+                _this.logger.log('debug', 'route-update: update requested');
+                Promise.all([_this.persistenceService.getLastEntryForLastYear(), _this.pageloader("https://www.lodur-zh.ch/duebendorf/index.php?modul=6&year=" + (0, _moment2.default)().startOf('year').subtract(1, 'years').get('year'))]).then(function (result) {
+                    try {
+                        var docs = result[0];
+                        var entries = result[1];
+                        var lastEntries = [];
+                        if (_lodurUtil2.default.containsDuplicatedID(entries)) {
+                            _this.logger.log('warn', 'duplicated ID in entries: ', JSON.stringify(lastEntries));
+                        } else {
+                            var lastEntry = { number: -1 };
+                            if (docs.length === 1) {
+                                lastEntry = docs[0]._doc;
+                            }
+                            lastEntries = _lodurUtil2.default.getSendArray(entries, lastEntry);
+                            _this.logger.log('info', 'route-update: elements to send ', lastEntries.length);
+                            if (lastEntries.length > 0) {
+                                _lodurUtil2.default.sortArrayByNumber(lastEntries).forEach(function (item) {
+                                    try {
+                                        _this.logger.log('info', 'route-update: persisting item nr', item.number);
+                                        var entry = {
+                                            number: item.number,
+                                            group: item.group,
+                                            timestamp: item.timestamp,
+                                            description: item.description
+                                        };
+                                        _this.persistenceService.createNewLodurEntry(entry).then(function () {
+                                            _this.logger.log('info', 'route-update: persisted item nr', item.number);
+
+                                            var message = "Wer:  " + item.group.toString() + "\n" + "Was:  " + item.description + "\n" + "Wann: " + (0, _moment2.default)(item.timestamp).locale('de').format('HH:mm DD.MM.YY') + "\n" + "Nummer: " + item.number;
+                                            _this.telegramBot.notifyAll(message).then(function (chats) {
+                                                return _this.logger.log('info', 'total ' + chats.length + ' notified');
+                                            });
+                                        }).catch(function (error) {
+                                            return _this.logger.log('error', 'persist new Entry Error' + JSON.stringify(error));
+                                        });
+                                    } catch (constex) {
+                                        _this.logger.log('info', 'woohwohohwohowow' + constex);
+                                    }
+                                });
+                            } else if (silent) {
+                                _this.logger.log('debug', 'no update, latest was: ' + JSON.stringify(lastEntry));
+                            }
+                        }
+                        res.json({ newEntries: lastEntries });
+                    } catch (ex) {
+                        _this.logger.log('error', 'route-update: exception occured: ' + JSON.stringify(ex));
+                        res.json({ 'error-catch': ex });
+                    }
+                }).catch(function (err) {
+                    _this.persistenceService.log('error', 'route-update Promise.all err: ' + JSON.stringify(err));
+                    res.json({ error: err });
+                });
+            };
+        }
+    }]);
+
+    return RouteUpdate;
+}();
+
+module.exports = RouteUpdate;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _lodash = __webpack_require__(1);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _moment = __webpack_require__(0);
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _lodurUtil = __webpack_require__(2);
 
 var _lodurUtil2 = _interopRequireDefault(_lodurUtil);
 
@@ -786,13 +909,13 @@ var RouteUpdate = function () {
 module.exports = RouteUpdate;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _mongoose = __webpack_require__(2);
+var _mongoose = __webpack_require__(3);
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
 
@@ -821,13 +944,13 @@ if (_mongoose2.default.models.Chat) {
 module.exports = Chat;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _mongoose = __webpack_require__(2);
+var _mongoose = __webpack_require__(3);
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
 
@@ -855,7 +978,7 @@ if (_mongoose2.default.models.LodurEntry) {
 module.exports = LodurEntry;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -899,68 +1022,68 @@ var MongoConnection = function () {
 module.exports = MongoConnection;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(35).install();
+__webpack_require__(36).install();
 
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports) {
-
-module.exports = require("body-parser");
 
 /***/ }),
 /* 20 */
 /***/ (function(module, exports) {
 
-module.exports = require("cookie-parser");
+module.exports = require("body-parser");
 
 /***/ }),
 /* 21 */
 /***/ (function(module, exports) {
 
-module.exports = require("express");
+module.exports = require("cookie-parser");
 
 /***/ }),
 /* 22 */
 /***/ (function(module, exports) {
 
-module.exports = require("express-winston");
+module.exports = require("express");
 
 /***/ }),
 /* 23 */
 /***/ (function(module, exports) {
 
-module.exports = require("node-telegram-bot");
+module.exports = require("express-winston");
 
 /***/ }),
 /* 24 */
 /***/ (function(module, exports) {
 
-module.exports = require("serve-favicon");
+module.exports = require("node-telegram-bot");
 
 /***/ }),
 /* 25 */
 /***/ (function(module, exports) {
 
-module.exports = require("source-map-support");
+module.exports = require("serve-favicon");
 
 /***/ }),
 /* 26 */
 /***/ (function(module, exports) {
 
-module.exports = require("winston");
+module.exports = require("source-map-support");
 
 /***/ }),
 /* 27 */
+/***/ (function(module, exports) {
+
+module.exports = require("winston");
+
+/***/ }),
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(__dirname) {
 
-__webpack_require__(18);
+__webpack_require__(19);
 
 var _persistenceService = __webpack_require__(10);
 
@@ -970,15 +1093,15 @@ var _telegramBotService = __webpack_require__(11);
 
 var _telegramBotService2 = _interopRequireDefault(_telegramBotService);
 
-var _nodeTelegramBot = __webpack_require__(23);
+var _nodeTelegramBot = __webpack_require__(24);
 
 var _nodeTelegramBot2 = _interopRequireDefault(_nodeTelegramBot);
 
-var _lodurEntry = __webpack_require__(16);
+var _lodurEntry = __webpack_require__(17);
 
 var _lodurEntry2 = _interopRequireDefault(_lodurEntry);
 
-var _chats = __webpack_require__(15);
+var _chats = __webpack_require__(16);
 
 var _chats2 = _interopRequireDefault(_chats);
 
@@ -994,11 +1117,11 @@ var _request = __webpack_require__(7);
 
 var _request2 = _interopRequireDefault(_request);
 
-var _express = __webpack_require__(21);
+var _express = __webpack_require__(22);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _winston = __webpack_require__(26);
+var _winston = __webpack_require__(27);
 
 var _winston2 = _interopRequireDefault(_winston);
 
@@ -1006,25 +1129,29 @@ var _routeIndex = __webpack_require__(13);
 
 var _routeIndex2 = _interopRequireDefault(_routeIndex);
 
-var _routeUpdate = __webpack_require__(14);
+var _routeUpdate = __webpack_require__(15);
 
 var _routeUpdate2 = _interopRequireDefault(_routeUpdate);
 
-var _lodurUtil = __webpack_require__(3);
+var _routeUpdateLastYear = __webpack_require__(14);
+
+var _routeUpdateLastYear2 = _interopRequireDefault(_routeUpdateLastYear);
+
+var _lodurUtil = __webpack_require__(2);
 
 var _lodurUtil2 = _interopRequireDefault(_lodurUtil);
 
-var _mongoConnect = __webpack_require__(17);
+var _mongoConnect = __webpack_require__(18);
 
 var _mongoConnect2 = _interopRequireDefault(_mongoConnect);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-__webpack_require__(25).install();
+__webpack_require__(26).install();
+
 //# sourceMappingURL=./app.bundle.js.map
 
 var CheckEnv = __webpack_require__(12);
-
 process.on('uncaughtException', function (err) {
     _logEntry2.default.create({
         timestamp: new Date(),
@@ -1044,12 +1171,11 @@ process.on('uncaughtException', function (err) {
 });
 
 var path = __webpack_require__(6);
-var favicon = __webpack_require__(24);
-var expressWinston = __webpack_require__(22);
-var cookieParser = __webpack_require__(20);
-var bodyParser = __webpack_require__(19);
-var mongoose = __webpack_require__(2);
-
+var favicon = __webpack_require__(25);
+var expressWinston = __webpack_require__(23);
+var cookieParser = __webpack_require__(21);
+var bodyParser = __webpack_require__(20);
+var mongoose = __webpack_require__(3);
 var pageloader = __webpack_require__(9);
 var app = (0, _express2.default)();
 
@@ -1086,6 +1212,7 @@ dependencies.telegramBotService = new _telegramBotService2.default(bot, dependen
 var router = _express2.default.Router();
 router.get('/', new _routeIndex2.default(dependencies).getRoute());
 router.get('/update', new _routeUpdate2.default(dependencies).getRoute());
+router.get('/update-last-year', new _routeUpdateLastYear2.default(dependencies).getRoute());
 app.use('/', router);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -1145,7 +1272,7 @@ module.exports = app;
 /* WEBPACK VAR INJECTION */}.call(exports, "/"))
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1180,33 +1307,33 @@ Entry.prototype.getNumber = function getNumberF() {
 module.exports = Entry;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _entry = __webpack_require__(28);
+var _entry = __webpack_require__(29);
 
 var _entry2 = _interopRequireDefault(_entry);
 
-var _dateparser = __webpack_require__(30);
+var _dateparser = __webpack_require__(31);
 
 var _dateparser2 = _interopRequireDefault(_dateparser);
 
-var _parseTimeFromLine = __webpack_require__(34);
+var _parseTimeFromLine = __webpack_require__(35);
 
 var _parseTimeFromLine2 = _interopRequireDefault(_parseTimeFromLine);
 
-var _parseGroups = __webpack_require__(32);
+var _parseGroups = __webpack_require__(33);
 
 var _parseGroups2 = _interopRequireDefault(_parseGroups);
 
-var _parseDescription = __webpack_require__(31);
+var _parseDescription = __webpack_require__(32);
 
 var _parseDescription2 = _interopRequireDefault(_parseDescription);
 
-var _parseNumber = __webpack_require__(33);
+var _parseNumber = __webpack_require__(34);
 
 var _parseNumber2 = _interopRequireDefault(_parseNumber);
 
@@ -1236,7 +1363,7 @@ module.exports = function (text) {
 };
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1257,7 +1384,7 @@ module.exports = function (args) {
 };
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1276,7 +1403,7 @@ module.exports = function parseDescriptionF(line) {
 };
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1295,7 +1422,7 @@ module.exports = function parseTimeFromLineF(line) {
 };
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1315,7 +1442,7 @@ module.exports = function parseNumberFromLineF(line) {
 };
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1333,15 +1460,15 @@ module.exports = function parseTimeFromLineF(line) {
 };
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var SourceMapConsumer = __webpack_require__(39).SourceMapConsumer;
+var SourceMapConsumer = __webpack_require__(41).SourceMapConsumer;
 var path = __webpack_require__(6);
 
 var fs;
 try {
-  fs = __webpack_require__(37);
+  fs = __webpack_require__(39);
   if (!fs.existsSync || !fs.readFileSync) {
     // fs doesn't have all methods we need
     fs = null;
@@ -1349,6 +1476,8 @@ try {
 } catch (err) {
   /* nop */
 }
+
+var bufferFrom = __webpack_require__(37);
 
 // Only install once if called multiple times
 var errorFormatterInstalled = false;
@@ -1402,39 +1531,52 @@ var retrieveFile = handlerExec(retrieveFileHandlers);
 retrieveFileHandlers.push(function(path) {
   // Trim the path to make sure there is no extra whitespace.
   path = path.trim();
+  if (/^file:/.test(path)) {
+    // existsSync/readFileSync can't handle file protocol, but once stripped, it works
+    path = path.replace(/file:\/\/\/(\w:)?/, function(protocol, drive) {
+      return drive ?
+        '' : // file:///C:/dir/file -> C:/dir/file
+        '/'; // file:///root-dir/file -> /root-dir/file
+    });
+  }
   if (path in fileContentsCache) {
     return fileContentsCache[path];
   }
 
-  var contents = null;
-  if (!fs) {
-    // Use SJAX if we are in the browser
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', path, false);
-    xhr.send(null);
-    var contents = null
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      contents = xhr.responseText
-    }
-  } else if (fs.existsSync(path)) {
-    // Otherwise, use the filesystem
-    try {
+  var contents = '';
+  try {
+    if (!fs) {
+      // Use SJAX if we are in the browser
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', path, /** async */ false);
+      xhr.send(null);
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        contents = xhr.responseText;
+      }
+    } else if (fs.existsSync(path)) {
+      // Otherwise, use the filesystem
       contents = fs.readFileSync(path, 'utf8');
-    } catch (er) {
-      contents = '';
     }
+  } catch (er) {
+    /* ignore any errors */
   }
 
   return fileContentsCache[path] = contents;
 });
 
 // Support URLs relative to a directory, but be careful about a protocol prefix
-// in case we are in the browser (i.e. directories may start with "http://")
+// in case we are in the browser (i.e. directories may start with "http://" or "file:///")
 function supportRelativeURL(file, url) {
   if (!file) return url;
   var dir = path.dirname(file);
   var match = /^\w+:\/\/[^\/]*/.exec(dir);
   var protocol = match ? match[0] : '';
+  var startPath = dir.slice(protocol.length);
+  if (protocol && /^\/\w\:/.test(startPath)) {
+    // handle file:///C:/ paths
+    protocol += '/';
+    return protocol + path.resolve(dir.slice(protocol.length), url).replace(/\\/g, '/');
+  }
   return protocol + path.resolve(dir.slice(protocol.length), url);
 }
 
@@ -1484,7 +1626,7 @@ retrieveMapHandlers.push(function(source) {
   if (reSourceMap.test(sourceMappingURL)) {
     // Support source map URL as a data url
     var rawData = sourceMappingURL.slice(sourceMappingURL.indexOf(',') + 1);
-    sourceMapData = new Buffer(rawData, "base64").toString();
+    sourceMapData = bufferFrom(rawData, "base64").toString();
     sourceMappingURL = source;
   } else {
     // Support source map URLs relative to the source URL
@@ -1684,6 +1826,8 @@ function wrapCallSite(frame) {
       column: column
     });
     frame = cloneCallSite(frame);
+    var originalFunctionName = frame.getFunctionName;
+    frame.getFunctionName = function() { return position.name || originalFunctionName(); };
     frame.getFileName = function() { return position.source; };
     frame.getLineNumber = function() { return position.line; };
     frame.getColumnNumber = function() { return position.column + 1; };
@@ -1752,6 +1896,11 @@ function getErrorSource(error) {
 function printErrorAndExit (error) {
   var source = getErrorSource(error);
 
+  // Ensure error is printed synchronously and not truncated
+  if (process.stderr._handle && process.stderr._handle.setBlocking) {
+    process.stderr._handle.setBlocking(true);
+  }
+
   if (source) {
     console.error();
     console.error(source);
@@ -1777,6 +1926,9 @@ function shimEmitUncaughtException () {
     return origEmit.apply(this, arguments);
   };
 }
+
+var originalRetrieveFileHandlers = retrieveFileHandlers.slice(0);
+var originalRetrieveMapHandlers = retrieveMapHandlers.slice(0);
 
 exports.wrapCallSite = wrapCallSite;
 exports.getErrorSource = getErrorSource;
@@ -1817,7 +1969,7 @@ exports.install = function(options) {
   if (options.hookRequire && !isInBrowser()) {
     var Module;
     try {
-      Module = __webpack_require__(38);
+      Module = __webpack_require__(40);
     } catch (err) {
       // NOP: Loading in catch block to convert webpack error to warning.
     }
@@ -1864,27 +2016,41 @@ exports.install = function(options) {
   }
 };
 
+exports.resetRetrieveHandlers = function() {
+  retrieveFileHandlers.length = 0;
+  retrieveMapHandlers.length = 0;
 
-/***/ }),
-/* 36 */
-/***/ (function(module, exports) {
+  retrieveFileHandlers = originalRetrieveFileHandlers.slice(0);
+  retrieveMapHandlers = originalRetrieveMapHandlers.slice(0);
+}
 
-module.exports = require("cheerio");
 
 /***/ }),
 /* 37 */
 /***/ (function(module, exports) {
 
-module.exports = require("fs");
+module.exports = require("buffer-from");
 
 /***/ }),
 /* 38 */
 /***/ (function(module, exports) {
 
-module.exports = require("module");
+module.exports = require("cheerio");
 
 /***/ }),
 /* 39 */
+/***/ (function(module, exports) {
+
+module.exports = require("fs");
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports) {
+
+module.exports = require("module");
+
+/***/ }),
+/* 41 */
 /***/ (function(module, exports) {
 
 module.exports = require("source-map");

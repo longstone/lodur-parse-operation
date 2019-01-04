@@ -36,25 +36,25 @@ class RouteUpdate {
                             if (lastEntries.length > 0) {
                                 lodurUtil.sortArrayByNumber(lastEntries).forEach((item) => {
                                     try {
-                                    this.logger.log('info', 'route-update: persisting item nr', item.number);
-                                    const entry = {
-                                        number: item.number,
-                                        group: item.group,
-                                        timestamp: item.timestamp,
-                                        description: item.description
-                                    };
-                                    this.persistenceService.createNewLodurEntry(entry).then(() => {
-                                        this.logger.log('info', 'route-update: persisted item nr', item.number);
+                                        this.logger.log('info', 'route-update: persisting item nr', item.number);
+                                        const entry = {
+                                            number: item.number,
+                                            group: item.group,
+                                            timestamp: item.timestamp,
+                                            description: item.description
+                                        };
+                                        this.persistenceService.createNewLodurEntry(entry).then(() => {
+                                            this.logger.log('info', 'route-update: persisted item nr', item.number);
 
                                             const message = "Wer:  " + item.group.toString() + "\n"
                                                 + "Was:  " + item.description + "\n"
                                                 + "Wann: " + moment(item.timestamp).locale('de').format('HH:mm DD.MM.YY') + "\n"
                                                 + "Nummer: " + item.number;
-                                            this.telegramBot.notifyAll(message).then( (chats) => this.logger.log('info','total '+chats.length+' notified'));
+                                            this.telegramBot.notifyAll(message).then((chats) => this.logger.log('info', 'total ' + chats.length + ' notified'));
 
                                         }).catch(error => this.logger.log('error', 'persist new Entry Error' + JSON.stringify(error)));
-                                    }catch (constex){
-                                        this.logger.log('info','woohwohohwohowow'+constex);
+                                    } catch (constex) {
+                                        this.logger.log('info', 'woohwohohwohowow' + constex);
                                     }
                                 });
                             } else if (silent) {

@@ -8,7 +8,7 @@ const logSchema = new mongoose.Schema({
     description: String
 });
 
-new SchemaUtil(logSchema,'LogEntry').indexes({ timestamp: 1, error: -1 });
+new SchemaUtil(logSchema, 'LogEntry').indexes({timestamp: 1, error: -1});
 
 let LogEntry;
 if (mongoose.models.LogEntry) {
