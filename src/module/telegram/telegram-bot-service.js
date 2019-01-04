@@ -7,6 +7,7 @@ class TelegramBotService {
         this.persistenceService = dependencies.persistenceService;
         this.logger = dependencies.logger;
         this.bot = this._initBot(botInstance, this.logger);
+        this.logger.log('debug', 'telegram-bot-service: construction');
     }
 
     _initBot(botInstance, logger) {
@@ -14,6 +15,7 @@ class TelegramBotService {
         const that = this;
         return botInstance.on('error', (message) => {
             // prevent bot from crashing
+            this.logger.log('error', 'telegram-bot-service: Bot.onError -> ' + JSON.stringify(message));
             this.persistenceService.log('telegramMngr - received error: ' + JSON.stringify(message),
                 'Bot.onError:' + message
             );

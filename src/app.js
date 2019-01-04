@@ -44,6 +44,7 @@ import RouteIndex from './routes/route-index';
 import RouteUpdate from './routes/route-update';
 import RouteUpdateLastYear from './routes/route-update-last-year';
 import LodurUtil from './module/util/lodur-util';
+import MongoConnection from './schemas/mongo-connect';
 const pageloader = require('./module/pageloader');
 const app = express();
 
@@ -82,7 +83,7 @@ const router = express.Router();
 router.get('/', new RouteIndex(dependencies).getRoute());
 router.get('/update', new RouteUpdate(dependencies).getRoute());
 router.get('/update-last-year', new RouteUpdateLastYear(dependencies).getRoute());
-app.use('/',router);
+app.use('/', router);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     logger.log('warn', 'errorhandler ', req.originalUrl);
@@ -97,23 +98,11 @@ if (missingEnv.length > 0) {
     logger.log('warn', 'missing process.env variables: ', missingEnv);
 }
 mongoose.Promise = global.Promise;
+
+const options = {promiseLibrary: global.Promise};
+
 const mongoUri = process.env.MONGOURI || "mongodb://localhost:27017/lodur";
-const options = { promiseLibrary: global.Promise };
-const stripCredentialsConnectionString = function (uri) {
-    const indexOfAt = uri.indexOf('@');
-    let substFrom = 0;
-    if (indexOfAt > 0) {
-        substFrom = indexOfAt;
-    }
-    return uri.substring(substFrom);
-};
-const connectionStringWithoutCredentials = stripCredentialsConnectionString(mongoUri);
-var promise = mongoose.createConnection(mongoUri, {
-    useMongoClient: true
-}).then(
-    () => logger.log('info','Succeeded connected to: ' + connectionStringWithoutCredentials) ,
-    err => logger.log('error', 'ERROR connecting to: ' + connectionStringWithoutCredentials + '. ' + err)
-);
+ new MongoConnection(mongoose, mongoUri, logger);
 
 // error handlers
 
@@ -122,6 +111,7 @@ var promise = mongoose.createConnection(mongoUri, {
 if (app.get('env') === 'development') {
     logger.level = 'silly';
     logger.warn('env:development');
+    mongoose.set('debug', true);
     app.use(function (err, req, res, next) {
         res.status(err.status || 500);
         res.json({
@@ -129,21 +119,21 @@ if (app.get('env') === 'development') {
             error: err
         });
     });
-}
+} else {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function (err, req, res, next) {
-    logger.log('error', err);
-    res.status(err.status || 500);
-    res.json({
-        message: err.message,
-        error: {}
+    app.use(function (err, req, res, next) {
+        logger.log('error', err);
+        res.status(err.status || 500);
+        res.json({
+            message: err.message,
+            error: {}
+        });
     });
-});
+}
 
-
-app.listen(LodurUtil.getServerPort(),LodurUtil.getServerIp(), function () {
+app.listen(LodurUtil.getServerPort(), LodurUtil.getServerIp(), function () {
     logger.log('info', "Listening on server_port: " + LodurUtil.getServerPort());
     logger.log('info', "Listening on server_ip_address: " + LodurUtil.getServerIp());
 });

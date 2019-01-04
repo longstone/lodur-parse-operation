@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import SchemaUtil from './schemaU';
 
 const chatSchema = new mongoose.Schema({
     chatId: String,
@@ -7,6 +8,8 @@ const chatSchema = new mongoose.Schema({
     type: String,
     username: String
 });
+
+new SchemaUtil(chatSchema,'Chat').indexes({ chatId: 1});
 
 let Chat;
 if (mongoose.models.Chat) {
