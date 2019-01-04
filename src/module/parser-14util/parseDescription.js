@@ -5,6 +5,7 @@ var S = require('string');
  */
 var POSITION_OF_FIRST_SLASH = 17;
 module.exports = function parseDescriptionF(line) {
+    // todo replace 'string'
     line = S(line).replaceAll('\t', '').s;
     var start = line.indexOf(' / ', POSITION_OF_FIRST_SLASH) + 3;
     var end = line.length;
