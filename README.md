@@ -6,3 +6,9 @@ Following env vars are required
 
 * `telegram_hash` // telegram bot api hash
 * `MONGOURI` // uri to persistence
+
+## dev
+
+* yarn install
+* build
+* start

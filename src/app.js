@@ -42,6 +42,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 import RouteIndex from './routes/route-index';
 import RouteUpdate from './routes/route-update';
+import RouteUpdateLastYear from './routes/route-update-last-year';
 import LodurUtil from './module/util/lodur-util';
 const pageloader = require('./module/pageloader');
 const app = express();
@@ -80,6 +81,7 @@ dependencies.telegramBotService = new TelegramBotService(bot, dependencies);
 const router = express.Router();
 router.get('/', new RouteIndex(dependencies).getRoute());
 router.get('/update', new RouteUpdate(dependencies).getRoute());
+router.get('/update-last-year', new RouteUpdateLastYear(dependencies).getRoute());
 app.use('/',router);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
