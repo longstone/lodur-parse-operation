@@ -48,6 +48,7 @@ const app = express();
 
 
 // uncomment after placing your favicon in /public
+// @todo place favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 // app.use(expressWinston.logger({
 //     transports: [
