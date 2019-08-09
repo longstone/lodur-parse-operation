@@ -1,0 +1,1042 @@
+[
+  {
+    "timestamp": "2019-08-07T15:15:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Wasser im Gebäude / Glärnischstrasse, Dübendorf",
+    "number": 126
+  },
+  {
+    "timestamp": "2019-08-07T10:55:00.000Z",
+    "group": [
+      "BagT1",
+      "BagT2"
+    ],
+    "description": "Oelspur / Hoffnigstrasse, Dübendorf",
+    "number": 125
+  },
+  {
+    "timestamp": "2019-08-06T17:28:00.000Z",
+    "group": [
+      "KAT1"
+    ],
+    "description": "BMA / Überlandstrasse, Dübendorf",
+    "number": 124
+  },
+  {
+    "timestamp": "2019-08-05T18:42:00.000Z",
+    "group": [
+      "KAN4"
+    ],
+    "description": "BMA / Sonnentalstrasse, Dübendorf",
+    "number": 123
+  },
+  {
+    "timestamp": "2019-08-04T08:26:00.000Z",
+    "group": [
+      "BagN1"
+    ],
+    "description": "Wasserrohrbruch / Chriesmattweg, Dübendorf",
+    "number": 122
+  },
+  {
+    "timestamp": "2019-08-01T22:58:00.000Z",
+    "group": [
+      "KAN2",
+      "KAN3",
+      "ADLN1",
+      "FU"
+    ],
+    "description": "gemeldeter Brand / Untere Geerenstrasse, Dübendorf",
+    "number": 121
+  },
+  {
+    "timestamp": "2019-08-01T22:58:00.000Z",
+    "group": [
+      "KAN2",
+      "KAN3",
+      "ADLN1",
+      "FU"
+    ],
+    "description": "gemeldeter Brand / Werlenweg, Dübendorf",
+    "number": 120
+  },
+  {
+    "timestamp": "2019-08-01T21:49:00.000Z",
+    "group": [
+      "KAN3",
+      "ADLN1",
+      "FU"
+    ],
+    "description": "gemeldeter Brand / Sagentobelbachstrasse, Dübendorf",
+    "number": 119
+  },
+  {
+    "timestamp": "2019-08-01T21:38:00.000Z",
+    "group": [
+      "KAN2"
+    ],
+    "description": "gemeldeter Brand / Schützenhausstrasse, Dübendorf",
+    "number": 118
+  },
+  {
+    "timestamp": "2019-08-01T13:57:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Verkehrsunfall / Hegnaustrasse, Volketswil",
+    "number": 117
+  },
+  {
+    "timestamp": "2019-07-31T22:58:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Erkundung/unklare Situation / Stettbachstrasse, Dübendorf",
+    "number": 116
+  },
+  {
+    "timestamp": "2019-07-27T17:41:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Kleintier / Strehlgasse, Dübendorf",
+    "number": 115
+  },
+  {
+    "timestamp": "2019-07-22T22:11:00.000Z",
+    "group": [
+      "KAN1",
+      "ADLN1",
+      "FU"
+    ],
+    "description": "Brand / Im Roggenacher, Brüttisellen",
+    "number": 114
+  },
+  {
+    "timestamp": "2019-07-22T19:58:00.000Z",
+    "group": [
+      "BagN3",
+      "VrkGr"
+    ],
+    "description": "Oelspur / Zürichstrasse, Brüttisellen",
+    "number": 113
+  },
+  {
+    "timestamp": "2019-07-21T02:53:00.000Z",
+    "group": [
+      "VrkGr"
+    ],
+    "description": "Verkehrsunfall / Tobelhofstrasse, Gockhausen",
+    "number": 112
+  },
+  {
+    "timestamp": "2019-07-19T05:08:00.000Z",
+    "group": [
+      "KAN4"
+    ],
+    "description": "SPA / Zürichstrasse, Dübendorf",
+    "number": 111
+  },
+  {
+    "timestamp": "2019-07-18T19:46:00.000Z",
+    "group": [
+      "BagN3"
+    ],
+    "description": "Wasser im Gebäude / Stationsstrasse, Brüttisellen",
+    "number": 110
+  },
+  {
+    "timestamp": "2019-07-17T22:06:00.000Z",
+    "group": [
+      "FRF"
+    ],
+    "description": "Herz-/Kreislauf Notfall / Bahnhof, Dübendorf",
+    "number": 109
+  },
+  {
+    "timestamp": "2019-07-17T07:08:00.000Z",
+    "group": [
+      "BagT2"
+    ],
+    "description": "Wasserrohrbruch / Bahnhofstrasse, Dübendorf",
+    "number": 108
+  },
+  {
+    "timestamp": "2019-07-14T21:48:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Erkundung/unklare Situation / Glärnischstrasse, Dübendorf",
+    "number": 107
+  },
+  {
+    "timestamp": "2019-07-13T11:16:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Unterstützung Rettungsdienst / Wallisellenstrasse, Dübendorf",
+    "number": 106
+  },
+  {
+    "timestamp": "2019-07-10T21:48:00.000Z",
+    "group": [
+      "VrkGr"
+    ],
+    "description": "Verkehrsunfall / Überlandstrasse, Dübendorf",
+    "number": 105
+  },
+  {
+    "timestamp": "2019-07-10T21:21:00.000Z",
+    "group": [
+      "KAN3"
+    ],
+    "description": "BMA / Hochbordstrasse, Dübendorf",
+    "number": 104
+  },
+  {
+    "timestamp": "2019-07-08T22:33:00.000Z",
+    "group": [
+      "KAN2"
+    ],
+    "description": "BMA / Ringstrasse, Dübendorf",
+    "number": 103
+  },
+  {
+    "timestamp": "2019-07-08T07:49:00.000Z",
+    "group": [
+      "ADLT1"
+    ],
+    "description": "Unterstützung Partnerorganisation / Amselweg 8, Dübendorf",
+    "number": 102
+  },
+  {
+    "timestamp": "2019-07-07T12:09:00.000Z",
+    "group": [
+      "BagN2"
+    ],
+    "description": "Wasserrohrbruch / Obere Geerenstrasse, Dübendorf",
+    "number": 101
+  },
+  {
+    "timestamp": "2019-07-06T10:05:00.000Z",
+    "group": [
+      "BagT2",
+      "BagT1"
+    ],
+    "description": "Wasser im Gebäude / Stettbachstrasse, Dübendorf",
+    "number": 100
+  },
+  {
+    "timestamp": "2019-07-04T18:23:00.000Z",
+    "group": [
+      "KAN1"
+    ],
+    "description": "BMA / Überlandstrasse, Dübendorf",
+    "number": 99
+  },
+  {
+    "timestamp": "2019-07-04T11:43:00.000Z",
+    "group": [
+      "BagT1"
+    ],
+    "description": "Wasser im Gebäude / Zürichstrasse, Dübendorf",
+    "number": 98
+  },
+  {
+    "timestamp": "2019-07-03T22:57:00.000Z",
+    "group": [
+      "Kdo"
+    ],
+    "description": "eingeschl. Person Gebäude / Seidenstrasse, Dübendorf",
+    "number": 97
+  },
+  {
+    "timestamp": "2019-07-01T17:19:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Liftrettung / Kasernenstrasse, Dübendorf",
+    "number": 96
+  },
+  {
+    "timestamp": "2019-07-01T14:30:00.000Z",
+    "group": [
+      "KAT2"
+    ],
+    "description": "BMA / Adlerstrasse, Dübendorf",
+    "number": 95
+  },
+  {
+    "timestamp": "2019-06-29T22:29:00.000Z",
+    "group": [
+      "KAN4"
+    ],
+    "description": "Fahrzeugbrand / Hochbordstrasse, Dübendorf",
+    "number": 94
+  },
+  {
+    "timestamp": "2019-06-28T19:02:00.000Z",
+    "group": [
+      "ADL"
+    ],
+    "description": "Brand / Rebackerweg, Dietlikon",
+    "number": 93
+  },
+  {
+    "timestamp": "2019-06-28T00:45:00.000Z",
+    "group": [
+      "KAN3"
+    ],
+    "description": "BMA / Überlandstrasse, Dübendorf",
+    "number": 92
+  },
+  {
+    "timestamp": "2019-06-27T13:11:00.000Z",
+    "group": [
+      "BagT1",
+      "BagT2"
+    ],
+    "description": "Gefahrgut chemisch / Lagerstrasse, Dübendorf",
+    "number": 91
+  },
+  {
+    "timestamp": "2019-06-24T15:38:00.000Z",
+    "group": [
+      "KAT1"
+    ],
+    "description": "Fahrzeugbrand / Hermikonstrasse, Dübendorf",
+    "number": 90
+  },
+  {
+    "timestamp": "2019-06-23T17:49:00.000Z",
+    "group": [
+      "ADLT1"
+    ],
+    "description": "Brand / Dübendorfstrasse, Fällanden",
+    "number": 89
+  },
+  {
+    "timestamp": "2019-06-22T12:05:00.000Z",
+    "group": [
+      "BagT2"
+    ],
+    "description": "Bäume/Äste / Eichstockweg, Dübendorf",
+    "number": 88
+  },
+  {
+    "timestamp": "2019-06-21T21:02:00.000Z",
+    "group": [
+      "BagN1",
+      "VrkGr",
+      "KAN2"
+    ],
+    "description": "Oelspur / Zwinggartenstrasse, Dübendorf",
+    "number": 87
+  },
+  {
+    "timestamp": "2019-06-17T14:54:00.000Z",
+    "group": [
+      "KAT2"
+    ],
+    "description": "Brand / Hochbordstrasse, Dübendorf",
+    "number": 86
+  },
+  {
+    "timestamp": "2019-06-15T23:44:00.000Z",
+    "group": [
+      "BagN2"
+    ],
+    "description": "Wasser im Gebäude / Rotbuchstrasse, Dübendorf",
+    "number": 85
+  },
+  {
+    "timestamp": "2019-06-15T21:46:00.000Z",
+    "group": [
+      "BagN2"
+    ],
+    "description": "Wasser im Gebäude / Wilstrasse, Dübendorf",
+    "number": 84
+  },
+  {
+    "timestamp": "2019-06-11T16:56:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Oelspur / Otto-Jaag-Strasse, Dübendorf",
+    "number": 83
+  },
+  {
+    "timestamp": "2019-06-09T01:16:00.000Z",
+    "group": [
+      "KAN1",
+      "ADLN1",
+      "FU"
+    ],
+    "description": "Brand / Oberes Hohmoos, Dübendorf",
+    "number": 82
+  },
+  {
+    "timestamp": "2019-06-08T23:30:00.000Z",
+    "group": [
+      "FRF"
+    ],
+    "description": "Herz-/Kreislauf Notfall / Amselweg, Dübendorf",
+    "number": 81
+  },
+  {
+    "timestamp": "2019-06-08T21:04:00.000Z",
+    "group": [
+      "KAN4",
+      "VrkGr"
+    ],
+    "description": "Verkehrsunfall / Weidstrasse, Wangen",
+    "number": 80
+  },
+  {
+    "timestamp": "2019-06-07T20:17:00.000Z",
+    "group": [
+      "BagN1"
+    ],
+    "description": "Rauchentwicklung / Hoffnigstrasse, Dübendorf",
+    "number": 79
+  },
+  {
+    "timestamp": "2019-06-07T17:56:00.000Z",
+    "group": [
+      "Kdo"
+    ],
+    "description": "Liftrettung / Neugutstrasse, Dübendorf",
+    "number": 78
+  },
+  {
+    "timestamp": "2019-06-06T14:54:00.000Z",
+    "group": [
+      "FRF"
+    ],
+    "description": "Herz-/Kreislauf Notfall / Hermikonstrasse, Dübendorf",
+    "number": 77
+  },
+  {
+    "timestamp": "2019-06-05T18:25:00.000Z",
+    "group": [
+      "ADLN1"
+    ],
+    "description": "Brand / Wigartenstrasse, Fällanden",
+    "number": 76
+  },
+  {
+    "timestamp": "2019-06-03T17:15:00.000Z",
+    "group": [
+      "FRF"
+    ],
+    "description": "Herz-/Kreislauf Notfall / Im Talacher, Brüttisellen",
+    "number": 75
+  },
+  {
+    "timestamp": "2019-06-03T07:18:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Bienen / Stägenbuckstrasse, Dübendorf",
+    "number": 74
+  },
+  {
+    "timestamp": "2019-06-03T06:30:00.000Z",
+    "group": [
+      "KAT1"
+    ],
+    "description": "BMA / Ringstrasse, Dübendorf",
+    "number": 73
+  },
+  {
+    "timestamp": "2019-06-01T05:14:00.000Z",
+    "group": [
+      "KAN3"
+    ],
+    "description": "BMA / Hoffnigstrasse, Dübendorf",
+    "number": 72
+  },
+  {
+    "timestamp": "2019-05-26T14:23:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Unterstützung Partnerorganisation / Im Winkel, Dübendorf",
+    "number": 71
+  },
+  {
+    "timestamp": "2019-05-26T11:46:00.000Z",
+    "group": [
+      "FRF"
+    ],
+    "description": "Herz-/Kreislauf Notfall / Neuhausstrasse, Dübendorf",
+    "number": 70
+  },
+  {
+    "timestamp": "2019-05-25T16:21:00.000Z",
+    "group": [
+      "BagT1"
+    ],
+    "description": "Oelspur / Leepüntstrasse, Dübendorf",
+    "number": 69
+  },
+  {
+    "timestamp": "2019-05-24T22:42:00.000Z",
+    "group": [
+      "ADLN1"
+    ],
+    "description": "Patientenbergung / Riedweg, Dübendorf",
+    "number": 68
+  },
+  {
+    "timestamp": "2019-05-23T19:03:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Verkehrsunfall / Haldenstrasse, Wangen",
+    "number": 67
+  },
+  {
+    "timestamp": "2019-05-22T21:13:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Erkundung/unklare Situation / Chästrägerweg, Dübendorf",
+    "number": 66
+  },
+  {
+    "timestamp": "2019-05-21T16:47:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Oelspur / Bühlwiesenstrasse, Dübendorf",
+    "number": 65
+  },
+  {
+    "timestamp": "2019-05-21T09:38:00.000Z",
+    "group": [
+      "KAT2"
+    ],
+    "description": "BMA / Am Stadtrand, Dübendorf",
+    "number": 64
+  },
+  {
+    "timestamp": "2019-05-16T17:27:00.000Z",
+    "group": [
+      "BagT2",
+      "VrkGr"
+    ],
+    "description": "Oelspur / Überlandstrasse, Dübendorf",
+    "number": 63
+  },
+  {
+    "timestamp": "2019-05-16T16:01:00.000Z",
+    "group": [
+      "BagT2"
+    ],
+    "description": "Oelspur / Rietwiesenstrasse, Dübendorf",
+    "number": 62
+  },
+  {
+    "timestamp": "2019-05-14T01:56:00.000Z",
+    "group": [
+      "KAN2"
+    ],
+    "description": "BMA / Ringstrasse, Dübendorf",
+    "number": 61
+  },
+  {
+    "timestamp": "2019-05-13T23:33:00.000Z",
+    "group": [
+      "KAN1"
+    ],
+    "description": "BMA / Ringstrasse, Dübendorf",
+    "number": 60
+  },
+  {
+    "timestamp": "2019-05-13T22:17:00.000Z",
+    "group": [
+      "KAN4"
+    ],
+    "description": "BMA / Ringstrasse, Dübendorf",
+    "number": 59
+  },
+  {
+    "timestamp": "2019-05-13T16:18:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Oelspur / Im Blattacher, Wangen",
+    "number": 58
+  },
+  {
+    "timestamp": "2019-05-13T14:37:00.000Z",
+    "group": [
+      "ADL T1"
+    ],
+    "description": "Bergung/Sicherung Sachgüter / Überlandstrasse, Dübendorf",
+    "number": 57
+  },
+  {
+    "timestamp": "2019-05-12T10:30:00.000Z",
+    "group": [
+      "BagN2"
+    ],
+    "description": "Oelspur / Alte Landstrasse, Dübendorf",
+    "number": 56
+  },
+  {
+    "timestamp": "2019-05-11T12:09:00.000Z",
+    "group": [
+      "BagN1"
+    ],
+    "description": "Oelspur / versch. Strassen, Dübendorf",
+    "number": 55
+  },
+  {
+    "timestamp": "2019-05-11T00:23:00.000Z",
+    "group": [
+      "KAN3"
+    ],
+    "description": "BMA / Neugutstrasse, Dübendorf",
+    "number": 54
+  },
+  {
+    "timestamp": "2019-05-08T17:03:00.000Z",
+    "group": [
+      "BagT1"
+    ],
+    "description": "Oelspur / Zürichstrasse, Dübendorf",
+    "number": 53
+  },
+  {
+    "timestamp": "2019-05-06T07:32:00.000Z",
+    "group": [
+      "KAT1"
+    ],
+    "description": "Brand  / beim Bahnhof, Dübendorf",
+    "number": 52
+  },
+  {
+    "timestamp": "2019-05-03T19:13:00.000Z",
+    "group": [
+      "Kdo"
+    ],
+    "description": "Oelspur / Muggenkreisel, Dübendorf",
+    "number": 51
+  },
+  {
+    "timestamp": "2019-04-28T16:57:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "kein Einsatz / Zürichstrasse, Dübendorf",
+    "number": 50
+  },
+  {
+    "timestamp": "2019-04-25T09:35:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Sturm / Claridenstrasse, Dübendorf",
+    "number": 49
+  },
+  {
+    "timestamp": "2019-04-24T17:07:00.000Z",
+    "group": [
+      "BagT2"
+    ],
+    "description": "Sturm / Überlandstrasse, Dübendorf",
+    "number": 48
+  },
+  {
+    "timestamp": "2019-04-24T17:01:00.000Z",
+    "group": [
+      "BagT1",
+      "VrkGr"
+    ],
+    "description": "Sturm / Oberdorfstrasse, Dübendorf",
+    "number": 47
+  },
+  {
+    "timestamp": "2019-04-19T23:49:00.000Z",
+    "group": [
+      "KAN2"
+    ],
+    "description": "Brand  / Schulhausstrasse, Dübendorf",
+    "number": 46
+  },
+  {
+    "timestamp": "2019-04-19T18:29:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "kein Einsatz / Sunnetalstrassestrasse, Fällanden",
+    "number": 45
+  },
+  {
+    "timestamp": "2019-04-16T20:04:00.000Z",
+    "group": [
+      "KAN1"
+    ],
+    "description": "BMA / Zürichstrasse, Dübendorf",
+    "number": 44
+  },
+  {
+    "timestamp": "2019-04-16T18:07:00.000Z",
+    "group": [
+      "KAN4"
+    ],
+    "description": "BMA / Zürichstrasse, Dübendorf",
+    "number": 43
+  },
+  {
+    "timestamp": "2019-04-15T20:02:00.000Z",
+    "group": [
+      "BagN2"
+    ],
+    "description": "Oelspur / Strehlgasse, Dübendorf",
+    "number": 42
+  },
+  {
+    "timestamp": "2019-04-15T15:59:00.000Z",
+    "group": [
+      "Kdo"
+    ],
+    "description": "Entenfamilie im Lichtschacht / Zürichstrasse, Dübendorf",
+    "number": 41
+  },
+  {
+    "timestamp": "2019-04-08T16:13:00.000Z",
+    "group": [
+      "BAGT2"
+    ],
+    "description": "Wasserrohrbruch / Hermikonstrasse, Dübendorf",
+    "number": 40
+  },
+  {
+    "timestamp": "2019-04-08T06:16:00.000Z",
+    "group": [
+      "KAT2"
+    ],
+    "description": "BMA / Überlandstrasse, Dübendorf",
+    "number": 39
+  },
+  {
+    "timestamp": "2019-04-06T17:03:00.000Z",
+    "group": [
+      "KAN3"
+    ],
+    "description": "BMA / Ringwiesenstrasse, Dübendorf",
+    "number": 38
+  },
+  {
+    "timestamp": "2019-04-06T12:20:00.000Z",
+    "group": [
+      "ADLT1"
+    ],
+    "description": "Patientenbergung / Im Hundsrücken, Dübendorf",
+    "number": 37
+  },
+  {
+    "timestamp": "2019-04-04T11:55:00.000Z",
+    "group": [
+      "KAT1"
+    ],
+    "description": "BMA / Hochbordstrasse, Dübendorf",
+    "number": 36
+  },
+  {
+    "timestamp": "2019-04-02T14:19:00.000Z",
+    "group": [
+      "BAGT1"
+    ],
+    "description": "eingekl. Person / Zukunftstrasse, Dübendorf",
+    "number": 35
+  },
+  {
+    "timestamp": "2019-04-02T06:31:00.000Z",
+    "group": [
+      "KAT2"
+    ],
+    "description": "BMA / Neugutstrasse, Dübendorf",
+    "number": 34
+  },
+  {
+    "timestamp": "2019-03-31T14:56:00.000Z",
+    "group": [
+      "KAN2",
+      "ADLT1",
+      "FU"
+    ],
+    "description": "Brand / Zürichstrasse, Dübendorf",
+    "number": 33
+  },
+  {
+    "timestamp": "2019-03-30T10:56:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Liftrettung / Haldenstrasse, Brüttisellen",
+    "number": 32
+  },
+  {
+    "timestamp": "2019-03-27T23:57:00.000Z",
+    "group": [
+      "KAN1"
+    ],
+    "description": "BMA / Hoffnigstrasse, Dübendorf",
+    "number": 31
+  },
+  {
+    "timestamp": "2019-03-26T13:29:00.000Z",
+    "group": [
+      "KAT1",
+      "ADLT1",
+      "FU"
+    ],
+    "description": "Brand / Kirchbachstrasse, Dübendorf",
+    "number": 30
+  },
+  {
+    "timestamp": "2019-03-18T09:32:00.000Z",
+    "group": [
+      "KAT2"
+    ],
+    "description": "BMA / Hoffnigstrasse, Dübendorf",
+    "number": 29
+  },
+  {
+    "timestamp": "2019-03-17T08:28:00.000Z",
+    "group": [
+      "KAN4"
+    ],
+    "description": "BMA / Ringstrasse, Dübendorf",
+    "number": 28
+  },
+  {
+    "timestamp": "2019-03-11T17:21:00.000Z",
+    "group": [
+      "KAT1"
+    ],
+    "description": "BMA / Fällandenstrasse, Dübendorf",
+    "number": 27
+  },
+  {
+    "timestamp": "2019-03-10T09:52:00.000Z",
+    "group": [
+      "BagT2"
+    ],
+    "description": "Verkehrsunfall / Überlandstrasse, Dübendorf",
+    "number": 26
+  },
+  {
+    "timestamp": "2019-03-04T12:37:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Bäume/Äste / Glattweg, Dübendorf",
+    "number": 25
+  },
+  {
+    "timestamp": "2019-03-03T14:54:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Unterstützung Rettungsdienst / Neuhausstrasse, Dübendorf",
+    "number": 24
+  },
+  {
+    "timestamp": "2019-03-02T11:00:00.000Z",
+    "group": [
+      "BagT1"
+    ],
+    "description": "Wasser im Gebäude / Tichelrütistrasse, Gockhausen",
+    "number": 23
+  },
+  {
+    "timestamp": "2019-02-28T09:18:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Oelspur / Ringstrasse, Dübendorf",
+    "number": 22
+  },
+  {
+    "timestamp": "2019-02-24T19:00:00.000Z",
+    "group": [
+      "KAN3"
+    ],
+    "description": "BMA / Hermikonstrasse, Dübendorf",
+    "number": 21
+  },
+  {
+    "timestamp": "2019-02-22T13:13:00.000Z",
+    "group": [
+      "KAT2"
+    ],
+    "description": "SPA / Pünten, Wangen",
+    "number": 20
+  },
+  {
+    "timestamp": "2019-02-21T04:38:00.000Z",
+    "group": [
+      "FRF"
+    ],
+    "description": "Herz-/Kreislauf Notfall / Casinostrasse, Dübendorf",
+    "number": 19
+  },
+  {
+    "timestamp": "2019-02-18T22:30:00.000Z",
+    "group": [
+      "KAN2",
+      "ADLN1",
+      "FU"
+    ],
+    "description": "Brand / Heugatterstrasse, Dübendorf",
+    "number": 18
+  },
+  {
+    "timestamp": "2019-02-13T07:51:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Unterstützung Partnerorganisation / Rechweg, Dübendorf",
+    "number": 17
+  },
+  {
+    "timestamp": "2019-02-12T19:32:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "gelöschter Brand / Weiherstrasse, Dübendorf",
+    "number": 16
+  },
+  {
+    "timestamp": "2019-02-12T17:08:00.000Z",
+    "group": [
+      "KAT1",
+      "ADLT1",
+      "FU"
+    ],
+    "description": "Brand / Stationsstrasse, Brüttisellen",
+    "number": 15
+  },
+  {
+    "timestamp": "2019-02-09T17:12:00.000Z",
+    "group": [
+      "KAN1"
+    ],
+    "description": "BMA / Zürichstrasse, Dübendorf",
+    "number": 14
+  },
+  {
+    "timestamp": "2019-02-08T12:03:00.000Z",
+    "group": [
+      "KAT2"
+    ],
+    "description": "BMA / Zürichstrasse, Dübendorf",
+    "number": 13
+  },
+  {
+    "timestamp": "2019-01-31T17:04:00.000Z",
+    "group": [
+      "VrkGr"
+    ],
+    "description": "Verkehrsunfall / Zürichstrasse, Brüttisellen",
+    "number": 12
+  },
+  {
+    "timestamp": "2019-01-30T15:21:00.000Z",
+    "group": [
+      "KAT1",
+      "ADLT1",
+      "FU"
+    ],
+    "description": "Brand / Finkenweg, Dübendorf",
+    "number": 11
+  },
+  {
+    "timestamp": "2019-01-26T03:56:00.000Z",
+    "group": [
+      "KA4"
+    ],
+    "description": "BMA / Zürichstrasse, Dübendorf",
+    "number": 10
+  },
+  {
+    "timestamp": "2019-01-22T19:40:00.000Z",
+    "group": [
+      "KA3"
+    ],
+    "description": "BMA / Zwinggartenstrasse, Dübendorf",
+    "number": 9
+  },
+  {
+    "timestamp": "2019-01-19T18:52:00.000Z",
+    "group": [
+      "KA2"
+    ],
+    "description": "Fahrzeugbrand / In Huebwiesen, Dübendorf",
+    "number": 8
+  },
+  {
+    "timestamp": "2019-01-18T18:16:00.000Z",
+    "group": [
+      "KA1"
+    ],
+    "description": "BMA / Neugutstrasse, Dübendorf",
+    "number": 7
+  },
+  {
+    "timestamp": "2019-01-17T18:40:00.000Z",
+    "group": [
+      "BagN1"
+    ],
+    "description": "Geruch im Gebäude / Breitibachstrasse, Dübendorf",
+    "number": 6
+  },
+  {
+    "timestamp": "2019-01-16T06:51:00.000Z",
+    "group": [
+      "VrkGr"
+    ],
+    "description": "Verkehrsunfall / Ringstrasse, Dübendorf",
+    "number": 5
+  },
+  {
+    "timestamp": "2019-01-14T06:04:00.000Z",
+    "group": [
+      "BagT2"
+    ],
+    "description": "Wasser im Gebäude / Leepüntstrasse, Dübendorf",
+    "number": 4
+  },
+  {
+    "timestamp": "2019-01-13T23:19:00.000Z",
+    "group": [
+      "TK"
+    ],
+    "description": "Bahnunfall / Bahnhof, Dübendorf",
+    "number": 3
+  },
+  {
+    "timestamp": "2019-01-11T11:43:00.000Z",
+    "group": [
+      "BagT1"
+    ],
+    "description": "Oelspur / Neugutstrasse, Dübendorf",
+    "number": 2
+  },
+  {
+    "timestamp": "2019-01-09T16:43:00.000Z",
+    "group": [
+      "KA4",
+      "FU"
+    ],
+    "description": "Brand / Hochbordstrasse, Dübendorf",
+    "number": 1
+  }
+]
