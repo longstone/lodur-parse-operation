@@ -16,7 +16,7 @@ class RouteIndex {
                     my_statistic: {
                         type: 'integer',
                         value: thisYear.length,
-                        label: 'Einsätze im Aktuellen Jahr'
+                        label: 'Einsätze im aktuellen Jahr'
                     }
                 })
             );
