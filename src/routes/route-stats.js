@@ -13,11 +13,11 @@ class RouteIndex {
                 let thisYear = this.import.persistenceService.getEntriesForActualYear();
 
                 // maybe there is something for https://www.dasheroo.com/
-
+                
                 res.json({
                     my_statistic: {
                         type: 'integer',
-                        value: thisYear.size(),
+                        value: thisYear.length,
                         label: 'Einsätze im Aktuellen Jahr'
                     }
                 });
