@@ -14,6 +14,7 @@ import logger from 'winston';
 import RouteIndex from './routes/route-index';
 import RouteUpdate from './routes/route-update';
 import RouteUpdateLastYear from './routes/route-update-last-year';
+import RouteStats from './routes/route-stats';
 import LodurUtil from './module/util/lodur-util';
 import MongoConnection from './schemas/mongo-connect';
 //# sourceMappingURL=./app.bundle.js.map
@@ -81,6 +82,7 @@ const router = express.Router();
 router.get('/', new RouteIndex(dependencies).getRoute());
 router.get('/update', new RouteUpdate(dependencies).getRoute());
 router.get('/update-last-year', new RouteUpdateLastYear(dependencies).getRoute());
+router.get('/stats-dasheroo', new RouteStats(dependencies).getRoute());
 app.use('/', router);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
