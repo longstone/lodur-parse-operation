@@ -8,21 +8,20 @@ class RouteIndex {
         };
     }
 
+    // maybe there is something for https://www.dasheroo.com/
     getRoute() {
         return (req, res) => {
-                let thisYear = this.import.persistenceService.getEntriesForActualYear();
-
-                // maybe there is something for https://www.dasheroo.com/
-                
-                res.json({
+            this.import.persistenceService.getEntriesForActualYear().then(
+                thisYear => res.json({
                     my_statistic: {
                         type: 'integer',
                         value: thisYear.length,
                         label: 'Einsätze im Aktuellen Jahr'
                     }
-                });
-            }
+                })
+            );
         }
+    }
 }
 
 
