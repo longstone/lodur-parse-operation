@@ -2,7 +2,7 @@ class MongoConnection {
     constructor(mongoose, mongoUri, logger) {
         const connectionStringWithoutCredentials = MongoConnection._stripCredentialsConnectionString(mongoUri);
         mongoose.connect(mongoUri, {
-            useMongoClient: true
+            useNewUrlParser: true
         }).then(
             () => logger.log('info', 'Succeeded connected to: ' + connectionStringWithoutCredentials),
             err => logger.log('error', 'ERROR connecting to: ' + connectionStringWithoutCredentials + '. ' + err)
