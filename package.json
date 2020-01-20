@@ -13,8 +13,8 @@
     "heroku-postbuild": "npm install webpack && webpack -p --config ./webpack.config.js --progress"
   },
   "engines": {
-    "node": "12.14.1",
-    "npm": "6.13.4"
+    "node": ">=12.14.1",
+    "npm": ">=6.13.4"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
