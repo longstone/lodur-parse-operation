@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 28);
+/******/ 	return __webpack_require__(__webpack_require__.s = 29);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -261,8 +261,8 @@ module.exports = require("string");
 
 
 var request = __webpack_require__(7);
-var cheerio = __webpack_require__(38);
-var parser14 = __webpack_require__(30);
+var cheerio = __webpack_require__(39);
+var parser14 = __webpack_require__(31);
 var LogEntry = __webpack_require__(5);
 
 module.exports = function pageLoaderF(url_unsused) {
@@ -711,6 +711,55 @@ module.exports = RouteIndex;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var RouteIndex = function () {
+    function RouteIndex(dependencies) {
+        _classCallCheck(this, RouteIndex);
+
+        this.import = {
+            express: dependencies.express,
+            persistenceService: dependencies.persistenceService,
+            logger: dependencies.logger
+        };
+    }
+
+    // maybe there is something for https://www.dasheroo.com/
+
+
+    _createClass(RouteIndex, [{
+        key: 'getRoute',
+        value: function getRoute() {
+            var _this = this;
+
+            return function (req, res) {
+                _this.import.persistenceService.getEntriesForActualYear().then(function (thisYear) {
+                    return res.json({
+                        my_statistic: {
+                            type: 'integer',
+                            value: thisYear.length,
+                            label: 'Einsätze im aktuellen Jahr'
+                        }
+                    });
+                });
+            };
+        }
+    }]);
+
+    return RouteIndex;
+}();
+
+module.exports = RouteIndex;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _lodash = __webpack_require__(1);
 
 var _lodash2 = _interopRequireDefault(_lodash);
@@ -806,7 +855,7 @@ var RouteUpdate = function () {
 module.exports = RouteUpdate;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -909,7 +958,7 @@ var RouteUpdate = function () {
 module.exports = RouteUpdate;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -944,7 +993,7 @@ if (_mongoose2.default.models.Chat) {
 module.exports = Chat;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -978,7 +1027,7 @@ if (_mongoose2.default.models.LodurEntry) {
 module.exports = LodurEntry;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -994,7 +1043,7 @@ var MongoConnection = function () {
 
         var connectionStringWithoutCredentials = MongoConnection._stripCredentialsConnectionString(mongoUri);
         mongoose.connect(mongoUri, {
-            useMongoClient: true
+            useNewUrlParser: true
         }).then(function () {
             return logger.log('info', 'Succeeded connected to: ' + connectionStringWithoutCredentials);
         }, function (err) {
@@ -1022,68 +1071,68 @@ var MongoConnection = function () {
 module.exports = MongoConnection;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(36).install();
+__webpack_require__(37).install();
 
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports) {
-
-module.exports = require("body-parser");
 
 /***/ }),
 /* 21 */
 /***/ (function(module, exports) {
 
-module.exports = require("cookie-parser");
+module.exports = require("body-parser");
 
 /***/ }),
 /* 22 */
 /***/ (function(module, exports) {
 
-module.exports = require("express");
+module.exports = require("cookie-parser");
 
 /***/ }),
 /* 23 */
 /***/ (function(module, exports) {
 
-module.exports = require("express-winston");
+module.exports = require("express");
 
 /***/ }),
 /* 24 */
 /***/ (function(module, exports) {
 
-module.exports = require("node-telegram-bot");
+module.exports = require("express-winston");
 
 /***/ }),
 /* 25 */
 /***/ (function(module, exports) {
 
-module.exports = require("serve-favicon");
+module.exports = require("node-telegram-bot");
 
 /***/ }),
 /* 26 */
 /***/ (function(module, exports) {
 
-module.exports = require("source-map-support");
+module.exports = require("serve-favicon");
 
 /***/ }),
 /* 27 */
 /***/ (function(module, exports) {
 
-module.exports = require("winston");
+module.exports = require("source-map-support");
 
 /***/ }),
 /* 28 */
+/***/ (function(module, exports) {
+
+module.exports = require("winston");
+
+/***/ }),
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(__dirname) {
 
-__webpack_require__(19);
+__webpack_require__(20);
 
 var _persistenceService = __webpack_require__(10);
 
@@ -1093,15 +1142,15 @@ var _telegramBotService = __webpack_require__(11);
 
 var _telegramBotService2 = _interopRequireDefault(_telegramBotService);
 
-var _nodeTelegramBot = __webpack_require__(24);
+var _nodeTelegramBot = __webpack_require__(25);
 
 var _nodeTelegramBot2 = _interopRequireDefault(_nodeTelegramBot);
 
-var _lodurEntry = __webpack_require__(17);
+var _lodurEntry = __webpack_require__(18);
 
 var _lodurEntry2 = _interopRequireDefault(_lodurEntry);
 
-var _chats = __webpack_require__(16);
+var _chats = __webpack_require__(17);
 
 var _chats2 = _interopRequireDefault(_chats);
 
@@ -1117,11 +1166,11 @@ var _request = __webpack_require__(7);
 
 var _request2 = _interopRequireDefault(_request);
 
-var _express = __webpack_require__(22);
+var _express = __webpack_require__(23);
 
 var _express2 = _interopRequireDefault(_express);
 
-var _winston = __webpack_require__(27);
+var _winston = __webpack_require__(28);
 
 var _winston2 = _interopRequireDefault(_winston);
 
@@ -1129,25 +1178,29 @@ var _routeIndex = __webpack_require__(13);
 
 var _routeIndex2 = _interopRequireDefault(_routeIndex);
 
-var _routeUpdate = __webpack_require__(15);
+var _routeUpdate = __webpack_require__(16);
 
 var _routeUpdate2 = _interopRequireDefault(_routeUpdate);
 
-var _routeUpdateLastYear = __webpack_require__(14);
+var _routeUpdateLastYear = __webpack_require__(15);
 
 var _routeUpdateLastYear2 = _interopRequireDefault(_routeUpdateLastYear);
+
+var _routeStats = __webpack_require__(14);
+
+var _routeStats2 = _interopRequireDefault(_routeStats);
 
 var _lodurUtil = __webpack_require__(2);
 
 var _lodurUtil2 = _interopRequireDefault(_lodurUtil);
 
-var _mongoConnect = __webpack_require__(18);
+var _mongoConnect = __webpack_require__(19);
 
 var _mongoConnect2 = _interopRequireDefault(_mongoConnect);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-__webpack_require__(26).install();
+__webpack_require__(27).install();
 
 //# sourceMappingURL=./app.bundle.js.map
 
@@ -1171,10 +1224,10 @@ process.on('uncaughtException', function (err) {
 });
 
 var path = __webpack_require__(6);
-var favicon = __webpack_require__(25);
-var expressWinston = __webpack_require__(23);
-var cookieParser = __webpack_require__(21);
-var bodyParser = __webpack_require__(20);
+var favicon = __webpack_require__(26);
+var expressWinston = __webpack_require__(24);
+var cookieParser = __webpack_require__(22);
+var bodyParser = __webpack_require__(21);
 var mongoose = __webpack_require__(3);
 var pageloader = __webpack_require__(9);
 var app = (0, _express2.default)();
@@ -1213,6 +1266,7 @@ var router = _express2.default.Router();
 router.get('/', new _routeIndex2.default(dependencies).getRoute());
 router.get('/update', new _routeUpdate2.default(dependencies).getRoute());
 router.get('/update-last-year', new _routeUpdateLastYear2.default(dependencies).getRoute());
+router.get('/stats-dasheroo', new _routeStats2.default(dependencies).getRoute());
 app.use('/', router);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -1272,7 +1326,7 @@ module.exports = app;
 /* WEBPACK VAR INJECTION */}.call(exports, "/"))
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1307,33 +1361,33 @@ Entry.prototype.getNumber = function getNumberF() {
 module.exports = Entry;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _entry = __webpack_require__(29);
+var _entry = __webpack_require__(30);
 
 var _entry2 = _interopRequireDefault(_entry);
 
-var _dateparser = __webpack_require__(31);
+var _dateparser = __webpack_require__(32);
 
 var _dateparser2 = _interopRequireDefault(_dateparser);
 
-var _parseTimeFromLine = __webpack_require__(35);
+var _parseTimeFromLine = __webpack_require__(36);
 
 var _parseTimeFromLine2 = _interopRequireDefault(_parseTimeFromLine);
 
-var _parseGroups = __webpack_require__(33);
+var _parseGroups = __webpack_require__(34);
 
 var _parseGroups2 = _interopRequireDefault(_parseGroups);
 
-var _parseDescription = __webpack_require__(32);
+var _parseDescription = __webpack_require__(33);
 
 var _parseDescription2 = _interopRequireDefault(_parseDescription);
 
-var _parseNumber = __webpack_require__(34);
+var _parseNumber = __webpack_require__(35);
 
 var _parseNumber2 = _interopRequireDefault(_parseNumber);
 
@@ -1363,7 +1417,7 @@ module.exports = function (text) {
 };
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1384,7 +1438,7 @@ module.exports = function (args) {
 };
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1404,7 +1458,7 @@ module.exports = function parseDescriptionF(line) {
 };
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1423,7 +1477,7 @@ module.exports = function parseTimeFromLineF(line) {
 };
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1443,7 +1497,7 @@ module.exports = function parseNumberFromLineF(line) {
 };
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1461,15 +1515,15 @@ module.exports = function parseTimeFromLineF(line) {
 };
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var SourceMapConsumer = __webpack_require__(41).SourceMapConsumer;
+var SourceMapConsumer = __webpack_require__(42).SourceMapConsumer;
 var path = __webpack_require__(6);
 
 var fs;
 try {
-  fs = __webpack_require__(39);
+  fs = __webpack_require__(40);
   if (!fs.existsSync || !fs.readFileSync) {
     // fs doesn't have all methods we need
     fs = null;
@@ -1478,7 +1532,7 @@ try {
   /* nop */
 }
 
-var bufferFrom = __webpack_require__(37);
+var bufferFrom = __webpack_require__(38);
 
 // Only install once if called multiple times
 var errorFormatterInstalled = false;
@@ -1603,7 +1657,7 @@ function retrieveSourceMapURL(source) {
 
   // Get the URL of the source map
   fileData = retrieveFile(source);
-  var re = /(?:\/\/[@#][ \t]+sourceMappingURL=([^\s'"]+?)[ \t]*$)|(?:\/\*[@#][ \t]+sourceMappingURL=([^\*]+?)[ \t]*(?:\*\/)[ \t]*$)/mg;
+  var re = /(?:\/\/[@#][\s]*sourceMappingURL=([^\s'"]+)[\s]*$)|(?:\/\*[@#][\s]*sourceMappingURL=([^\s*'"]+)[\s]*(?:\*\/)[\s]*$)/mg;
   // Keep executing the search to find the *last* sourceMappingURL to avoid
   // picking up sourceMappingURLs from comments, strings, etc.
   var lastMatch, match;
@@ -1676,7 +1730,7 @@ function mapSourcePosition(position) {
   }
 
   // Resolve the source URL relative to the URL of the source map
-  if (sourceMap && sourceMap.map) {
+  if (sourceMap && sourceMap.map && typeof sourceMap.map.originalPositionFor === 'function') {
     var originalPosition = sourceMap.map.originalPositionFor(position);
 
     // Only return the original position if a matching line was found. If no
@@ -1801,8 +1855,13 @@ function cloneCallSite(frame) {
   return object;
 }
 
-function wrapCallSite(frame) {
+function wrapCallSite(frame, state) {
+  // provides interface backward compatibility
+  if (state === undefined) {
+    state = { nextPosition: null, curPosition: null }
+  }
   if(frame.isNative()) {
+    state.curPosition = null;
     return frame;
   }
 
@@ -1816,7 +1875,11 @@ function wrapCallSite(frame) {
 
     // Fix position in Node where some (internal) code is prepended.
     // See https://github.com/evanw/node-source-map-support/issues/36
-    var headerLength = 62;
+    // Header removed in node at ^10.16 || >=11.11.0
+    // v11 is not an LTS candidate, we can just test the one version with it.
+    // Test node versions for: 10.16-19, 10.20+, 12-19, 20-99, 100+, or 11.11
+    var noHeader = /^v(10\.1[6-9]|10\.[2-9][0-9]|10\.[0-9]{3,}|1[2-9]\d*|[2-9]\d|\d{3,}|11\.11)/;
+    var headerLength = noHeader.test(process.version) ? 0 : 62;
     if (line === 1 && column > headerLength && !isInBrowser() && !frame.isEval()) {
       column -= headerLength;
     }
@@ -1826,9 +1889,15 @@ function wrapCallSite(frame) {
       line: line,
       column: column
     });
+    state.curPosition = position;
     frame = cloneCallSite(frame);
     var originalFunctionName = frame.getFunctionName;
-    frame.getFunctionName = function() { return position.name || originalFunctionName(); };
+    frame.getFunctionName = function() {
+      if (state.nextPosition == null) {
+        return originalFunctionName();
+      }
+      return state.nextPosition.name || originalFunctionName();
+    };
     frame.getFileName = function() { return position.source; };
     frame.getLineNumber = function() { return position.line; };
     frame.getColumnNumber = function() { return position.column + 1; };
@@ -1850,16 +1919,25 @@ function wrapCallSite(frame) {
 }
 
 // This function is part of the V8 stack trace API, for more info see:
-// http://code.google.com/p/v8/wiki/JavaScriptStackTraceApi
+// https://v8.dev/docs/stack-trace-api
 function prepareStackTrace(error, stack) {
   if (emptyCacheBetweenOperations) {
     fileContentsCache = {};
     sourceMapCache = {};
   }
 
-  return error + stack.map(function(frame) {
-    return '\n    at ' + wrapCallSite(frame);
-  }).join('');
+  var name = error.name || 'Error';
+  var message = error.message || '';
+  var errorString = name + ": " + message;
+
+  var state = { nextPosition: null, curPosition: null };
+  var processedStack = [];
+  for (var i = stack.length - 1; i >= 0; i--) {
+    processedStack.push('\n    at ' + wrapCallSite(stack[i], state));
+    state.nextPosition = state.curPosition;
+  }
+  state.curPosition = state.nextPosition = null;
+  return errorString + processedStack.reverse().join('');
 }
 
 // Generate position and snippet of original source with pointer
@@ -1970,7 +2048,7 @@ exports.install = function(options) {
   if (options.hookRequire && !isInBrowser()) {
     var Module;
     try {
-      Module = __webpack_require__(40);
+      Module = __webpack_require__(41);
     } catch (err) {
       // NOP: Loading in catch block to convert webpack error to warning.
     }
@@ -2023,35 +2101,38 @@ exports.resetRetrieveHandlers = function() {
 
   retrieveFileHandlers = originalRetrieveFileHandlers.slice(0);
   retrieveMapHandlers = originalRetrieveMapHandlers.slice(0);
+
+  retrieveSourceMap = handlerExec(retrieveMapHandlers);
+  retrieveFile = handlerExec(retrieveFileHandlers);
 }
 
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports) {
-
-module.exports = require("buffer-from");
 
 /***/ }),
 /* 38 */
 /***/ (function(module, exports) {
 
-module.exports = require("cheerio");
+module.exports = require("buffer-from");
 
 /***/ }),
 /* 39 */
 /***/ (function(module, exports) {
 
-module.exports = require("fs");
+module.exports = require("cheerio");
 
 /***/ }),
 /* 40 */
 /***/ (function(module, exports) {
 
-module.exports = require("module");
+module.exports = require("fs");
 
 /***/ }),
 /* 41 */
+/***/ (function(module, exports) {
+
+module.exports = require("module");
+
+/***/ }),
+/* 42 */
 /***/ (function(module, exports) {
 
 module.exports = require("source-map");
