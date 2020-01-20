@@ -34,7 +34,7 @@
     "q": "^1.4.1",
     "request": "^2.88.0",
     "serve-favicon": "~2.5.0",
-    "source-map": "^0.6.1",
+    "source-map": "^0.7.3",
     "source-map-support": "^0.5.0",
     "string": "^3.3.3",
     "underscore": "^1.8.3",
