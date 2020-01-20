@@ -24,7 +24,7 @@
     "cookie-parser": "^1.4.3",
     "cross-env": "^6.0.3",
     "debug": "~4.1.1",
-    "express": "~4.16.2",
+    "express": "~4.17.1",
     "express-winston": "^4.0.2",
     "lodash": "^4.17.11",
     "moment": "^2.23.0",
