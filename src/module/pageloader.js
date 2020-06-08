@@ -1,54 +1,67 @@
 "use strict";
-import logger from 'winston';
-
-const request = require('request');
+const logger = require('winston');
+const axios = require('axios').default;
 const cheerio = require('cheerio');
-const parser14 = require("./parser-14");
-const LogEntry = require('./../schemas/logEntry');
+const Parser = require("./parser-14");
+class Pageloader {
 
-module.exports = function pageLoaderF(url_unsused) {
-    return new Promise((resolve, reject)=> {
-        let parsedEntries= [];
-        let url = url_unsused || 'https://www.lodur-zh.ch/duebendorf/index.php?modul=6';
-        let $;
-        // @todo replace with active framework (see https://github.com/request/request/issues/3142)
-        request(url, {
-            uri: url,
-            method: 'GET',
-            encoding: 'binary'
-        }, function (err, resp, body) {
-            let contentsOfPage = [];
-            try {
-                $ = cheerio.load(body);
-                contentsOfPage = $('div .content table');
-            } catch (ex) {
-                console.log('pageloader $',ex);
-                LogEntry.create({
-                    timestamp: new Date(),
-                    text: 'pageloader - parser: uncaughtException',
-                    error: JSON.stringify(ex),
-                    description: ex.message + '\nbody:' + body + '\n' + ex.stack
-                }, function (err) {
-                    if (err === null) {
-                        return;
-                    }
-                    console.log('persist new Entry ', err);
-                });
-                logger.log('error: pageloader parse',ex);
-                reject({'err-parse-contents-page' :ex});
-                return;
-            }
-            let entries = [];
-            contentsOfPage.each(function (position, element) {
-                const entry = $(element);
-                entries.push(entry.text());
-            });
-            entries.shift(); // remove Einsatzberichte des Jahres...
-            entries.forEach((element) =>{
-                parsedEntries.push(parser14(element));
-            });
-            resolve(parsedEntries);
+    constructor() {
+        this.parser = new Parser.default();
+        this.cheerio = cheerio;
+        this.axios = axios;
+    }
+
+    parse(text) {
+        return this.parser.parse(text);
+    }
+
+    load(url_unused) {
+        return new Promise((resolve, reject) => {
+            let url = url_unused || 'https://www.lodur-zh.ch/duebendorf/index.php?modul=6';
+            this.axios.get(url, {responseEncoding: 'binary' })
+                .then(this.htmlToLines.bind(this))
+                .then(this.linesToEntries.bind(this))
+                .then(resolve)
+                .catch(reject);
+
         });
+    }
 
-    });
-};
+    htmlToLines(response) {
+        let html = response.data;
+        let $ = this.cheerio.load(html , {
+            normalizeWhitespace: true,
+            xmlMode: true
+        });
+        let contentsOfPage = $('div .content table');
+        let entries = [];
+        contentsOfPage.each(function (position, element) {
+            const entry = $(element);
+            entries.push(entry.text());
+        });
+        return entries;
+    }
+
+    linesToEntries(elements) {
+        elements.shift(); // remove Einsatzberichte des Jahres...
+        return elements.map(element => this.parse(element));
+    }
+
+    // handleException(ex, reject) {
+    //     LogEntry.create({
+    //         timestamp: new Date(),
+    //         text: 'pageloader - parser: uncaughtException',
+    //         error: JSON.stringify(ex),
+    //         description: ex.message + ex.stack
+    //     }, function (err) {
+    //         if (err === null) {
+    //             return;
+    //         }
+    //         console.log('persist new Entry ', err);
+    //     });
+    //     logger.log('error: pageloader parse', ex);
+    //     reject({'err-parse-contents-page': ex});
+    // }
+}
+
+export default Pageloader;

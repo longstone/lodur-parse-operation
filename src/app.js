@@ -1,4 +1,6 @@
 "use strict";
+import Parser from "./module/parser-14";
+
 require('source-map-support').install();
 import 'source-map-support/register';
 import PersistenceService from './module/persistence/persistence-service';
@@ -10,7 +12,7 @@ import LogEntry from './schemas/logEntry'
 import _ from 'lodash';
 import request from 'request';
 import express from 'express';
-import logger from 'winston';
+import winston from 'winston';
 import RouteIndex from './routes/route-index';
 import RouteUpdate from './routes/route-update';
 import RouteUpdateLastYear from './routes/route-update-last-year';
@@ -44,21 +46,31 @@ const expressWinston = require('express-winston');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const pageloader = require('./module/pageloader');
+const Pageloader = require('./module/pageloader');
+const pageloader = new Pageloader.default();
 const app = express();
 
 
 // uncomment after placing your favicon in /public
 // @todo place favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
-// app.use(expressWinston.logger({
-//     transports: [
-//         new logger.transports.Console({
-//             json: true,
-//             colorize: true
-//         })
-//     ]
-// }));
+const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.json(),
+    defaultMeta: { service: 'user-service' },
+    transports: [
+        //
+        // - Write all logs with level `error` and below to `error.log`
+        // - Write all logs with level `info` and below to `combined.log`
+        //
+        new winston.transports.Console({
+            colorize: true,
+            level: 'debug'
+        }),
+        new winston.transports.File({ filename: 'error.log', level: 'error' }),
+        new winston.transports.File({ filename: 'combined.log' }),
+    ],
+});
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
@@ -121,9 +133,8 @@ if (app.get('env') === 'development') {
         });
     });
 } else {
-
-// production error handler
-// no stacktraces leaked to user
+    // production error handler
+    // no stacktraces leaked to user
     app.use(function (err, req, res, next) {
         logger.log('error', err);
         res.status(err.status || 500);
@@ -139,4 +150,4 @@ app.listen(LodurUtil.getServerPort(), LodurUtil.getServerIp(), function () {
     logger.log('info', "Listening on server_ip_address: " + LodurUtil.getServerIp());
 });
 
-module.exports = app;
+export default app;

@@ -1,3 +1,7 @@
+import _ from "lodash";
+
+const LogEntry = require('./../schemas/logEntry');
+
 class RouteIndex {
 
     constructor(dependencies) {
@@ -9,15 +13,26 @@ class RouteIndex {
 
     getRoute() {
         return (req, res) => {
-            this.import.pageloader().then(json => {
+            this.import.pageloader.load().then(json => {
                     res.setHeader('charset', 'utf8');
-                    res.setHeader('Content-Length', new Buffer(json).length);
                     res.json(json);
                 },
-                err => res.json({error: err}));
+                function (err) {
+                    LogEntry.create({
+                        timestamp: new Date(),
+                        text: 'index - pageloader exception',
+                        error: JSON.stringify(err),
+                        description: _.get(err, 'message', 'nomessage') + '\nstack:\n' + _.get(err, 'stack', 'nostack')
+                    }, function (err) {
+                        if(err != null){
+                            console.log('not able to write log Entry ', err);
+                        }
+                    });
+                    res.json({error: err})
+                });
 
         }
     }
 }
 
-module.exports = RouteIndex;
+export default RouteIndex;

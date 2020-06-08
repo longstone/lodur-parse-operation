@@ -5,6 +5,7 @@ var moment = require('moment');
  */
 
 module.exports = function parseTimeFromLineF(line) {
+    // 07.06.2020   083 - 21:03 Uhr
     var timeStartIndex = line.indexOf('- ') + 2;
     var timeEndIndex = line.indexOf(' Uhr');
     return line.substring(timeStartIndex, timeEndIndex)

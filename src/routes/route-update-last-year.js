@@ -1,6 +1,6 @@
-import _ from 'lodash';
-import moment from 'moment'
-import lodurUtil from '../module/util/lodur-util';
+const _ = require('lodash');
+const moment = require('moment');
+const lodurUtil = require('../module/util/lodur-util');
 
 
 class RouteUpdate {
