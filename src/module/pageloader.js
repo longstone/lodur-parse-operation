@@ -11,6 +11,7 @@ module.exports = function pageLoaderF(url_unsused) {
         let parsedEntries= [];
         let url = url_unsused || 'https://www.lodur-zh.ch/duebendorf/index.php?modul=6';
         let $;
+        // @todo replace with active framework (see https://github.com/request/request/issues/3142)
         request(url, {
             uri: url,
             method: 'GET',
