@@ -17,7 +17,7 @@ module.exports ={
         devtoolFallbackModuleFilenameTemplate: '[absolute-resource-path]?[hash]'
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.js$/,
                 loader: "babel-loader"

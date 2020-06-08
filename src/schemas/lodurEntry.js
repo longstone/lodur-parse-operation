@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import SchemaUtil from './schemaU';
+const mongoose =  require('mongoose');
+const SchemaUtil = require('./schemaU');
 
 const entrySchema = new mongoose.Schema({
     group: [String],

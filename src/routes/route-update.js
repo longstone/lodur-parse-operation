@@ -1,6 +1,6 @@
-import _ from 'lodash';
-import moment from 'moment'
-import lodurUtil from '../module/util/lodur-util';
+const _ = require('lodash');
+const moment = require('moment');
+const lodurUtil = require('../module/util/lodur-util');
 
 class RouteUpdate {
     constructor(dependencies) {
@@ -17,7 +17,7 @@ class RouteUpdate {
             this.logger.log('debug', 'route-update: update requested');
             Promise.all([
                 this.persistenceService.getLastEntryForYear(),
-                this.pageloader()
+                this.pageloader.load()
             ])
                 .then(result => {
                     try{

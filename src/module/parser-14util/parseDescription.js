@@ -1,13 +1,13 @@
 "use strict";
-var S = require('string');
 /**
  * Created by longstone on 31/12/14.
  */
-var POSITION_OF_FIRST_SLASH = 17;
-module.exports = function parseDescriptionF(line) {
-    // todo replace 'string'
-    line = S(line).replaceAll('\t', '').s;
-    var start = line.indexOf(' / ', POSITION_OF_FIRST_SLASH) + 3;
-    var end = line.length;
-    return line.substring(start, end).trim();
+
+var nThPositionOf = function NthPositionOf(string, subString, n) {
+    return string.split(subString, n).join(subString).length;
+}
+
+module.exports = function parseDescriptionF(text) {
+    const start = nThPositionOf(text, "/", 2) + 1;
+    return text.substr(start).trim();
 };

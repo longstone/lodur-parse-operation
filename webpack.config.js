@@ -32,17 +32,15 @@ module.exports = {
     },
     devtool: 'source-map',
     module: {
-        loaders: [
+        rules: [
             {   test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
-                loader: 'babel-loader',
-                query: {
-                    presets: ['es2015']
-                }
+                loader: 'babel-loader'
             }
 
         ]
     },
+    mode: 'production',
     plugins: [
         new webpack.IgnorePlugin(/vertx/)
     ]

@@ -1,5 +1,5 @@
-import _ from 'lodash';
-import LodurUtil from './../util/lodur-util';
+const _ = require('lodash');
+const LodurUtil = require('./../util/lodur-util');
 
 class TelegramBotService {
     constructor(botInstance, dependencies) {
