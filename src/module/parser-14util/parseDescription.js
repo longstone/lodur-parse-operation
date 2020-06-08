@@ -8,6 +8,6 @@ var nThPositionOf = function NthPositionOf(string, subString, n) {
 }
 
 module.exports = function parseDescriptionF(text) {
-    const start = nThPositionOf(text,"/",2) -1;
+    const start = nThPositionOf(text, "/", 2) + 1;
     return text.substr(start).trim();
 };

@@ -37,13 +37,30 @@ const getSendArray = function getSendArrayF(json, _lastEntryCache) {
     return sendArr.reverse();
 };
 
-const containsDuplicatedID = function(array) {
+const containsDuplicatedID = function (array) {
     if (!array) {
         return false;
     }
     const set = new Set();
     array.map(item => set.add(item.number));
-    return !(array.length === set.size);
+     const invalid =  !(array.length === set.size);
+    if(invalid){
+        let a = [];
+        array.map(e => a.push(e.number))
+        let success = false;
+        for (var key of set.keys()) {
+            success = false
+            for (var i = 0; i < a.length; i++) {
+                if (a[i] === key && !success) {
+                    a[i] = null;
+                    success = true;
+                }
+            }
+        };
+        let duplicate = a.filter(element => element != null);
+        console.log('error; duplicated element found, number: ', duplicate);
+    }
+    return invalid;
 };
 const getServerPort = () => {
     return process.env.NODE_PORT || process.env.PORT || 8080
