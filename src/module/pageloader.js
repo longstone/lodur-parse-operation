@@ -1,4 +1,6 @@
 "use strict";
+import logger from 'winston';
+
 const request = require('request');
 const cheerio = require('cheerio');
 const parser14 = require("./parser-14");
