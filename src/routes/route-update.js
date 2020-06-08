@@ -26,6 +26,8 @@ class RouteUpdate {
                         let lastEntries = [];
                         if (lodurUtil.containsDuplicatedID(entries)) {
                             this.logger.log('warn', 'duplicated ID in entries: ', JSON.stringify(entries));
+                            this.logger.log('warn', 'docs: ', JSON.stringify(docs));
+                            this.logger.log('warn', 'promise result: ', JSON.stringify(result));
                         } else {
                             let lastEntry = {number: -1};
                             if (docs.length === 1) {
