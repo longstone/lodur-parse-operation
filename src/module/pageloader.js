@@ -47,21 +47,6 @@ class Pageloader {
         return elements.map(element => this.parse(element));
     }
 
-    // handleException(ex, reject) {
-    //     LogEntry.create({
-    //         timestamp: new Date(),
-    //         text: 'pageloader - parser: uncaughtException',
-    //         error: JSON.stringify(ex),
-    //         description: ex.message + ex.stack
-    //     }, function (err) {
-    //         if (err === null) {
-    //             return;
-    //         }
-    //         console.log('persist new Entry ', err);
-    //     });
-    //     logger.log('error: pageloader parse', ex);
-    //     reject({'err-parse-contents-page': ex});
-    // }
 }
 
 export default Pageloader;
