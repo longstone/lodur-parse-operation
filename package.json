@@ -57,7 +57,7 @@
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.11.0",
-    "webpack-node-externals": "^1.7.2",
+    "webpack-node-externals": "^2.5.2",
     "webpack-webstorm-debugger-script": "^1.0.1"
   }
 }
