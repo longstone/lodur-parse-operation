@@ -5,14 +5,14 @@
   "main": "./bin/app.bundle.js",
   "scripts": {
     "start": "node ./bin/app.bundle.js",
-    "start-dev": "cross-env NODE_ENV=development webpack --config ./webpack.config.js --colors && node ./bin/app.bundle.js",
+    "start-dev": "cross-env NODE_ENV=development webpack --mode development --config ./webpack.config.js --colors && node ./bin/app.bundle.js",
     "test": "mochapack --webpack-config webpack.config-test.babel.js \"src/**/*-spec.js\"",
     "test-watch": "mochapack --webpack-config webpack.config-test.babel.js \"src/**/*-spec.js\" --watch",
     "init": "npm install yarn && yarn install",
     "build": "npm run-script test && cross-env NODE_ENV=production webpack --config ./webpack.config.js --progress --colors",
-    "build-dev": "cross-env NODE_ENV=development webpack --config ./webpack.config.js --progress --colors",
+    "build-dev": "cross-env NODE_ENV=development webpack --mode development --config ./webpack.config.js --progress --colors",
     "build-dev-watch": "cross-env NODE_ENV=development webpack --config ./webpack.config.js --progress --colors --watch",
-    "heroku-postbuild": "npm install webpack && webpack -p --config ./webpack.config.js --progress"
+    "heroku-postbuild": "npm install webpack && webpack -p --mode production --config ./webpack.config.js --progress"
   },
   "engines": {
     "node": ">=12.14.1",
