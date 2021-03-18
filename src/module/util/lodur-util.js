@@ -58,7 +58,11 @@ const containsDuplicatedID = function (array) {
             }
         };
         let duplicate = a.filter(element => element != null);
-        console.log('error; duplicated element found, number: ', duplicate);
+        const winston = require('winston');
+        winston.log({
+            level: 'error',
+            message: 'duplicated element found, number: '+ duplicate
+        });
     }
     return invalid;
 };

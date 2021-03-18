@@ -1,5 +1,4 @@
 "use strict";
-const logger = require('winston');
 const axios = require('axios').default;
 const cheerio = require('cheerio');
 const Parser = require("./parser-14");
