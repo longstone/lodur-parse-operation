@@ -9,6 +9,6 @@ Following env vars are required
 
 ## dev
 
-* yarn install
-* build
-* start
+* npm ci
+* npm run-script build-dev-watch
+* npm run-script start-dev
