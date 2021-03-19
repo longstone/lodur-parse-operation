@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/longstone/lodur-parse-operation.svg?branch=ng-webpack)](https://travis-ci.org/longstone/lodur-parse-operation)
+[![Build Status](https://travis-ci.org/longstone/lodur-parse-operation.svg?branch=dev)](https://travis-ci.org/longstone/lodur-parse-operation)
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=longstone/lodur-parse-operation)](https://dependabot.com)
+
 # lodur-parse-operation
 nodejs app which parses the lodur entries and make it available as json
 
