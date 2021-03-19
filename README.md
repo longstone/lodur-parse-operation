@@ -12,3 +12,7 @@ Following env vars are required
 * npm ci
 * npm run-script build-dev-watch
 * npm run-script start-dev
+
+### update
+
+* npm run-script upgrade

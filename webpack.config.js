@@ -33,9 +33,10 @@ module.exports = {
     devtool: 'source-map',
     module: {
         rules: [
-            {   test: /\.js$/,
+            {
+                loader: 'babel-loader',
+                test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
-                loader: 'babel-loader'
             }
 
         ]

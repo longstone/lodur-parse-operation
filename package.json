@@ -12,7 +12,7 @@
     "build": "npm run-script test && cross-env NODE_ENV=production webpack --config ./webpack.config.js --progress --colors",
     "build-dev": "cross-env NODE_ENV=development webpack --mode development --config ./webpack.config.js --progress --colors",
     "build-dev-watch": "cross-env NODE_ENV=development webpack --config ./webpack.config.js --progress --colors --watch",
-    "heroku-postbuild": "npm install webpack && webpack -p --mode production --config ./webpack.config.js --progress"
+    "heroku-postbuild": "npm install webpack && webpack --mode production --config ./webpack.config.js --progress"
   },
   "engines": {
     "node": ">=12.14.1",
@@ -54,7 +54,7 @@
     "file-loader": "^6.0.0",
     "mocha": "^8.2.0",
     "mochapack": "^2.0.0",
-    "webpack": "^4.43.0",
+    "webpack": "^4.46.0",
     "webpack-cli": "^4.2.0",
     "webpack-dev-server": "^3.11.0",
     "webpack-node-externals": "^2.5.2",
