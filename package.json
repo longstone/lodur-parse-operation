@@ -37,7 +37,7 @@
     "serve-favicon": "~2.5.0",
     "source-map": "^0.7.3",
     "source-map-support": "^0.5.19",
-    "underscore": "^1.10.2",
+    "underscore": "^1.13.0",
     "winston": "^3.2.1"
   },
   "devDependencies": {
