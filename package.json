@@ -29,7 +29,7 @@
     "express-winston": "^4.0.3",
     "lodash": "^4.17.15",
     "moment": "^2.26.0",
-    "mongodb": "^4.0.0",
+    "mongodb": "^4.0.1",
     "mongoose": "^5.13.4",
     "node-telegram-bot": "^0.1.9",
     "q": "^1.5.1",
