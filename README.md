@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/longstone/lodur-parse-operation.svg?branch=dev)](https://travis-ci.org/longstone/lodur-parse-operation)
+[![Build Status](https://app.travis-ci.com/longstone/lodur-parse-operation.svg?branch=dev)](https://app.travis-ci.com/github/longstone/lodur-parse-operation)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=longstone/lodur-parse-operation)](https://dependabot.com)
 
 # lodur-parse-operation
