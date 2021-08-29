@@ -3,7 +3,6 @@ class MongoConnection {
         const connectionStringWithoutCredentials = MongoConnection._stripCredentialsConnectionString(mongoUri);
         mongoose.connect(mongoUri, {
             useNewUrlParser: true,
-            useCreateIndex: true,
             useUnifiedTopology: true
         }).then(
             () => logger.log('info', 'Succeeded connected to: ' + connectionStringWithoutCredentials),
