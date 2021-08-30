@@ -26,7 +26,7 @@
     "cross-env": "^7.0.2",
     "debug": "~4.3.2",
     "express": "~4.17.1",
-    "express-winston": "^4.0.3",
+    "express-winston": "^4.2.0",
     "lodash": "^4.17.15",
     "moment": "^2.26.0",
     "mongodb": "^4.1.0",
