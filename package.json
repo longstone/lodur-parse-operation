@@ -36,7 +36,7 @@
     "request": "^2.88.2",
     "serve-favicon": "~2.5.0",
     "source-map": "^0.7.3",
-    "source-map-support": "^0.5.19",
+    "source-map-support": "^0.5.20",
     "underscore": "^1.13.1",
     "winston": "^3.2.1"
   },
