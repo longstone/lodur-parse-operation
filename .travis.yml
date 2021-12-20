@@ -1,11 +1,14 @@
 language: node_js
 node_js:
-  - "node"
+  - "lts/*"
 before_script:
   - npm ci
 jobs:
   include:
+    - stage: "Test only"
+      name: "Unit Test"
+      script: npm test
     - stage: "Tests & Build"
-      name: "Unit Tests"
+      name: "Unit Tests and Build"
       script: npm run-script build
 

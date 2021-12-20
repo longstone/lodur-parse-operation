@@ -9,14 +9,14 @@
     "test": "mochapack --webpack-config webpack.config-test.babel.js \"src/**/*-spec.js\"",
     "test-watch": "mochapack --webpack-config webpack.config-test.babel.js \"src/**/*-spec.js\" --watch",
     "upgrade": "npm install",
-    "build": "npm run-script test && cross-env NODE_ENV=production webpack --config ./webpack.config.js --progress --color",
+    "build": "cross-env NODE_ENV=production webpack --config ./webpack.config.js --progress --color",
     "build-dev": "cross-env NODE_ENV=development webpack --mode development --config ./webpack.config.js --progress --color",
     "build-dev-watch": "cross-env NODE_ENV=development webpack --config ./webpack.config.js --progress --color --watch",
     "heroku-postbuild": "npm install webpack && webpack --mode production --config ./webpack.config.js --progress"
   },
   "engines": {
-    "node": "14.x",
-    "npm": "6.x"
+    "node": "16.x",
+    "npm": "8.x"
   },
   "dependencies": {
     "axios": "^0.21.1",
