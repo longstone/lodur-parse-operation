@@ -1,14 +1,14 @@
 /**
- * Created by longstone on 15/11/14.
+ * Created by longstone on 20/12/21.
  */
 import logger from 'winston';
 
 import Entry from './entry';
-import dateParser from './parser-14util/dateparser';
-import parseTimeFromLine from './parser-14util/parseTimeFromLine';
-import parseGroups from './parser-14util/parseGroups';
-import parseDescription from './parser-14util/parseDescription';
-import parseNumber from './parser-14util/parseNumber';
+import dateParser from './parser-21util/dateparser';
+import parseTimeFromLine from './parser-21util/parseTimeFromLine';
+import parseGroups from './parser-21util/parseGroups';
+import parseDescription from './parser-21util/parseDescription';
+import parseNumber from './parser-21util/parseNumber';
 
 class Parser {
 
