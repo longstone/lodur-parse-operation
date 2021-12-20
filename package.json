@@ -30,7 +30,7 @@
     "lodash": "^4.17.15",
     "moment": "^2.26.0",
     "mongodb": "^4.2.2",
-    "mongoose": "^6.0.2",
+    "mongoose": "^6.1.2",
     "node-telegram-bot": "^0.1.9",
     "q": "^1.5.1",
     "request": "^2.88.2",
