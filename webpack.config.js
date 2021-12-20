@@ -43,7 +43,6 @@ module.exports = {
     },
     mode: 'production',
     plugins: [
-        new webpack.IgnorePlugin(/vertx/)
     ]
    
 };
