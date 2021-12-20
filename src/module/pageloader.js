@@ -1,7 +1,7 @@
 "use strict";
 const axios = require('axios').default;
 const cheerio = require('cheerio');
-const Parser = require("./parser-14");
+const Parser = require("./parser-actual");
 class Pageloader {
 
     constructor() {

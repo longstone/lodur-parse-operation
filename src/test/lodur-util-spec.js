@@ -35,7 +35,7 @@ describe('order array by number', function () {
         assert.deepEqual(arr, expected);
     });
     // https://github.com/longstone/lodur-parse-operation/issues/4
-    it('should order multible entries the right way', function () {
+    it('should order multiple entries the right way', function () {
         var arr = [{
             "timestamp": "2016-11-26T11:39:00.000Z",
             "group": [
@@ -100,7 +100,7 @@ describe('order array by number', function () {
         assert.deepEqual(arr, expected);
     });
     // https://github.com/longstone/lodur-parse-operation/issues/4
-    it('should order multible entries the right way and return them', function () {
+    it('should order multiple entries the right way and return them', function () {
         var arr = [{
             "timestamp": "2016-11-26T11:39:00.000Z",
             "group": [
