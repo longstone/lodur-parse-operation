@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:alpine:lts
 EXPOSE 8080
 # copy app to src
 ADD . /script
