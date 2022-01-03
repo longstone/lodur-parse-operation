@@ -15,7 +15,7 @@ class RouteIndex {
                 thisYear => res.json({
                     my_statistic: {
                         type: 'integer',
-                        value: thisYear.length,
+                        value: thisYear?.slice(0,1)[0]?.number ?? 0,
                         label: 'Einsätze im aktuellen Jahr'
                     }
                 })

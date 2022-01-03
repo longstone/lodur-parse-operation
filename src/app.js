@@ -77,6 +77,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 const config = {telegramToken: process.env.telegram_hash};
+const bot = new Bot({token: config.telegramToken});
+
 const dependencies = {
     express,
     pageloader,
@@ -87,9 +89,9 @@ const dependencies = {
     }, {logger}),
     logger,
     request,
-    telegramBotService: null
+    telegramBotService: null,
+
 };
-const bot = new Bot({token: config.telegramToken});
 dependencies.telegramBotService = new TelegramBotService(bot, dependencies);
 const router = express.Router();
 router.get('/', new RouteIndex(dependencies).getRoute());
