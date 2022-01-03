@@ -2,7 +2,6 @@ const _ = require('lodash');
 const moment = require('moment');
 const lodurUtil = require('../module/util/lodur-util');
 
-
 class RouteUpdate {
     constructor(dependencies) {
         this.persistenceService = dependencies.persistenceService;
@@ -18,7 +17,7 @@ class RouteUpdate {
             this.logger.log('debug', 'route-update: update requested');
              Promise.all([
                 this.persistenceService.getLastEntryForLastYear(),
-                this.pageloader("https://www.lodur-zh.ch/duebendorf/index.php?modul=6&year=" + moment().startOf('year').subtract(1,'years').get('year'))
+                this.pageloader.load("https://www.lodur-zh.ch/duebendorf/index.php?modul=6&year=" + moment().startOf('year').subtract(1,'years').get('year'))
             ])
                 .then(result => {
                     try{
