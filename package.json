@@ -41,7 +41,7 @@
     "winston": "^3.7.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.9",
+    "@babel/core": "^7.19.0",
     "@babel/preset-env": "^7.16.11",
     "babel-loader": "^8.2.5",
     "file-loader": "^6.0.0",
