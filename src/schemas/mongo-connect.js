@@ -5,8 +5,8 @@ class MongoConnection {
 
     constructor(mongoose, mongoUri, logger) {
         const connectionStringWithoutCredentials = MongoConnection._stripCredentialsConnectionString(mongoUri);
+        mongoose.set('strictQuery', false);
         mongoose.connect(mongoUri, {
-            strictQuery: false,
             useNewUrlParser: true,
             useUnifiedTopology: true
         }).then(
