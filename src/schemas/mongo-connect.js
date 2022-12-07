@@ -1,12 +1,22 @@
+const EventEmitter = require('node:events');
+
 class MongoConnection {
+        connected =  new EventEmitter();
+
     constructor(mongoose, mongoUri, logger) {
         const connectionStringWithoutCredentials = MongoConnection._stripCredentialsConnectionString(mongoUri);
         mongoose.connect(mongoUri, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         }).then(
-            () => logger.log('info', 'Succeeded connected to: ' + connectionStringWithoutCredentials),
-            err => logger.log('error', 'ERROR connecting to: ' + connectionStringWithoutCredentials + '. ' + err)
+            () => {
+                this.connected.emit('connected');
+                logger.log('info', 'Succeeded connected to: ' + connectionStringWithoutCredentials);
+            },
+            err => {
+                logger.log('error', 'ERROR connecting to: ' + connectionStringWithoutCredentials + '. ' + err);
+                this.connected.emit('error')
+            }
         ).catch(err => console.log('mongoose-connect: unhandled error', err));
     }
 
@@ -19,6 +29,9 @@ class MongoConnection {
         return uri.substring(substFrom);
     }
 
+    getConnectionStatus(){
+        return this.connected;
+    }
 }
 
 module.exports = MongoConnection;

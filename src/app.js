@@ -57,7 +57,7 @@ const app = express();
 const logger = winston.createLogger({
     level: 'info',
     format: winston.format.json(),
-    defaultMeta: { service: 'user-service' },
+    defaultMeta: {service: 'user-service'},
     transports: [
         //
         // - Write all logs with level `error` and below to `error.log`
@@ -67,8 +67,8 @@ const logger = winston.createLogger({
             colorize: true,
             level: 'debug'
         }),
-        new winston.transports.File({ filename: 'error.log', level: 'error' }),
-        new winston.transports.File({ filename: 'combined.log' }),
+        new winston.transports.File({filename: 'error.log', level: 'error'}),
+        new winston.transports.File({filename: 'combined.log'}),
     ],
 });
 app.use(bodyParser.json());
@@ -117,7 +117,7 @@ mongoose.Promise = global.Promise;
 const options = {promiseLibrary: global.Promise};
 
 const mongoUri = process.env.MONGOURI || "mongodb://localhost:27017/lodur";
-new MongoConnection(mongoose, mongoUri, logger);
+const connection = new MongoConnection(mongoose, mongoUri, logger);
 
 // error handlers
 
@@ -146,10 +146,13 @@ if (app.get('env') === 'development') {
         });
     });
 }
-
-app.listen(LodurUtil.getServerPort(), LodurUtil.getServerIp(), function () {
-    logger.log('info', "Listening on server_port: " + LodurUtil.getServerPort());
-    logger.log('info', "Listening on server_ip_address: " + LodurUtil.getServerIp());
+connection.getConnectionStatus().prependOnceListener('connected', (stream) => {
+    // connection to mongo is successful, listen for requests
+    app.listen(LodurUtil.getServerPort(), LodurUtil.getServerIp(), function () {
+        logger.log('info', "Listening on server_port: " + LodurUtil.getServerPort());
+        logger.log('info', "Listening on server_ip_address: " + LodurUtil.getServerIp());
+    });
 });
+
 
 export default app;
