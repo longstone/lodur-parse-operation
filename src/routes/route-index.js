@@ -17,7 +17,7 @@ class RouteIndex {
             this.import.pageloader.load().then(json => {
                     res.setHeader('charset', 'utf8');
                     if (lodurUtil.containsDuplicatedID(json)) {
-                        res.json({error: "duplication, please contact admin"})
+                        res.json({error: 'More than once the same >Einsatznummer<.\n Please contact admin (to check logs).\n If your a lodur admin, check that each number is unique.'})
                     }
                     res.json(json);
                 },
