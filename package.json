@@ -15,7 +15,7 @@
     "heroku-postbuild": "npm install webpack && webpack --mode production --config ./webpack.config.js --progress"
   },
   "engines": {
-    "node": "16.x",
+    "node": "18.x",
     "npm": "8.x"
   },
   "dependencies": {
