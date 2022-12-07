@@ -43,8 +43,8 @@ const containsDuplicatedID = function (array) {
     }
     const set = new Set();
     array.map(item => set.add(item.number));
-     const invalid =  !(array.length === set.size);
-    if(invalid){
+    const invalid = !(array.length === set.size);
+    if (invalid) {
         let a = [];
         array.map(e => a.push(e.number))
         let success = false;
@@ -56,12 +56,12 @@ const containsDuplicatedID = function (array) {
                     success = true;
                 }
             }
-        };
+        }
         let duplicate = a.filter(element => element != null);
         const winston = require('winston');
         winston.log({
             level: 'error',
-            message: 'duplicated element found, number: '+ duplicate
+            message: 'duplicated element found, number: ' + duplicate
         });
     }
     return invalid;
