@@ -5,7 +5,8 @@ require('source-map-support').install();
 import 'source-map-support/register';
 import PersistenceService from './module/persistence/persistence-service';
 import TelegramBotService from './module/telegram/telegram-bot-service';
-import Bot from 'node-telegram-bot'
+const TelegramBot = require('node-telegram-bot-api');
+
 import LodurEntry from './schemas/lodurEntry';
 import Chats from './schemas/chats';
 import LogEntry from './schemas/logEntry'
@@ -77,7 +78,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 const config = {telegramToken: process.env.telegram_hash};
-const bot = new Bot({token: config.telegramToken});
+const bot = new TelegramBot(config.telegramToken, {polling: true});
 
 const dependencies = {
     express,

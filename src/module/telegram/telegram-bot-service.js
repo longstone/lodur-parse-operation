@@ -14,13 +14,7 @@ class TelegramBotService {
     _initBot(botInstance, logger) {
         logger.log('info', 'binding bot commands');
         const that = this;
-        return botInstance.on('error', (message) => {
-            // prevent bot from crashing
-            this.logger.log('error', 'telegram-bot-service: Bot.onError -> ' + JSON.stringify(message));
-            this.persistenceService.log('telegramMngr - received error: ' + JSON.stringify(message),
-                'Bot.onError:' + message
-            );
-        }).on('start', message => {
+        botInstance.onText(/\/start/, message => {
             this.persistenceService.log('telegram-bot-service: cmd start: ', JSON.stringify(message));
             this.persistenceService.findChatsById(message.chat.id).then(docs => {
                 if (docs.length === 0) {
@@ -42,7 +36,8 @@ class TelegramBotService {
                     this._send(message.chat.id, 'you\'re registered already, doing nothing...');
                 }
             }).catch(err => this.logger.log('error', 'telegram-bot-service: unknow error occured ' + JSON.stringify(err)));
-        }).on('stop', (message) => {
+        });
+        botInstance.onText(/\/stop/, (message) => {
             this.persistenceService.log('telegram-bot-service: cmd stop: ', JSON.stringify(message));
             this.persistenceService.findChatsById(message.chat.id).then(docs => {
                 _.each(docs, doc => doc.remove((error) => {
@@ -53,7 +48,8 @@ class TelegramBotService {
                     that._send(message.chat.id, sendMessage);
                 }));
             });
-        }).on('stats', message => {
+        });
+        botInstance.onText(/\/stats/, message => {
             this.persistenceService.log('telegram-bot-service: cmd stats: ' + JSON.stringify(message));
             this.persistenceService.findAllChats().then(chats => {
                 const sendMessage = 'currently, im notifying ' + TelegramBotService._chatOrChats(chats.length);
@@ -62,14 +58,16 @@ class TelegramBotService {
                 console.log('stats', err);
                 that.logger('warn', JSON.stringify(err))
             });
-        }).on('update', message => {
+        });
+        botInstance.onText(/\/update/, message => {
             this.persistenceService.log('telegram-bot-service: cmd update: ', JSON.stringify(message));
-                this.req.request('http://'+LodurUtil.getServerIp()+':'+LodurUtil.getServerPort()+'/update', () => {
+            this.req.request('http://' + LodurUtil.getServerIp() + ':' + LodurUtil.getServerPort() + '/update', () => {
                 logger.log('info', 'update from bot triggered');
                 that._send(message.chat.id, 'update triggered');
-             });
+            });
 
-        }).start();
+        });
+        return botInstance;
     }
 
     static _chatOrChats(count) {
@@ -98,22 +96,10 @@ class TelegramBotService {
     }
 
     _send(id, msg) {
-        const conf = {
-            chat_id: id,
-            text: msg
-        };
-        this.logger.log('debug', 'send ' + JSON.stringify(conf));
-        this.bot.sendMessage(conf, (err, body) => {
-            if (err) {
-                this.persistenceService.log(
-                    'telegramMngr - send: ' + JSON.stringify(body) + 'conf: ' + JSON.stringify(conf),
-                    'id: ' + id + ' text:' + this._.isObject(err) ? JSON.stringify(err) : err + '\n' + body
-                );
-            } else {
-                this.persistenceService.log('sucessful sent :' + JSON.stringify(body), '');
-            }
-        });
+        this.logger.log('debug', 'send ' + JSON.stringify({id, msg}));
+        this.bot.sendMessage(id, msg);
     }
 
 }
+
 module.exports = TelegramBotService;
