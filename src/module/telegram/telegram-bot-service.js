@@ -75,6 +75,10 @@ class TelegramBotService {
             logger.log('error', error);
             console.log(error.code);  // => 'EFATAL'
         });
+        botInstance.getMe().then(value => {
+            console.log('Sally goes up...');
+            console.log(value);
+        }).catch(reason => console.error(reason));
         return botInstance;
     }
 
@@ -104,12 +108,12 @@ class TelegramBotService {
     }
 
     _send(id, msg) {
-        this.logger.log('debug', 'send ' + JSON.stringify({id, msg}));
-        this.bot.sendMessage(id, msg).catch((error) => {
+        this.bot.sendMessage(id, msg)
+            .then(() => this.logger.log('debug', 'send ' + JSON.stringify({id, msg}))
+            ).catch((error) => {
             console.log(error.code);  // => 'ETELEGRAM'
             console.log(error.response.body); // => { ok: false, error_code: 400, description: 'Bad Request: chat not found' }
             this.persistenceService.log('telegram-bot-service.send: error', error);
-
         });
     }
 
