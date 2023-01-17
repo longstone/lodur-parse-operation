@@ -64,8 +64,16 @@ class TelegramBotService {
             this.req.request('http://' + LodurUtil.getServerIp() + ':' + LodurUtil.getServerPort() + '/update', () => {
                 logger.log('info', 'update from bot triggered');
                 that._send(message.chat.id, 'update triggered');
-            });
+            }).catch(_errorHandlerText);
 
+        });
+        botInstance.on('polling_error', (error) => {
+            logger.log('error', error);
+            console.log(error.code);  // => 'EFATAL'
+        });
+        botInstance.on('error', (error) => {
+            logger.log('error', error);
+            console.log(error.code);  // => 'EFATAL'
         });
         return botInstance;
     }
@@ -97,7 +105,12 @@ class TelegramBotService {
 
     _send(id, msg) {
         this.logger.log('debug', 'send ' + JSON.stringify({id, msg}));
-        this.bot.sendMessage(id, msg);
+        this.bot.sendMessage(id, msg).catch((error) => {
+            console.log(error.code);  // => 'ETELEGRAM'
+            console.log(error.response.body); // => { ok: false, error_code: 400, description: 'Bad Request: chat not found' }
+            this.persistenceService.log('telegram-bot-service.send: error', error);
+
+        });
     }
 
 }
