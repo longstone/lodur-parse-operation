@@ -52,7 +52,8 @@ class RouteUpdate {
                                                 + "Was:  " + item.description + "\n"
                                                 + "Wann: " + moment(item.timestamp).locale('de').format('HH:mm DD.MM.YY') + "\n"
                                                 + "Nummer: " + item.number;
-                                            this.telegramBot.notifyAll(message).then((chats) => this.logger.log('info', 'total ' + chats.length + ' notified'));
+                                            this.telegramBot.notifyAll(message)
+                                                .then((chats) => this.logger.log('info', 'total ' + chats.length + ' notified'));
 
                                         }).catch(error => this.logger.log('error', 'persist new Entry Error' + JSON.stringify(error)));
                                     } catch (constex) {
