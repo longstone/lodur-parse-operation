@@ -34,11 +34,10 @@ class RouteUpdate {
                                 lastEntry = docs[0]._doc;
                             }
                             lastEntries = lodurUtil.getSendArray(entries, lastEntry);
-                            this.logger.log('info', 'route-update: elements to send ', lastEntries.length);
+                            this.logger.log('info', `route-update: elements to send ${lastEntries.length}`);
                             if (lastEntries.length > 0) {
                                 lodurUtil.sortArrayByNumber(lastEntries).forEach((item) => {
                                     try {
-                                        this.logger.log('info', 'route-update: persisting item nr', item.number);
                                         const entry = {
                                             number: item.number,
                                             group: item.group,
@@ -55,7 +54,7 @@ class RouteUpdate {
                                             this.telegramBot.notifyAll(message)
                                                 .then((chats) => this.logger.log('info', 'total ' + chats.length + ' notified'));
 
-                                        }).catch(error => this.logger.log('error', 'persist new Entry Error' + JSON.stringify(error)));
+                                        }).catch(error => this.logger.log('error', 'route-update: persist new Entry Error ' + JSON.stringify(error)));
                                     } catch (constex) {
                                         this.logger.log('info', 'woohwohohwohowow' + constex);
                                     }
