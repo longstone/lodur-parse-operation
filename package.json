@@ -11,8 +11,7 @@
     "upgrade": "npm install",
     "build": "cross-env NODE_ENV=production webpack --config ./webpack.config.js --progress --color",
     "build-dev": "cross-env NODE_ENV=development webpack --mode development --config ./webpack.config.js --progress --color",
-    "build-dev-watch": "cross-env NODE_ENV=development webpack --config ./webpack.config.js --progress --color --watch",
-    "heroku-postbuild": "npm install webpack && webpack --mode production --config ./webpack.config.js --progress"
+    "build-dev-watch": "cross-env NODE_ENV=development webpack --config ./webpack.config.js --progress --color --watch"
   },
   "engines": {
     "node": "18.x",
