@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.21.3",
-    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-env": "^7.22.4",
     "@types/node-telegram-bot-api": "^0.61.4",
     "babel-loader": "^9.1.2",
     "file-loader": "^6.0.0",
