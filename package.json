@@ -37,7 +37,7 @@
     "source-map": "^0.7.4",
     "source-map-support": "^0.5.21",
     "underscore": "^1.13.6",
-    "winston": "^3.9.0"
+    "winston": "^3.12.0"
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",
